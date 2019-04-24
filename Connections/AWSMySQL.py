@@ -17,6 +17,9 @@ class AWSMySQLConn:
         print("Hello2")
         print(pd.read_sql('show tables;', con=self.conn))
 
+    def execute_query(self, query):
+        return pd.read_sql(query, con=self.conn)
+
 
 if __name__ == '__main__':
     connection = AWSMySQLConn()
