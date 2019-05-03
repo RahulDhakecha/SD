@@ -1,8 +1,8 @@
 # using python 3
-from flask import Flask, render_template
+from flask import Flask, render_template, flash
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, DateField, DecimalField, BooleanField
 from wtforms.validators import Required
 from data import ACTORS, COMPANIES
 
@@ -15,12 +15,33 @@ Bootstrap(app)
 # instead of using a CDN
 app.config['BOOTSTRAP_SERVE_LOCAL'] = True
 
+
 # with Flask-WTF, each web form is represented by a class
 # "NameForm" can change; "(FlaskForm)" cannot
 # see the route for "/" and "index.html" to see how this is used
-class NameForm(FlaskForm):
-    name = StringField('Please enter company name or select from drop down list', validators=[Required()])
-    # submit = SubmitField('Submit')
+class POForm(FlaskForm):
+    date = DateField('PO Date')
+    raj_elect = BooleanField('Raj Electricals')
+    dn_synd = BooleanField('D.N. Syndicate')
+    raj_entr = BooleanField('Raj Enterprise')
+    company_name = StringField('Please enter company name or select from drop down list', validators=[Required()])
+    location = StringField('Location')
+    project_description = StringField('Please enter project description')
+    total_cost = DecimalField('Total Cost')
+    order_no = DecimalField('Order number')
+    special_design = BooleanField('Special/Design')
+    telecom = BooleanField('Telecom')
+    eht = BooleanField('66KV')
+    turnkey = BooleanField('Turnkey')
+    liaison = BooleanField('Liaison')
+    ligthing = BooleanField('Lighting')
+    cable_earthing = BooleanField('Cable and Earthing')
+    maintenace_testing = BooleanField('Maintenance and Testing')
+    bbt = BooleanField('BBT')
+    sitc = BooleanField('SITC Panels')
+    retrofitting = BooleanField('Retrofitting')
+    submit = SubmitField('Submit')
+
 
 # define functions to be used by the routes (just one here)
 
@@ -46,18 +67,24 @@ def index():
     names = get_names(COMPANIES)
     # you must tell the variable 'form' what you named the class, above
     # 'form' is the variable name used in this template: index.html
-    form = NameForm()
+    form = POForm()
     message = ""
+
     if form.validate_on_submit():
-        name = form.name.data
-        if name in names:
-            message = "Yay! " + name + "!"
-            # empty the form field
-            form.name.data = ""
-        else:
-            message = "That actor is not in our database."
+        # flash("Validation in process")
+        company_name = form.company_name.data
+        project_name = form.project_name.data
+        print(company_name)
+        print(project_name)
+        # if name in names:
+        #     message = "Yay! " + name + "!"
+        #     # empty the form field
+        #     form.name.data = ""
+        # else:
+        #     message = "That company is not in our database."
     # notice that we don't need to pass name or names to the template
     return render_template('index.html', form=form, message=message, names=names)
+
 
 # keep this as is
 if __name__ == '__main__':
