@@ -2,9 +2,10 @@
 from flask import Flask, render_template, flash
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, DateField, DecimalField, BooleanField
+from wtforms import StringField, SubmitField, DateField, DecimalField, BooleanField, SelectMultipleField, SelectField, IntegerField
 from wtforms.validators import Required
 from data import ACTORS, COMPANIES
+from wtforms.fields.html5 import DateField
 
 app = Flask(__name__)
 # Flask-WTF requires an enryption key - the string can be anything
@@ -20,15 +21,22 @@ app.config['BOOTSTRAP_SERVE_LOCAL'] = True
 # "NameForm" can change; "(FlaskForm)" cannot
 # see the route for "/" and "index.html" to see how this is used
 class POForm(FlaskForm):
-    date = DateField('PO Date')
-    raj_elect = BooleanField('Raj Electricals')
-    dn_synd = BooleanField('D.N. Syndicate')
-    raj_entr = BooleanField('Raj Enterprise')
-    company_name = StringField('Please enter company name or select from drop down list', validators=[Required()])
+    firm = SelectMultipleField('Please select the firm',
+                                    choices=[('Raj Electricals', 'Raj Electricals'),
+                                             ('Raj VijTech', 'Raj VijTech'),
+                                             ('D.N. Syndicate', 'D.N. Syndicate'),
+                                             ('Raj Enterprise', 'Raj Enterprise')])
+    date = DateField('PO Date', format='%Y-%m-%d')
+    company_dropdown = SelectField(label='Please select company from drop down',
+                                   choices=[('Voltas', 'Voltas'),
+                                            ('Hikal', 'Hikal'),
+                                            ('Glenmark', 'Glenmark'),
+                                            ('SMC', 'SMC')])
+    company_name = StringField('Please enter company name if not found in drop down', validators=[Required()])
     location = StringField('Location')
     project_description = StringField('Please enter project description')
     total_cost = DecimalField('Total Cost')
-    order_no = DecimalField('Order number')
+    order_no = IntegerField('Order number', default=121)
     special_design = BooleanField('Special/Design')
     telecom = BooleanField('Telecom')
     eht = BooleanField('66KV')
@@ -73,9 +81,12 @@ def index():
     if form.validate_on_submit():
         # flash("Validation in process")
         company_name = form.company_name.data
-        project_name = form.project_name.data
+        project_description = form.project_description.data
+        date = form.date.data
+        print(form.firm.data)
+        print(date)
         print(company_name)
-        print(project_name)
+        print(project_description)
         # if name in names:
         #     message = "Yay! " + name + "!"
         #     # empty the form field
