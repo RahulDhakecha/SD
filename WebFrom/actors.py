@@ -1,5 +1,5 @@
 # using python 3
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, request, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, DateField, DecimalField, BooleanField, SelectMultipleField, SelectField, IntegerField, FileField
@@ -21,12 +21,6 @@ app.config['BOOTSTRAP_SERVE_LOCAL'] = True
 # "NameForm" can change; "(FlaskForm)" cannot
 # see the route for "/" and "index.html" to see how this is used
 class POForm(FlaskForm):
-    firm = SelectMultipleField('Please select the firm',
-                                    choices=[('Raj Electricals', 'Raj Electricals'),
-                                             ('Raj VijTech', 'Raj VijTech'),
-                                             ('D.N. Syndicate', 'D.N. Syndicate'),
-                                             ('Raj Enterprise', 'Raj Enterprise')])
-
     order_no = IntegerField('Order number', default=121)
     date = DateField('PO Date', format='%Y-%m-%d')
     company_dropdown = SelectField(label='Please select company from drop down',
@@ -53,54 +47,54 @@ class POForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
-# define functions to be used by the routes (just one here)
+class HomeForm(FlaskForm):
+    firm = SelectField('Please select the firm',
+                                    choices=[('Raj Electricals', 'Raj Electricals'),
+                                             ('Raj VijTech', 'Raj VijTech'),
+                                             ('D.N. Syndicate', 'D.N. Syndicate'),
+                                             ('Raj Enterprise', 'Raj Enterprise')])
+    submit = SubmitField('Submit')
 
-# retrieve all the names from the dataset and put them into a list
-def get_names(source):
-    names = []
-    for row in source:
-        name = row["name"]
-        names.append(name)
-    return sorted(names)
+
+# define functions to be used by the routes (just one here)
 
 # all Flask routes below
 
-# @app.route('/', methods=['GET'])
-# def dropdown():
-#     colours = ['Red', 'Blue', 'Black', 'Orange']
-#     return render_template('/test.html', colours=colours)
-
 # two decorators using the same function
-@app.route('/', methods=['GET', 'POST'])
+# @app.route('/', methods=['GET', 'POST'])
 @app.route('/index.html', methods=['GET', 'POST'])
-def index():
-    names = get_names(COMPANIES)
+def index(response=""):
+    names = ""
     # you must tell the variable 'form' what you named the class, above
     # 'form' is the variable name used in this template: index.html
     form = POForm()
     message = ""
-
-    form.order_no.data = 1
-    if form.firm.data == 'Raj Electricals':
-        form.order_no.data = 121
+    print(request.method)
+    print(response)
+    # form.order_no.data = 1
+    # if request.method == 'GET' and form.firm.data == 'Raj Electricals':
+    #     form.order_no.data = 121
+    #     return render_template('index.html', form=form, message=message, names=names)
 
     if form.validate_on_submit():
         # flash("Validation in process")
         company_name = form.company_name.data
         project_description = form.project_description.data
         date = form.date.data
-        print(form.firm.data)
         print(date)
         print(company_name)
         print(project_description)
-        # if name in names:
-        #     message = "Yay! " + name + "!"
-        #     # empty the form field
-        #     form.name.data = ""
-        # else:
-        #     message = "That company is not in our database."
-    # notice that we don't need to pass name or names to the template
-    return render_template('index.html', form=form, message=message, names=names)
+    return render_template('index.html', form=form, message=message, names=names, response=response)
+
+
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/home.html', methods=['GET', 'POST'])
+def home():
+    form = HomeForm()
+    if form.validate_on_submit():
+        print(form.firm.data)
+        return redirect(url_for('index'))
+    return render_template('home.html', form=form)
 
 
 # keep this as is
