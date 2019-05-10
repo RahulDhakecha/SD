@@ -2,7 +2,7 @@
 from flask import Flask, render_template, flash
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, DateField, DecimalField, BooleanField, SelectMultipleField, SelectField, IntegerField
+from wtforms import StringField, SubmitField, DateField, DecimalField, BooleanField, SelectMultipleField, SelectField, IntegerField, FileField
 from wtforms.validators import Required
 from data import ACTORS, COMPANIES
 from wtforms.fields.html5 import DateField
@@ -26,6 +26,8 @@ class POForm(FlaskForm):
                                              ('Raj VijTech', 'Raj VijTech'),
                                              ('D.N. Syndicate', 'D.N. Syndicate'),
                                              ('Raj Enterprise', 'Raj Enterprise')])
+
+    order_no = IntegerField('Order number', default=121)
     date = DateField('PO Date', format='%Y-%m-%d')
     company_dropdown = SelectField(label='Please select company from drop down',
                                    choices=[('Voltas', 'Voltas'),
@@ -36,7 +38,7 @@ class POForm(FlaskForm):
     location = StringField('Location')
     project_description = StringField('Please enter project description')
     total_cost = DecimalField('Total Cost')
-    order_no = IntegerField('Order number', default=121)
+    po_file = FileField('Please upload PO file')
     special_design = BooleanField('Special/Design')
     telecom = BooleanField('Telecom')
     eht = BooleanField('66KV')
@@ -77,6 +79,10 @@ def index():
     # 'form' is the variable name used in this template: index.html
     form = POForm()
     message = ""
+
+    form.order_no.data = 1
+    if form.firm.data == 'Raj Electricals':
+        form.order_no.data = 121
 
     if form.validate_on_submit():
         # flash("Validation in process")
