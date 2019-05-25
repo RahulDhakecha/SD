@@ -11,6 +11,7 @@ class AWSMySQLConn:
         user = user
         password = password
         self.conn = pymysql.connect(host, user=user, port=port, passwd=password, db=dbname)
+        self.cursor = self.conn.cursor()
         print("Hello1")
 
     def show_tables(self):
@@ -19,6 +20,21 @@ class AWSMySQLConn:
 
     def execute_query(self, query):
         return pd.read_sql(query, con=self.conn)
+
+    def insert_query(self, table_name, fields, values=[]):
+        tuple_values = tuple(values)
+        query = "INSERT INTO {} {} VALUES {};".format(table_name, fields, tuple_values)
+        print("Following query executed: {}".format(query))
+        self.cursor.execute(query)
+        self.conn.commit()
+
+    def get_columnnames(self, table_name):
+        return pd.read_sql("SELECT column_name from information_schema.columns where "
+                           "table_name = '{}';".format(table_name), con=self.conn)
+
+    def get_max_value(self, table_name, column_name):
+        query = "SELECT MAX({}) as m FROM {}".format(column_name, table_name)
+        return pd.read_sql(query, con=self.conn)['m'].iloc[0]
 
 
 if __name__ == '__main__':
