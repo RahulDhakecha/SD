@@ -12,11 +12,12 @@ class AWSMySQLConn:
         password = password
         self.conn = pymysql.connect(host, user=user, port=port, passwd=password, db=dbname)
         self.cursor = self.conn.cursor()
-        print("Hello1")
+        print("Database connection successful")
 
     def show_tables(self):
-        print("Hello2")
         print(pd.read_sql('show tables;', con=self.conn))
+        self.conn.commit()
+        self.conn.close()
 
     def execute_query(self, query):
         return pd.read_sql(query, con=self.conn)
@@ -35,6 +36,10 @@ class AWSMySQLConn:
     def get_max_value(self, table_name, column_name):
         query = "SELECT MAX({}) as m FROM {}".format(column_name, table_name)
         return pd.read_sql(query, con=self.conn)['m'].iloc[0]
+
+    def get_unique_values(self, table_name, column_name):
+        query = "SELECT {} FROM {} GROUP BY 1;".format(column_name, table_name)
+        return list(pd.read_sql(query, con=self.conn).iloc[:, 0])
 
 
 if __name__ == '__main__':
