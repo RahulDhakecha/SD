@@ -8,8 +8,9 @@ from flask_login import LoginManager
 from wtforms import validators
 from data import ACTORS, COMPANIES
 from wtforms.fields.html5 import DateField
-from Connections.AWSMySQL import AWSMySQLConn
 import sys
+sys.path.append('~/RajGroup/SD/')
+from Connections.AWSMySQL import AWSMySQLConn
 
 app = Flask(__name__)
 # Flask-WTF requires an encryption key - the string can be anything
