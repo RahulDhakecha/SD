@@ -1,10 +1,12 @@
 import pandas as pd
 import pymysql
+import os
 
 
 class AWSMySQLConn:
 
-    def __init__(self, host="rajgroup.cyjtpl2nvnjr.us-west-2.rds.amazonaws.com", port=3306, dbname="RajGroup", user="raj_2004", password="India123"):
+    def __init__(self, host=os.environ.get("HOST"), port=int(os.environ.get("PORT")),
+                 dbname=os.environ.get("DB_NAME"), user=os.environ.get("USER"), password=os.environ.get("PASSWORD")):
         host = host
         port = port
         dbname = dbname

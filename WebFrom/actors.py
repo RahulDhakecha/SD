@@ -102,7 +102,6 @@ def login():
         existing_users = connection.get_unique_values("users", "user_name")
         if form.username.data in existing_users:
             password = connection.execute_query("select user_password from users where user_name='{}'".format(form.username.data)).iloc[0,0]
-            print(password == form.password.data)
             if password == form.password.data:
                 return redirect(url_for('home'))
             else:
@@ -191,7 +190,6 @@ def home():
     # print("home method")
     form = HomeForm()
     if form.validate_on_submit():
-        print(form.firm.data)
         return redirect(url_for('index'))
     return render_template('home.html', form=form)
 
@@ -211,8 +209,53 @@ def dashboard():
     return render_template('dashboard_table.html', tables=[data.to_html(classes='data',index=False)], titles=data.columns.values)
 
 
+# Edit Article
+@app.route('/edit_article/<string:id>', methods=['GET', 'POST'])
+# @is_logged_in
+def edit_article(id):
+    # Create cursor
+    cur = mysql.connection.cursor()
+
+    # Get article by id
+    result = cur.execute("SELECT * FROM articles WHERE id = %s", [id])
+
+    article = cur.fetchone()
+    cur.close()
+    # Get form
+    form = ArticleForm(request.form)
+
+    # Populate article form fields
+    form.title.data = article['title']
+    form.body.data = article['body']
+
+    if request.method == 'POST' and form.validate():
+        title = request.form['title']
+        body = request.form['body']
+
+        # Create Cursor
+        cur = mysql.connection.cursor()
+        app.logger.info(title)
+        # Execute
+        cur.execute ("UPDATE articles SET title=%s, body=%s WHERE id=%s",(title, body, id))
+        # Commit to DB
+        mysql.connection.commit()
+
+        #Close connection
+        cur.close()
+
+        flash('Article Updated', 'success')
+
+        return redirect(url_for('dashboard'))
+
+    return render_template('edit_article.html', form=form)
+
+
 @app.route('/download.html', methods=['GET', 'POST'])
 def download():
+    connection = AWSMySQLConn()
+    data = connection.execute_query("select * from RajPO;")
+    print("Successfully fetched data from database")
+    data.to_excel(r"/Users/rahuldhakecha/RajGroup/Raj_PO_list.xlsx", index=False)
     return redirect(url_for('dashboard'))
 
 
