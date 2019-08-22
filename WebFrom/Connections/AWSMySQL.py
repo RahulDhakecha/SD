@@ -5,8 +5,8 @@ import os
 
 class AWSMySQLConn:
 
-    def __init__(self, host=os.environ.get("HOST"), port=int(os.environ.get("PORT")),
-                 dbname=os.environ.get("DB_NAME"), user=os.environ.get("USER"), password=os.environ.get("PASSWORD")):
+    def __init__(self, host=os.environ.get("DB_HOST"), port=int(os.environ.get("DB_PORT")),
+                 dbname=os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"), password=os.environ.get("DB_PASSWORD")):
         host = host
         port = port
         dbname = dbname
