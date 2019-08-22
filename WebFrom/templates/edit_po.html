@@ -8,12 +8,12 @@
 
 
 {% block title %}
-Data Entry
+PO Form
 {% endblock %}
 
 
 {% block content %}
- <nav class="navbar navbar-inverse navbar-fixed-top">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -26,8 +26,8 @@ Data Entry
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="{{ url_for('base') }}">Home</a></li>
-            <li class="active"><a href="{{ url_for('home') }}">Data Entry</a></li>
-            <li><a href="{{ url_for('data_edit') }}">Data Edit</a></li>
+            <li><a href="{{ url_for('home') }}">Data Entry</a></li>
+            <li class="active"><a href="{{ url_for('data_edit') }}">Data Edit</a></li>
             <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -35,14 +35,15 @@ Data Entry
           </ul>
         </div><!--/.nav-collapse -->
       </div>
- </nav>
+    </nav>
 <div class="container">
   <div class="row">
     <div class="col-xs-12">
-      {% include '_messages.html' %}
-      <h1>Raj Group!</h1>
 
-      <p class="lead">Please select the firm.</p>
+      <h1>{{ response }}</h1>
+      <p class="space-above"><strong>{{ response }}</strong></p>
+
+      <p class="lead">PO entry form. Please enter valid details.</p>
 
       {{ wtf.quick_form(form) }}
 
@@ -51,19 +52,5 @@ Data Entry
     </div>
   </div>
 </div>
-
-<!--
-TIPS about using Flask-Bootstrap:
-Flask-Bootstrap keeps the default Bootstrap stylesheet in the
-env/lib/python3.5/site-packages/flask_bootstrap/static/css/ directory.
-You can replace the CSS file. HOWEVER, when you reinstall requirements
-for your project, you would overwrite all the Bootstrap files
-with the defaults.
-Flask-Bootstrap templates are in
-env/lib/python3.5/site-packages/flask_bootstrap/static/templates
-Modifying the Bootstrap base.html template: use directives and
-Jinja2's super() function. See Jinja2 documentation and also this:
-https://pythonhosted.org/Flask-Bootstrap/basic-usage.html
--->
 
 {% endblock %}

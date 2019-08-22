@@ -1,0 +1,90 @@
+{% extends "bootstrap/base.html" %}
+
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
+{% endblock %}
+
+{% block content %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('base') }}">Home</a></li>
+            <li><a href="{{ url_for('home') }}">Data Entry</a></li>
+            <li><a href="{{ url_for('data_edit') }}">Data Edit</a></li>
+            <li class="active"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+  <hr>
+  <table class="table table-striped" style="width:100%">
+    <thead>
+    <tr>
+        <th>Order No</th>
+        <th>PO No</th>
+        <th>po_date</th>
+        <th>company</th>
+        <th>location</th>
+        <th>project_description</th>
+        <th>po_value</th>
+        <th>file_no</th>
+        <th>project_status</th>
+        <th>project_incharge</th>
+        <th>special_design</th>
+        <th>telecom</th>
+        <th>eht</th>
+        <th>turnkey</th>
+        <th>liaison</th>
+        <th>solar</th>
+        <th>lighting</th>
+        <th>cable_earthing</th>
+        <th>maintenance_testing</th>
+        <th>bbt</th>
+        <th>sitc_panel</th>
+        <th>retrofitting</th>
+    </tr>
+    </thead>
+    {% for po in po_list %}
+      <tr>
+        <td>{{po[0]}}</td>
+        <td>{{po[1]}}</td>
+        <td>{{po[2]}}</td>
+        <td>{{po[3]}}</td>
+        <td>{{po[4]}}</td>
+        <td>{{po[5]}}</td>
+        <td>{{po[6]}}</td>
+        <td>{{po[7]}}</td>
+        <td>{{po[8]}}</td>
+        <td>{{po[9]}}</td>
+        <td>{{po[10]}}</td>
+        <td>{{po[11]}}</td>
+        <td>{{po[12]}}</td>
+        <td>{{po[13]}}</td>
+        <td>{{po[14]}}</td>
+        <td>{{po[15]}}</td>
+        <td>{{po[16]}}</td>
+        <td>{{po[17]}}</td>
+        <td>{{po[18]}}</td>
+        <td>{{po[19]}}</td>
+        <td>{{po[20]}}</td>
+        <td>{{po[21]}}</td>
+        <td><a href="edit_po/{{po[0]}}" class="btn btn-default pull-right">Edit</a></td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

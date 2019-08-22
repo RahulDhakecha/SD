@@ -1,0 +1,105 @@
+{% extends "bootstrap/base.html" %}
+
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
+{% endblock %}
+
+{% block content %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('base') }}">Home</a></li>
+            <li><a href="{{ url_for('home') }}">Data Entry</a></li>
+            <li class="active"><a href="{{ url_for('data_edit') }}">Data Edit</a></li>
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('download') }}">Download</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+  <hr>
+  <table class="table table-striped" style="width:100%">
+    <thead>
+    <tr>
+        <th>Entry_Date</th>
+        <th>PO_Date</th>
+        <th>PO_Key</th>
+        <th>Order_No</th>
+        <th>PO_No</th>
+        <th>Client</th>
+        <th>Location</th>
+        <th>Sector</th>
+        <th>PO_Description</th>
+        <th>PO_Value</th>
+        <th>File_No</th>
+        <th>Tender_File_No</th>
+        <th>Project_Status</th>
+        <th>Project_Incharge</th>
+        <th>PO_file</th>
+        <th>Innovative_Design</th>
+        <th>Turnkey</th>
+        <th>Maintenance_Testing</th>
+        <th>Retrofitting</th>
+        <th>SITC</th>
+        <th>Supply</th>
+        <th>ITC</th>
+        <th>BBT</th>
+        <th>Lighting</th>
+        <th>Cable_Earthing</th>
+        <th>Liaison</th>
+        <th>EHT</th>
+        <th>Telecom_Const</th>
+        <th>Solar</th>
+    </tr>
+    </thead>
+    {% for po in po_list %}
+      <tr>
+        <td>{{po[0]}}</td>
+        <td>{{po[1]}}</td>
+        <td>{{po[2]}}</td>
+        <td>{{po[3]}}</td>
+        <td>{{po[4]}}</td>
+        <td>{{po[5]}}</td>
+        <td>{{po[6]}}</td>
+        <td>{{po[7]}}</td>
+        <td>{{po[8]}}</td>
+        <td>{{po[9]}}</td>
+        <td>{{po[10]}}</td>
+        <td>{{po[11]}}</td>
+        <td>{{po[12]}}</td>
+        <td>{{po[13]}}</td>
+        <td>{{po[14]}}</td>
+        <td>{{po[15]}}</td>
+        <td>{{po[16]}}</td>
+        <td>{{po[17]}}</td>
+        <td>{{po[18]}}</td>
+        <td>{{po[19]}}</td>
+        <td>{{po[20]}}</td>
+        <td>{{po[21]}}</td>
+        <td>{{po[22]}}</td>
+        <td>{{po[23]}}</td>
+        <td>{{po[24]}}</td>
+        <td>{{po[25]}}</td>
+        <td>{{po[26]}}</td>
+        <td>{{po[27]}}</td>
+        <td>{{po[28]}}</td>
+        <td><a href="edit_po/{{po[2]}}" class="btn btn-default pull-right">Edit</a></td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
