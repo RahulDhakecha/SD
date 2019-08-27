@@ -49,39 +49,6 @@ dash_app = dash.Dash(__name__,
                      routes_pathname_prefix='/dash/',
                      )
 
-# dash_app.layout = dash_table.DataTable(
-#     id='table',
-#     style_data={'whiteSpace': 'normal',
-#                 'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
-#     style_table={
-#         'maxHeight': '30',
-#         'overflowY': 'scroll'
-#     },
-#     style_header={
-#         'backgroundColor': 'rgb(230, 230, 230)',
-#         'fontWeight': 'bold'
-#     },
-#     style_cell={
-#         'textAlign': 'center'
-#     },
-#     style_data_conditional=[
-#         {
-#             'if': {'row_index': 'odd'},
-#             'backgroundColor': 'rgb(248, 248, 248)'
-#         }
-#     ],
-#     fixed_rows={'headers': True, 'data': 0},
-#     css=[{
-#         'selector': '.dash-cell div.dash-cell-value',
-#         'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
-#     }],
-#     filter_action="native",
-#     sort_action="native",
-#     sort_mode="multi",
-#     columns=[{"name": i, "id": i} for i in data.columns],
-#     data=data.to_dict('records'),
-# )
-
 
 date_col_converted = pd.to_datetime(data['PO_Date'])
 filtered_df = data[date_col_converted >= '2018-04-01']
@@ -99,7 +66,7 @@ dash_app.layout = html.Div([
         # Date Picker
         html.Div([
             dcc.DatePickerRange(
-                id='my-date-picker-range-birst-category',
+                id='my-date-picker',
                 # with_portal=True,
                 min_date_allowed=dt(2004, 1, 1),
                 max_date_allowed=date_col_converted.max().to_pydatetime(),
@@ -107,7 +74,7 @@ dash_app.layout = html.Div([
                 start_date=(date_col_converted.max() - timedelta(6)).to_pydatetime(),
                 end_date=date_col_converted.max().to_pydatetime(),
             ),
-            html.Div(id='output-container-date-picker-range-birst-category')
+            html.Div(id='output-container-date-picker')
         ], className="row ", style={'marginTop': 30, 'marginBottom': 15}),
 
         # First Data Table
@@ -173,16 +140,17 @@ dash_app.layout = html.Div([
 
 
 # # Date Picker Callback
-# @dash_app.callback(Output('output-container-date-picker-range-birst-category', 'children'),
-#               [Input('my-date-picker-range-birst-category', 'start_date'),
-#                Input('my-date-picker-range-birst-category', 'end_date')])
+# @dash_app.callback(Output('output-container-date-picker', 'children'),
+#               [Input('my-date-picker', 'start_date'),
+#                Input('my-date-picker', 'end_date')])
 # def update_output(start_date, end_date):
 #     string_prefix = 'You have selected '
-#     print(start_date.strftime)
-#     if start_date is not None:
-#         start_date = dt.strptime(start_date, '%Y-%m-%d')
-#         start_date_string = start_date.strftime('%B %d, %Y')
-#         string_prefix = string_prefix + 'a Start Date of ' + start_date_string + ' | '
+#     print(start_date)
+#     print(end_date)
+#     # if start_date is not None:
+#     #     start_date = dt.strptime(start_date, '%Y-%m-%d')
+#     #     start_date_string = start_date.strftime('%B %d, %Y')
+#     #     string_prefix = string_prefix + 'a Start Date of ' + start_date_string + ' | '
 #     if end_date is not None:
 #         end_date = dt.strptime(end_date, '%Y-%m-%d')
 #         end_date_string = end_date.strftime('%B %d, %Y')
