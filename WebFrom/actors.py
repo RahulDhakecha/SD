@@ -43,15 +43,15 @@ login = LoginManager(app)
 
 
 connection = AWSMySQLConn()
-data = connection.execute_query("select * from Raj_PO;")
+data1 = connection.execute_query("select * from Raj_PO;")
 dash_app = dash.Dash(__name__,
                      server=app,
                      routes_pathname_prefix='/dash/',
                      )
 
 
-date_col_converted = pd.to_datetime(data['PO_Date'])
-filtered_df = data[date_col_converted >= '2018-04-01']
+date_col_converted = pd.to_datetime(data1['PO_Date'])
+filtered_df = data1[date_col_converted >= '2018-04-01']
 cols = list(filtered_df)[-14:-1]
 values = []
 for c in cols:
@@ -107,8 +107,8 @@ dash_app.layout = html.Div([
                                 filter_action="native",
                                 sort_action="native",
                                 sort_mode="multi",
-                                columns=[{"name": i, "id": i} for i in data.columns],
-                                data=data.to_dict('records')
+                                columns=[{"name": i, "id": i} for i in data1.columns],
+                                data=data1.to_dict('records')
                 ),
         ], className=" twelve columns"),
 
