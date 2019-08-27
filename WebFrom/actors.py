@@ -13,8 +13,8 @@ from Connections.AWSMySQL import AWSMySQLConn
 from datetime import datetime as dt
 from datetime import date, timedelta
 from datetime import datetime
-from plotly import tools
-import plotly.graph_objs as go
+#from plotly import tools
+#import plotly.graph_objs as go
 import sys
 import json
 import pandas as pd
