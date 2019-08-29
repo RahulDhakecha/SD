@@ -13,8 +13,8 @@ from Connections.AWSMySQL import AWSMySQLConn
 from datetime import datetime as dt
 from datetime import date, timedelta
 from datetime import datetime
-#from plotly import tools
-#import plotly.graph_objs as go
+from plotly import tools
+import plotly.graph_objs as go
 import sys
 import json
 import pandas as pd
@@ -63,19 +63,6 @@ for c in cols:
 dash_app.layout = html.Div([
 
     html.Div([
-        # Date Picker
-        html.Div([
-            dcc.DatePickerRange(
-                id='my-date-picker',
-                # with_portal=True,
-                min_date_allowed=dt(2004, 1, 1),
-                max_date_allowed=date_col_converted.max().to_pydatetime(),
-                initial_visible_month=dt(date_col_converted.max().to_pydatetime().year, date_col_converted.max().to_pydatetime().month, 1),
-                start_date=(date_col_converted.max() - timedelta(6)).to_pydatetime(),
-                end_date=date_col_converted.max().to_pydatetime(),
-            ),
-            html.Div(id='output-container-date-picker')
-        ], className="row ", style={'marginTop': 30, 'marginBottom': 15}),
 
         # First Data Table
         html.Div([
@@ -112,14 +99,49 @@ dash_app.layout = html.Div([
                 ),
         ], className=" twelve columns"),
 
-        # GRAPHS
+        # Date Picker
+        html.Div([
+            dcc.DatePickerRange(
+                id='my-date-picker',
+                # with_portal=True,
+                min_date_allowed=dt(2004, 1, 1),
+                max_date_allowed=date_col_converted.max().to_pydatetime(),
+                initial_visible_month=dt(date_col_converted.max().to_pydatetime().year, date_col_converted.max().to_pydatetime().month, 1),
+                start_date=(date_col_converted.max() - timedelta(6)).date(),
+                end_date=date_col_converted.max().date(),
+            ),
+            html.Div(id='output-container-date-picker')
+        ], className="row ", style={'marginTop': 30, 'marginBottom': 15}),
+
+        # GRAPH - Sector Wise Orders
         html.Div([
             html.Div(
-            id='update_graph_1'
+            id='graph_1'
             ),
             html.Div([
                 dcc.Graph(
-                    id='birst-category',
+                    id='graph_sector_wise_orders',
+                    figure={
+                        'data': [
+                            {'x': cols, 'y': values, 'type': 'bar', 'name': 'SF'},
+                        ],
+                        'layout': {
+                            'title': 'Raj Electrical - Service wise Orders'
+                        }
+                    }
+                ),
+            ], className=" twelve columns"
+            ), ], className="row "
+        ),
+
+        # GRAPH - Monthly Order Booking
+        html.Div([
+            html.Div(
+            id='graph_2'
+            ),
+            html.Div([
+                dcc.Graph(
+                    id='graph_monthly_order_booking',
                     figure={
                         'data': [
                             {'x': cols, 'y': values, 'type': 'bar', 'name': 'SF'},
@@ -136,21 +158,22 @@ dash_app.layout = html.Div([
     ], className="subpage")
 ], className="page")
 
-########################  Layout ########################
+########################  Layout End ########################
 
 
-# # Date Picker Callback
-# @dash_app.callback(Output('output-container-date-picker', 'children'),
-#               [Input('my-date-picker', 'start_date'),
-#                Input('my-date-picker', 'end_date')])
-# def update_output(start_date, end_date):
-#     string_prefix = 'You have selected '
-#     print(start_date)
-#     print(end_date)
-#     # if start_date is not None:
-#     #     start_date = dt.strptime(start_date, '%Y-%m-%d')
-#     #     start_date_string = start_date.strftime('%B %d, %Y')
-#     #     string_prefix = string_prefix + 'a Start Date of ' + start_date_string + ' | '
+# Date Picker Callback
+@dash_app.callback(Output('output-container-date-picker', 'children'),
+              [Input('my-date-picker', 'start_date'),
+               Input('my-date-picker', 'end_date')])
+def update_output(start_date, end_date):
+    string_prefix = 'You have selected '
+    print(start_date)
+    print(end_date)
+    if start_date is not None:
+        start_date = dt.strptime(start_date, '%Y-%m-%d')
+        start_date_string = start_date.strftime('%B %d, %Y')
+        print(string_prefix + start_date_string)
+    #     string_prefix = string_prefix + 'a Start Date of ' + start_date_string + ' | '
 #     if end_date is not None:
 #         end_date = dt.strptime(end_date, '%Y-%m-%d')
 #         end_date_string = end_date.strftime('%B %d, %Y')
@@ -167,31 +190,56 @@ dash_app.layout = html.Div([
 #         return string_prefix
 
 
-# # Callback for the Graphs
-# @dash_app.callback(
-#    Output('birst-category', 'figure'),
-#    [Input('my-date-picker-range-birst-category', 'start_date'),
-#     Input('my-date-picker-range-birst-category', 'end_date')])
-# def update_birst_category(start_date, end_date):
-#     print("Hi")
-#     new_df = data[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
-#     fig = update_graph(new_df)
-#     return fig
-#
-#
-# def update_graph(new_df):
-#     cols = list(new_df)[-14:-1]
-#     values = []
-#     for c in cols:
-#         values.append(new_df[c].sum(axis=0, skipna=True))
-#
-#     bar_total_order = go.Bar(
-#       x=cols,
-#       y=values,
-#       text='Sessions YoY (%)', opacity=0.6
-#     )
-#
-#     return bar_total_order
+# Callback for the Graph - Sector Wise
+@dash_app.callback(
+   Output('graph_sector_wise_orders', 'figure'),
+   [Input('my-date-picker', 'start_date'),
+    Input('my-date-picker', 'end_date')])
+def update_graph_1(start_date, end_date):
+    new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
+    fig = update_graph(new_df)
+    return fig
+
+
+def update_graph(new_df):
+    cols = list(new_df)[-14:]
+    values = []
+    for c in cols:
+        values.append(new_df[c].sum(axis=0, skipna=True))
+
+    bar_total_order = go.Figure([go.Bar(
+      x=cols,
+      y=values,
+      text='Sessions YoY (%)', opacity=0.6
+    )])
+
+    return bar_total_order
+
+
+# Callback for the Graph - Month Wise Order Value
+@dash_app.callback(
+   Output('graph_monthly_order_booking', 'figure'),
+   [Input('my-date-picker', 'start_date'),
+    Input('my-date-picker', 'end_date')])
+def update_graph_1(start_date, end_date):
+    new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
+    fig = update_graph_montly_order_value(new_df)
+    return fig
+
+
+def update_graph_montly_order_value(new_df):
+    cols = list(new_df)[-14:]
+    values = []
+    for c in cols:
+        values.append(new_df[c].sum(axis=0, skipna=True))
+
+    bar_total_order = go.Figure([go.Scatter(
+      x=cols,
+      y=values,
+      text='Sessions YoY (%)', opacity=0.6
+    )])
+
+    return bar_total_order
 
 
 fields = "(po_date \
