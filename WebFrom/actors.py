@@ -221,7 +221,7 @@ def update_graph(new_df):
    Output('graph_monthly_order_booking', 'figure'),
    [Input('my-date-picker', 'start_date'),
     Input('my-date-picker', 'end_date')])
-def update_graph_1(start_date, end_date):
+def update_graph_2(start_date, end_date):
     new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
     fig = update_graph_montly_order_value(new_df)
     return fig
