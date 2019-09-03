@@ -161,18 +161,18 @@ dash_app.layout = html.Div([
 ########################  Layout End ########################
 
 
-# Date Picker Callback
-@dash_app.callback(Output('output-container-date-picker', 'children'),
-              [Input('my-date-picker', 'start_date'),
-               Input('my-date-picker', 'end_date')])
-def update_output(start_date, end_date):
-    string_prefix = 'You have selected '
-    print(start_date)
-    print(end_date)
-    if start_date is not None:
-        start_date = dt.strptime(start_date, '%Y-%m-%d')
-        start_date_string = start_date.strftime('%B %d, %Y')
-        print(string_prefix + start_date_string)
+# # Date Picker Callback
+# @dash_app.callback(Output('output-container-date-picker', 'children'),
+#               [Input('my-date-picker', 'start_date'),
+#                Input('my-date-picker', 'end_date')])
+# def update_output(start_date, end_date):
+#     string_prefix = 'You have selected '
+#     print(start_date)
+#     print(end_date)
+#     if start_date is not None:
+#         start_date = dt.strptime(start_date, '%Y-%m-%d')
+#         start_date_string = start_date.strftime('%B %d, %Y')
+#         print(string_prefix + start_date_string)
     #     string_prefix = string_prefix + 'a Start Date of ' + start_date_string + ' | '
 #     if end_date is not None:
 #         end_date = dt.strptime(end_date, '%Y-%m-%d')
@@ -216,30 +216,30 @@ def update_graph(new_df):
     return bar_total_order
 
 
-# Callback for the Graph - Month Wise Order Value
-@dash_app.callback(
-   Output('graph_monthly_order_booking', 'figure'),
-   [Input('my-date-picker', 'start_date'),
-    Input('my-date-picker', 'end_date')])
-def update_graph_2(start_date, end_date):
-    new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
-    fig = update_graph_montly_order_value(new_df)
-    return fig
-
-
-def update_graph_montly_order_value(new_df):
-    cols = list(new_df)[-14:]
-    values = []
-    for c in cols:
-        values.append(new_df[c].sum(axis=0, skipna=True))
-
-    bar_total_order = go.Figure([go.Scatter(
-      x=cols,
-      y=values,
-      text='Sessions YoY (%)', opacity=0.6
-    )])
-
-    return bar_total_order
+# # Callback for the Graph - Month Wise Order Value
+# @dash_app.callback(
+#    Output('graph_monthly_order_booking', 'figure'),
+#    [Input('my-date-picker', 'start_date'),
+#     Input('my-date-picker', 'end_date')])
+# def update_graph_2(start_date, end_date):
+#     new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
+#     fig = update_graph_montly_order_value(new_df)
+#     return fig
+#
+#
+# def update_graph_montly_order_value(new_df):
+#     cols = list(new_df)[-14:]
+#     values = []
+#     for c in cols:
+#         values.append(new_df[c].sum(axis=0, skipna=True))
+#
+#     bar_total_order = go.Figure([go.Scatter(
+#       x=cols,
+#       y=values,
+#       text='Sessions YoY (%)', opacity=0.6
+#     )])
+#
+#     return bar_total_order
 
 
 fields = "(po_date \
