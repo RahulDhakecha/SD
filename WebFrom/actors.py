@@ -2,7 +2,7 @@
 from flask import Flask, render_template, flash, request, redirect, url_for, session, jsonify
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField, IntegerField, FileField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField, IntegerField, FileField, HiddenField
 from wtforms.validators import Required, InputRequired, Email, Length
 from flask_login import LoginManager
 from wtforms.fields.html5 import DateField
@@ -10,6 +10,7 @@ from functools import wraps
 from passlib.hash import sha256_crypt
 from werkzeug import secure_filename
 from Connections.AWSMySQL import AWSMySQLConn
+from Connections.GeographicInfo import GeoInfoConn
 from datetime import datetime as dt
 from datetime import date, timedelta
 from datetime import datetime
@@ -44,6 +45,21 @@ login = LoginManager(app)
 
 connection = AWSMySQLConn()
 data1 = connection.execute_query("select * from Raj_PO;")
+data_upcoming_projects = connection.execute_query("select A.* , B.call_date, C.visit_date, D.followup_comment, E.name \
+from Upcoming_Projects as A \
+left join \
+Call_Log as B \
+on A.up_key=B.reference \
+left join \
+Visit_Log as C \
+on A.up_key=C.reference \
+left join \
+Followup_Log as D \
+on A.up_key=D.reference \
+left join \
+Company_Rep as E \
+on A.up_key=E.up_reference;")
+
 dash_app = dash.Dash(__name__,
                      server=app,
                      routes_pathname_prefix='/dash/',
@@ -63,6 +79,8 @@ for c in cols:
 dash_app.layout = html.Div([
 
     html.Div([
+        # Refresh Button
+        html.Button('Refresh', id='button'),
 
         # First Data Table
         html.Div([
@@ -98,6 +116,44 @@ dash_app.layout = html.Div([
                                 data=data1.to_dict('records')
                 ),
         ], className=" twelve columns"),
+
+
+        # Data Table - Upcoming Projects
+        html.Div([
+            dash_table.DataTable(id='upcoming_projects_table',
+                                style_data={'whiteSpace': 'normal',
+                                            'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
+                                style_table={
+                                    'maxHeight': '30',
+                                    'overflowY': 'scroll'
+                                },
+                                style_header={
+                                    'backgroundColor': 'rgb(230, 230, 230)',
+                                    'fontWeight': 'bold'
+                                },
+                                style_cell={
+                                    'textAlign': 'center'
+                                },
+                                style_data_conditional=[
+                                    {
+                                        'if': {'row_index': 'odd'},
+                                        'backgroundColor': 'rgb(248, 248, 248)'
+                                    }
+                                ],
+                                fixed_rows={'headers': True, 'data': 0},
+                                css=[{
+                                    'selector': '.dash-cell div.dash-cell-value',
+                                    'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
+                                }],
+                                filter_action="native",
+                                sort_action="native",
+                                sort_mode="multi",
+                                columns=[{"name": i, "id": i} for i in data_upcoming_projects.columns],
+                                data=data_upcoming_projects.to_dict('records')
+                ),
+        ], className=" twelve columns"),
+
+
 
         # Date Picker
         html.Div([
@@ -155,39 +211,80 @@ dash_app.layout = html.Div([
             ), ], className="row "
         ),
 
+        # GRAPH - Geographic Bubble Plot
+        html.Div([
+            html.Div(
+            id='graph_3'
+            ),
+            html.Div([
+                dcc.Graph(
+                    id='graph_geographic_reach'
+                ),
+            ], className=" twelve columns"
+            ), ], className="row "
+        ),
+
     ], className="subpage")
 ], className="page")
 
 ########################  Layout End ########################
 
 
-# # Date Picker Callback
-# @dash_app.callback(Output('output-container-date-picker', 'children'),
-#               [Input('my-date-picker', 'start_date'),
-#                Input('my-date-picker', 'end_date')])
-# def update_output(start_date, end_date):
-#     string_prefix = 'You have selected '
-#     print(start_date)
-#     print(end_date)
-#     if start_date is not None:
-#         start_date = dt.strptime(start_date, '%Y-%m-%d')
-#         start_date_string = start_date.strftime('%B %d, %Y')
-#         print(string_prefix + start_date_string)
+# Refresh Button Callback
+@dash_app.callback([Output('upcoming_projects_table', 'data'),
+               Output('upcoming_projects_table', 'columns')],
+              [dash.dependencies.Input('button', 'n_clicks')])
+def update_upcoming_projects_table(n_clicks):
+    if n_clicks is not None:
+        new_data_upcoming_projects = connection.execute_query("select A.* , B.call_date, C.visit_date, D.followup_comment, E.name \
+        from Upcoming_Projects as A \
+        left join \
+        Call_Log as B \
+        on A.up_key=B.reference \
+        left join \
+        Visit_Log as C \
+        on A.up_key=C.reference \
+        left join \
+        Followup_Log as D \
+        on A.up_key=D.reference \
+        left join \
+        Company_Rep as E \
+        on A.up_key=E.up_reference;")
+        columns = [{"name": i, "id": i} for i in new_data_upcoming_projects.columns],
+        data = new_data_upcoming_projects.to_dict('records')
+        print(data)
+        return data, columns
+
+
+
+
+# Date Picker Callback
+@dash_app.callback(Output('output-container-date-picker', 'children'),
+              [Input('my-date-picker', 'start_date'),
+               Input('my-date-picker', 'end_date')])
+def update_output(start_date, end_date):
+    string_prefix = 'You have selected '
+    print(start_date)
+    print(end_date)
+    if start_date is not None:
+        start_date = dt.strptime(start_date, '%Y-%m-%d')
+        start_date_string = start_date.strftime('%B %d, %Y')
+        print(string_prefix + start_date_string)
     #     string_prefix = string_prefix + 'a Start Date of ' + start_date_string + ' | '
-#     if end_date is not None:
-#         end_date = dt.strptime(end_date, '%Y-%m-%d')
-#         end_date_string = end_date.strftime('%B %d, %Y')
-#         days_selected = (end_date - start_date).days
-#         prior_start_date = start_date - timedelta(days_selected + 1)
-#         prior_start_date_string = datetime.strftime(prior_start_date, '%B %d, %Y')
-#         prior_end_date = end_date - timedelta(days_selected + 1)
-#         prior_end_date_string = datetime.strftime(prior_end_date, '%B %d, %Y')
-#         string_prefix = string_prefix + 'End Date of ' + end_date_string + ', for a total of ' + str(days_selected + 1) + ' Days. The prior period Start Date was ' + \
-#         prior_start_date_string + ' | End Date: ' + prior_end_date_string + '.'
-#     if len(string_prefix) == len('You have selected: '):
-#         return 'Select a date to see it displayed here'
-#     else:
-#         return string_prefix
+    # if end_date is not None:
+    #     end_date = dt.strptime(end_date, '%Y-%m-%d')
+    #     end_date_string = end_date.strftime('%B %d, %Y')
+    #     days_selected = (end_date - start_date).days
+    #     prior_start_date = start_date - timedelta(days_selected + 1)
+    #     prior_start_date_string = datetime.strftime(prior_start_date, '%B %d, %Y')
+    #     prior_end_date = end_date - timedelta(days_selected + 1)
+    #     prior_end_date_string = datetime.strftime(prior_end_date, '%B %d, %Y')
+    #     string_prefix = string_prefix + 'End Date of ' + end_date_string + ', for a total of ' + str(days_selected + 1) + ' Days. The prior period Start Date was ' + \
+    #     prior_start_date_string + ' | End Date: ' + prior_end_date_string + '.'
+    # if len(string_prefix) == len('You have selected: '):
+    #     return 'Select a date to see it displayed here'
+    # else:
+    #     return string_prefix
 
 
 # Callback for the Graph - Sector Wise
@@ -216,30 +313,110 @@ def update_graph(new_df):
     return bar_total_order
 
 
-# # Callback for the Graph - Month Wise Order Value
-# @dash_app.callback(
-#    Output('graph_monthly_order_booking', 'figure'),
-#    [Input('my-date-picker', 'start_date'),
-#     Input('my-date-picker', 'end_date')])
-# def update_graph_2(start_date, end_date):
-#     new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
-#     fig = update_graph_montly_order_value(new_df)
-#     return fig
-#
-#
-# def update_graph_montly_order_value(new_df):
-#     cols = list(new_df)[-14:]
-#     values = []
-#     for c in cols:
-#         values.append(new_df[c].sum(axis=0, skipna=True))
-#
-#     bar_total_order = go.Figure([go.Scatter(
-#       x=cols,
-#       y=values,
-#       text='Sessions YoY (%)', opacity=0.6
-#     )])
-#
-#     return bar_total_order
+# Callback for the Graph - Month Wise Order Value
+@dash_app.callback(
+   Output('graph_monthly_order_booking', 'figure'),
+   [Input('my-date-picker', 'start_date'),
+    Input('my-date-picker', 'end_date')])
+def update_graph_2(start_date, end_date):
+    new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
+    fig = update_graph_montly_order_value(new_df)
+    return fig
+
+
+def update_graph_montly_order_value(new_df):
+    cols = list(new_df)[-14:]
+    values = []
+    for c in cols:
+        values.append(new_df[c].sum(axis=0, skipna=True))
+
+    bar_total_order = go.Figure([go.Scatter(
+      x=cols,
+      y=values,
+      text='Sessions YoY (%)', opacity=0.6
+    )])
+    return bar_total_order
+
+
+
+# Callback for the Graph - Geographic Reach
+@dash_app.callback(
+   Output('graph_geographic_reach', 'figure'),
+   [Input('my-date-picker', 'start_date'),
+    Input('my-date-picker', 'end_date')])
+def update_graph_2(start_date, end_date):
+    new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
+    fig = update_geographic_reach(new_df)
+    return fig
+
+
+def update_geographic_reach(new_df):
+    cols = list(new_df)[-14:]
+    values = []
+    for c in cols:
+        values.append(new_df[c].sum(axis=0, skipna=True))
+
+    # print(new_df.groupby(by=['Location','Client']).apply(list))
+    # print(dict(new_df.groupby(['Location','Client'])['Location','Client'].apply(list)))
+    geo_conn = GeoInfoConn()
+    # locs = ["Surat","Vadodara","Ankleshwar","Dahej","Jhagadia","Vapi","Ahmedabad","Bharuch","Daman","Silvassa",
+    #         "Jambusar","Gandhidham","Mumbai","Panoli","Ukai","Valia","Jamnagar","Rajpipla","Kosamba","Mangrol",
+    #         "Palsana","Navsari","Porbandar","Valsad"]
+    # values = [215,22,173,85,53,35,15,13,5,8,19,25,22,71,5,7,3,20,9,13,8,3,6]
+    locs = ["Surat"]
+    values = [215]
+    lats = []
+    lons = []
+    for loc in locs:
+        lats.append(geo_conn.find_latitude(location=loc))
+        lons.append(geo_conn.find_longitude(location=loc))
+
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Scattergeo(
+        lat=lats,
+        lon=lons,
+        mode="markers+text",
+        # location=['Surat'],
+        text=locs,
+        # hoverinfo="text",
+        # hovertext=[['Dharmanandan','Ankit Gems']],
+        marker=dict(
+            size=values,
+            sizemode='area',
+            color='rgb(33,113,181)',
+            line_width=0
+        )
+        # geo='geo'
+    ))
+
+    fig.update_layout(
+        title=go.layout.Title(
+            text='Raj Group - Geographic Reach'),
+        width=1200,
+        height=1200,
+        geo=go.layout.Geo(
+            resolution=50,
+            scope='asia',
+            showframe=False,
+            showcoastlines=True,
+            showland=True,
+            landcolor="#F0DC82",
+            showocean=True,
+            oceancolor= "#89C5DA",
+            countrycolor="white",
+            coastlinecolor="blue",
+            projection_type='mercator',
+            lonaxis_range=[67.0, 75.0],
+            lataxis_range=[20.0, 25.0],
+            domain=dict(x=[0, 1], y=[0, 1])
+        ),
+        legend_traceorder='reversed'
+    )
+
+    return fig
+
 
 
 fields = "(po_date \
@@ -271,9 +448,14 @@ fields = "(po_date \
         ,telecom_construction \
         ,solar)"
 
-# fields = "(order_no, po_no, po_date, company, location, project_description, po_value, file_no, project_status, " \
-#              "project_incharge, special_design, telecom, eht, turnkey, liaison, solar, lighting, cable_earthing, " \
-#              "maintenance_testing, bbt, sitc_panel, retrofitting)"
+
+fields_up = "(up_key,client,sector,location,existing_work,project_description,work_scope,project_value,start_month, \
+             internal_lead,external_lead,competition,enquiry,final_verdict)"
+
+fields_call = "(reference, call_date)"
+fields_visit = "(reference, visit_date)"
+fields_followup = "(reference, followup_comment)"
+fields_company_rep = "(up_reference,name,mobile,email)"
 
 
 # with Flask-WTF, each web form is represented by a class
@@ -315,6 +497,34 @@ class POForm(FlaskForm):
     eht = BooleanField('EHT-66KV')
     telecom_const = BooleanField('Telecom/Construction')
     solar = BooleanField('Solar')
+
+    submit = SubmitField('Submit')
+
+
+class UPForm(FlaskForm):
+    up_key = StringField('UP Key')
+    client_dropdown = SelectField(label='Please select client from drop down', default=None)
+    client_name = StringField('Please enter client name if not found in drop down')
+    sector_dropdown = SelectField(label='Please select sector from drop down', default=None)
+    sector = StringField('Client Sector')
+    location_dropdown = SelectField(label='Please select location from drop down', default=None)
+    location = StringField('Location')
+    existing_work = SelectField(label='Exsiting Work', choices=[('YES','YES'),('NO','NO')])
+    project_description = StringField('Project description')
+    work_scope = StringField('Scope of Work')
+    project_value = StringField('Project Value')
+    start_month = StringField('Project Start Month')
+    contact_person_name = StringField("Contact Person Name")
+    contact_person_mobile = StringField("Contact Person Mobile")
+    contact_person_email = StringField("Contact Person Email")
+    internal_lead = StringField("Internal Lead")
+    external_lead = StringField("External Lead")
+    competition = StringField("Competition")
+    last_call = DateField('Last Call', format='%Y-%m-%d')
+    last_visit = DateField('Last Visit', format='%Y-%m-%d')
+    last_followup = StringField('Last Follow Up')
+    enquiry = SelectField(label='Enquiry', choices=[('YES', 'YES'), ('NO', 'NO')])
+    final_verdict = SelectField(label='Final Verdict', choices=[('OPEN', 'OPEN'), ('CLOSE', 'CLOSE'), ('HOLD', 'HOLD')])
 
     submit = SubmitField('Submit')
 
@@ -410,6 +620,84 @@ def logout():
     session.clear()
     # flash('You are now logged out', 'success')
     return redirect(url_for('base'))
+
+
+@app.route('/upcoming_projects.html', methods=['GET', 'POST'])
+@is_logged_in
+def upcoming_projects():
+
+    up_form = UPForm()
+    connection = AWSMySQLConn()
+    # default_val = int(connection.get_max_value("Raj_PO", "PO_Key")) if connection.get_max_value("Raj_PO",
+    #                                                                                              "PO_Key") else 0
+    default_val = 0
+    companies = connection.get_unique_values("Raj_PO", "Client")
+    companies += ['None']
+    locations = connection.get_unique_values("Raj_PO", "Location")
+    locations += ['None']
+    sectors = connection.get_unique_values("Raj_PO", "Sector")
+    sectors += ['None']
+
+    up_form.client_dropdown.choices = [(x, x) for x in companies]
+    up_form.location_dropdown.choices = [(x, x) for x in locations]
+    up_form.sector_dropdown.choices = [(x, x) for x in sectors]
+
+    if request.method == 'GET':
+        up_form.up_key.data = default_val + 1
+        print("GETTTTTT")
+
+    if up_form.validate_on_submit() or request.method == 'POST':
+        # flash("Validation in process")
+        print("POSTTTTTT")
+        # "=HYPERLINK(/Users/rahuldhakecha/fees/{},{})".format(form.upload_file.name, form.order_no.data)
+        raw_values_up = [
+                  up_form.up_key.data,
+                  up_form.client_name.data if up_form.client_dropdown.data == "None" else up_form.client_dropdown.data,
+                  up_form.sector.data if up_form.sector_dropdown.data == "None" else up_form.sector_dropdown.data,
+                  up_form.location.data if up_form.location_dropdown.data == "None" else up_form.location_dropdown.data,
+                  up_form.existing_work.data,
+                  up_form.project_description.data,
+                  up_form.work_scope.data,
+                  up_form.project_value.data,
+                  up_form.start_month.data,
+                  up_form.internal_lead.data,
+                  up_form.external_lead.data,
+                  up_form.competition.data,
+                  up_form.enquiry.data,
+                  up_form.final_verdict.data]
+        raw_values_company_rep=[
+                  up_form.up_key.data,
+                  up_form.contact_person_name.data,
+                  up_form.contact_person_mobile.data,
+                  up_form.contact_person_email.data]
+        raw_values_call=[
+                  up_form.up_key.data,
+                  str(up_form.last_call.data)]
+        raw_values_visit = [
+                  up_form.up_key.data,
+                  str(up_form.last_visit.data)]
+        raw_values_followup = [
+                  up_form.up_key.data,
+                  up_form.last_followup.data]
+
+        print(raw_values_up)
+        print(raw_values_call)
+        print(raw_values_visit)
+        print(raw_values_followup)
+        print(raw_values_company_rep)
+
+        connection.insert_query("Upcoming_Projects", fields=fields_up, values=raw_values_up)
+        if up_form.last_call.data is not None:
+            connection.insert_query("Call_Log", fields=fields_call, values=raw_values_call)
+        if up_form.last_visit.data is not None:
+            connection.insert_query("Visit_Log", fields=fields_visit, values=raw_values_visit)
+        if up_form.last_followup.data != '':
+            connection.insert_query("Followup_Log", fields=fields_followup, values=raw_values_followup)
+        if up_form.contact_person_name.data != '':
+            connection.insert_query("Company_Rep", fields=fields_company_rep, values=raw_values_company_rep)
+
+        return redirect(url_for('upcoming_projects'))
+    return render_template('upcoming_projects.html', form=up_form)
 
 
 # two decorators using the same function

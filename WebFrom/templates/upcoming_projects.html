@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+{{ super() }}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+
+
+{% block title %}
+PO Form
+{% endblock %}
+
+
+{% block content %}
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('base') }}">Home</a></li>
+              <li class="active"><a href="{{ url_for('upcoming_projects') }}">Upcoming Projects</a></li>
+            <li><a href="{{ url_for('home') }}">Data Entry</a></li>
+            <li><a href="{{ url_for('data_edit') }}">Data Edit</a></li>
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+ </nav>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <p class="space-above"><strong>{{ response }}</strong></p>
+      <p class="lead">PO entry form. Please enter valid details.</p>
+
+      {{ wtf.quick_form(form) }}
+
+      <script>
+        var client_select = document.getElementById("client_dropdown");
+        var location_select = document.getElementById("location_dropdown");
+        var sector_select = document.getElementById("sector_dropdown");
+        client_select.onchange = function(){
+          client = client_select.value;
+          fetch('/location/' + client).then(function(response){
+            response.json().then(function(data){
+              let optionHTML = '';
+              for(let location of data.locations){
+                optionHTML += '<option value="' + location.name + '">' + location.name + '</option>';
+              }
+              location_select.innerHTML = optionHTML;
+              let optionHTML_sec = '';
+              for(let sector of data.sectors){
+                optionHTML_sec += '<option value="' + sector.name + '">' + sector.name + '</option>';
+              }
+              sector_select.innerHTML = optionHTML_sec;
+            });
+          });
+        }
+      </script>
+
+    </div>
+  </div>
+</div>
+</body>
+<!--
+TIPS about using Flask-Bootstrap:
+Flask-Bootstrap keeps the default Bootstrap stylesheet in the
+env/lib/python3.5/site-packages/flask_bootstrap/static/css/ directory.
+You can replace the CSS file. HOWEVER, when you reinstall requirements
+for your project, you would overwrite all the Bootstrap files
+with the defaults.
+Flask-Bootstrap templates are in
+env/lib/python3.5/site-packages/flask_bootstrap/static/templates
+Modifying the Bootstrap base.html template: use directives and
+Jinja2's super() function. See Jinja2 documentation and also this:
+https://pythonhosted.org/Flask-Bootstrap/basic-usage.html
+-->
+
+{% endblock %}
