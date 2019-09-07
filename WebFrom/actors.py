@@ -17,6 +17,7 @@ from datetime import datetime
 from plotly import tools
 import plotly.graph_objs as go
 import sys
+import time
 import json
 import pandas as pd
 import numpy as np
@@ -24,7 +25,7 @@ sys.path.append('~/RajGroup/SD/')
 
 
 import dash
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 import dash_table
 import dash_bootstrap_components as dbc
 import dash_html_components as html
@@ -41,383 +42,6 @@ Bootstrap(app)
 app.config['BOOTSTRAP_SERVE_LOCAL'] = True
 
 login = LoginManager(app)
-
-
-connection = AWSMySQLConn()
-data1 = connection.execute_query("select * from Raj_PO;")
-data_upcoming_projects = connection.execute_query("select A.* , B.call_date, C.visit_date, D.followup_comment, E.name \
-from Upcoming_Projects as A \
-left join \
-Call_Log as B \
-on A.up_key=B.reference \
-left join \
-Visit_Log as C \
-on A.up_key=C.reference \
-left join \
-Followup_Log as D \
-on A.up_key=D.reference \
-left join \
-Company_Rep as E \
-on A.up_key=E.up_reference;")
-
-dash_app = dash.Dash(__name__,
-                     server=app,
-                     routes_pathname_prefix='/dash/',
-                     )
-
-
-date_col_converted = pd.to_datetime(data1['PO_Date'])
-filtered_df = data1[date_col_converted >= '2018-04-01']
-cols = list(filtered_df)[-14:-1]
-values = []
-for c in cols:
-    values.append(filtered_df[c].sum(axis=0, skipna=True))
-
-
-
-######################## Layout ########################
-dash_app.layout = html.Div([
-
-    html.Div([
-        # Refresh Button
-        html.Button('Refresh', id='button'),
-
-        # First Data Table
-        html.Div([
-            dash_table.DataTable(id='table',
-                                style_data={'whiteSpace': 'normal',
-                                            'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
-                                style_table={
-                                    'maxHeight': '30',
-                                    'overflowY': 'scroll'
-                                },
-                                style_header={
-                                    'backgroundColor': 'rgb(230, 230, 230)',
-                                    'fontWeight': 'bold'
-                                },
-                                style_cell={
-                                    'textAlign': 'center'
-                                },
-                                style_data_conditional=[
-                                    {
-                                        'if': {'row_index': 'odd'},
-                                        'backgroundColor': 'rgb(248, 248, 248)'
-                                    }
-                                ],
-                                fixed_rows={'headers': True, 'data': 0},
-                                css=[{
-                                    'selector': '.dash-cell div.dash-cell-value',
-                                    'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
-                                }],
-                                filter_action="native",
-                                sort_action="native",
-                                sort_mode="multi",
-                                columns=[{"name": i, "id": i} for i in data1.columns],
-                                data=data1.to_dict('records')
-                ),
-        ], className=" twelve columns"),
-
-
-        # Data Table - Upcoming Projects
-        html.Div([
-            dash_table.DataTable(id='upcoming_projects_table',
-                                style_data={'whiteSpace': 'normal',
-                                            'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
-                                style_table={
-                                    'maxHeight': '30',
-                                    'overflowY': 'scroll'
-                                },
-                                style_header={
-                                    'backgroundColor': 'rgb(230, 230, 230)',
-                                    'fontWeight': 'bold'
-                                },
-                                style_cell={
-                                    'textAlign': 'center'
-                                },
-                                style_data_conditional=[
-                                    {
-                                        'if': {'row_index': 'odd'},
-                                        'backgroundColor': 'rgb(248, 248, 248)'
-                                    }
-                                ],
-                                fixed_rows={'headers': True, 'data': 0},
-                                css=[{
-                                    'selector': '.dash-cell div.dash-cell-value',
-                                    'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
-                                }],
-                                filter_action="native",
-                                sort_action="native",
-                                sort_mode="multi",
-                                columns=[{"name": i, "id": i} for i in data_upcoming_projects.columns],
-                                data=data_upcoming_projects.to_dict('records')
-                ),
-        ], className=" twelve columns"),
-
-
-
-        # Date Picker
-        html.Div([
-            dcc.DatePickerRange(
-                id='my-date-picker',
-                # with_portal=True,
-                min_date_allowed=dt(2004, 1, 1),
-                max_date_allowed=date_col_converted.max().to_pydatetime(),
-                initial_visible_month=dt(date_col_converted.max().to_pydatetime().year, date_col_converted.max().to_pydatetime().month, 1),
-                start_date=(date_col_converted.max() - timedelta(6)).date(),
-                end_date=date_col_converted.max().date(),
-            ),
-            html.Div(id='output-container-date-picker')
-        ], className="row ", style={'marginTop': 30, 'marginBottom': 15}),
-
-        # GRAPH - Sector Wise Orders
-        html.Div([
-            html.Div(
-            id='graph_1'
-            ),
-            html.Div([
-                dcc.Graph(
-                    id='graph_sector_wise_orders',
-                    figure={
-                        'data': [
-                            {'x': cols, 'y': values, 'type': 'bar', 'name': 'SF'},
-                        ],
-                        'layout': {
-                            'title': 'Raj Electrical - Service wise Orders'
-                        }
-                    }
-                ),
-            ], className=" twelve columns"
-            ), ], className="row "
-        ),
-
-        # GRAPH - Monthly Order Booking
-        html.Div([
-            html.Div(
-            id='graph_2'
-            ),
-            html.Div([
-                dcc.Graph(
-                    id='graph_monthly_order_booking',
-                    figure={
-                        'data': [
-                            {'x': cols, 'y': values, 'type': 'bar', 'name': 'SF'},
-                        ],
-                        'layout': {
-                            'title': 'Raj Electrical - Service wise Orders'
-                        }
-                    }
-                ),
-            ], className=" twelve columns"
-            ), ], className="row "
-        ),
-
-        # GRAPH - Geographic Bubble Plot
-        html.Div([
-            html.Div(
-            id='graph_3'
-            ),
-            html.Div([
-                dcc.Graph(
-                    id='graph_geographic_reach'
-                ),
-            ], className=" twelve columns"
-            ), ], className="row "
-        ),
-
-    ], className="subpage")
-], className="page")
-
-########################  Layout End ########################
-
-
-# Refresh Button Callback
-@dash_app.callback([Output('upcoming_projects_table', 'data'),
-               Output('upcoming_projects_table', 'columns')],
-              [dash.dependencies.Input('button', 'n_clicks')])
-def update_upcoming_projects_table(n_clicks):
-    if n_clicks is not None:
-        new_data_upcoming_projects = connection.execute_query("select A.* , B.call_date, C.visit_date, D.followup_comment, E.name \
-        from Upcoming_Projects as A \
-        left join \
-        Call_Log as B \
-        on A.up_key=B.reference \
-        left join \
-        Visit_Log as C \
-        on A.up_key=C.reference \
-        left join \
-        Followup_Log as D \
-        on A.up_key=D.reference \
-        left join \
-        Company_Rep as E \
-        on A.up_key=E.up_reference;")
-        columns = [{"name": i, "id": i} for i in new_data_upcoming_projects.columns],
-        data = new_data_upcoming_projects.to_dict('records')
-        print(data)
-        return data, columns
-
-
-
-
-# Date Picker Callback
-@dash_app.callback(Output('output-container-date-picker', 'children'),
-              [Input('my-date-picker', 'start_date'),
-               Input('my-date-picker', 'end_date')])
-def update_output(start_date, end_date):
-    string_prefix = 'You have selected '
-    print(start_date)
-    print(end_date)
-    if start_date is not None:
-        start_date = dt.strptime(start_date, '%Y-%m-%d')
-        start_date_string = start_date.strftime('%B %d, %Y')
-        print(string_prefix + start_date_string)
-    #     string_prefix = string_prefix + 'a Start Date of ' + start_date_string + ' | '
-    # if end_date is not None:
-    #     end_date = dt.strptime(end_date, '%Y-%m-%d')
-    #     end_date_string = end_date.strftime('%B %d, %Y')
-    #     days_selected = (end_date - start_date).days
-    #     prior_start_date = start_date - timedelta(days_selected + 1)
-    #     prior_start_date_string = datetime.strftime(prior_start_date, '%B %d, %Y')
-    #     prior_end_date = end_date - timedelta(days_selected + 1)
-    #     prior_end_date_string = datetime.strftime(prior_end_date, '%B %d, %Y')
-    #     string_prefix = string_prefix + 'End Date of ' + end_date_string + ', for a total of ' + str(days_selected + 1) + ' Days. The prior period Start Date was ' + \
-    #     prior_start_date_string + ' | End Date: ' + prior_end_date_string + '.'
-    # if len(string_prefix) == len('You have selected: '):
-    #     return 'Select a date to see it displayed here'
-    # else:
-    #     return string_prefix
-
-
-# Callback for the Graph - Sector Wise
-@dash_app.callback(
-   Output('graph_sector_wise_orders', 'figure'),
-   [Input('my-date-picker', 'start_date'),
-    Input('my-date-picker', 'end_date')])
-def update_graph_1(start_date, end_date):
-    new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
-    fig = update_graph(new_df)
-    return fig
-
-
-def update_graph(new_df):
-    cols = list(new_df)[-14:]
-    values = []
-    for c in cols:
-        values.append(new_df[c].sum(axis=0, skipna=True))
-
-    bar_total_order = go.Figure([go.Bar(
-      x=cols,
-      y=values,
-      text='Sessions YoY (%)', opacity=0.6
-    )])
-
-    return bar_total_order
-
-
-# Callback for the Graph - Month Wise Order Value
-@dash_app.callback(
-   Output('graph_monthly_order_booking', 'figure'),
-   [Input('my-date-picker', 'start_date'),
-    Input('my-date-picker', 'end_date')])
-def update_graph_2(start_date, end_date):
-    new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
-    fig = update_graph_montly_order_value(new_df)
-    return fig
-
-
-def update_graph_montly_order_value(new_df):
-    cols = list(new_df)[-14:]
-    values = []
-    for c in cols:
-        values.append(new_df[c].sum(axis=0, skipna=True))
-
-    bar_total_order = go.Figure([go.Scatter(
-      x=cols,
-      y=values,
-      text='Sessions YoY (%)', opacity=0.6
-    )])
-    return bar_total_order
-
-
-
-# Callback for the Graph - Geographic Reach
-@dash_app.callback(
-   Output('graph_geographic_reach', 'figure'),
-   [Input('my-date-picker', 'start_date'),
-    Input('my-date-picker', 'end_date')])
-def update_graph_2(start_date, end_date):
-    new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
-    fig = update_geographic_reach(new_df)
-    return fig
-
-
-def update_geographic_reach(new_df):
-    cols = list(new_df)[-14:]
-    values = []
-    for c in cols:
-        values.append(new_df[c].sum(axis=0, skipna=True))
-
-    # print(new_df.groupby(by=['Location','Client']).apply(list))
-    # print(dict(new_df.groupby(['Location','Client'])['Location','Client'].apply(list)))
-    geo_conn = GeoInfoConn()
-    # locs = ["Surat","Vadodara","Ankleshwar","Dahej","Jhagadia","Vapi","Ahmedabad","Bharuch","Daman","Silvassa",
-    #         "Jambusar","Gandhidham","Mumbai","Panoli","Ukai","Valia","Jamnagar","Rajpipla","Kosamba","Mangrol",
-    #         "Palsana","Navsari","Porbandar","Valsad"]
-    # values = [215,22,173,85,53,35,15,13,5,8,19,25,22,71,5,7,3,20,9,13,8,3,6]
-    locs = ["Surat"]
-    values = [215]
-    lats = []
-    lons = []
-    for loc in locs:
-        lats.append(geo_conn.find_latitude(location=loc))
-        lons.append(geo_conn.find_longitude(location=loc))
-
-
-    fig = go.Figure()
-
-    fig.add_trace(go.Scattergeo(
-        lat=lats,
-        lon=lons,
-        mode="markers+text",
-        # location=['Surat'],
-        text=locs,
-        # hoverinfo="text",
-        # hovertext=[['Dharmanandan','Ankit Gems']],
-        marker=dict(
-            size=values,
-            sizemode='area',
-            color='rgb(33,113,181)',
-            line_width=0
-        )
-        # geo='geo'
-    ))
-
-    fig.update_layout(
-        title=go.layout.Title(
-            text='Raj Group - Geographic Reach'),
-        width=1200,
-        height=1200,
-        geo=go.layout.Geo(
-            resolution=50,
-            scope='asia',
-            showframe=False,
-            showcoastlines=True,
-            showland=True,
-            landcolor="#F0DC82",
-            showocean=True,
-            oceancolor= "#89C5DA",
-            countrycolor="white",
-            coastlinecolor="blue",
-            projection_type='mercator',
-            lonaxis_range=[67.0, 75.0],
-            lataxis_range=[20.0, 25.0],
-            domain=dict(x=[0, 1], y=[0, 1])
-        ),
-        legend_traceorder='reversed'
-    )
-
-    return fig
-
-
 
 fields = "(po_date \
         ,po_key \
@@ -456,6 +80,493 @@ fields_call = "(reference, call_date)"
 fields_visit = "(reference, visit_date)"
 fields_followup = "(reference, followup_comment)"
 fields_company_rep = "(up_reference,name,mobile,email)"
+
+
+connection = AWSMySQLConn()
+data1 = connection.execute_query("select * from Raj_PO;")
+data_upcoming_projects = connection.execute_query("select A.* , B.call_date, C.visit_date, D.followup_comment, E.name \
+from Upcoming_Projects as A \
+left join \
+(select reference, max(call_date) as call_date \
+from Call_Log group by 1) as B \
+on A.up_key=B.reference \
+left join \
+(select reference, max(visit_date) as visit_date \
+from Visit_Log group by 1) as C \
+on A.up_key=C.reference \
+left join \
+Followup_Log as D \
+on A.up_key=D.reference \
+left join \
+Company_Rep as E \
+on A.up_key=E.up_reference;")
+
+lost_opportunities = data_upcoming_projects['Final_Verdict']=='CLOSE'
+open_opportunities = data_upcoming_projects['Final_Verdict']=='OPEN'
+not_contacted = data_upcoming_projects['call_date'].isnull()
+contacted = data_upcoming_projects['call_date'].notnull()
+visited = data_upcoming_projects['visit_date'].notnull()
+enquiries = data_upcoming_projects['Enquiry']=='YES'
+x_crm_stages = ['Lost Opportunities', 'Not contacted', 'Contacted', 'Visited', 'Enquiries']
+y_crm_stages = [sum(lost_opportunities), sum(not_contacted), sum(contacted), sum(visited), sum(enquiries)]
+
+internal_leads = data_upcoming_projects.Internal_Lead.unique()
+
+
+
+
+# data_upcoming_projects['id'] = data_upcoming_projects['UP_Key']
+# data_upcoming_projects.set_index('id', inplace=True, drop=False)
+
+dash_app = dash.Dash(__name__,
+                     server=app,
+                     routes_pathname_prefix='/dash/',
+                     )
+
+
+date_col_converted = pd.to_datetime(data1['PO_Date'])
+filtered_df = data1[date_col_converted >= '2018-04-01']
+cols = list(filtered_df)[-14:-1]
+values = []
+for c in cols:
+    values.append(filtered_df[c].sum(axis=0, skipna=True))
+
+
+
+######################## Layout ########################
+dash_app.layout = html.Div([
+
+    html.Div([
+        # # Refresh Button
+        # html.Button('Refresh', id='button'),
+        #
+        # # First Data Table
+        # html.Div([
+        #     dash_table.DataTable(id='table',
+        #                         style_data={'whiteSpace': 'normal',
+        #                                     'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
+        #                         style_table={
+        #                             'maxHeight': '30',
+        #                             'overflowY': 'scroll'
+        #                         },
+        #                         style_header={
+        #                             'backgroundColor': 'rgb(230, 230, 230)',
+        #                             'fontWeight': 'bold'
+        #                         },
+        #                         style_cell={
+        #                             'textAlign': 'center'
+        #                         },
+        #                         style_data_conditional=[
+        #                             {
+        #                                 'if': {'row_index': 'odd'},
+        #                                 'backgroundColor': 'rgb(248, 248, 248)'
+        #                             }
+        #                         ],
+        #                         fixed_rows={'headers': True, 'data': 0},
+        #                         css=[{
+        #                             'selector': '.dash-cell div.dash-cell-value',
+        #                             'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
+        #                         }],
+        #                         filter_action="native",
+        #                         sort_action="native",
+        #                         sort_mode="multi",
+        #                         columns=[{"name": i, "id": i} for i in data1.columns],
+        #                         data=data1.to_dict('records')
+        #         ),
+        # ], className=" twelve columns"),
+
+        # GRAPH - CRM Stages
+        html.Div([
+            html.Div(
+                id='graph_crm'
+            ),
+            html.Div([
+                dcc.Graph(
+                    id='graph_crm_stages',
+                    figure={
+                        'data': [
+                            {'x': x_crm_stages, 'y': y_crm_stages, 'type': 'bar', 'name': 'SF'},
+                        ],
+                        'layout': {
+                            'title': 'Raj Electrical - CRM stages'
+                        }
+                    }
+                ),
+            ], className=" twelve columns"
+            ), ], className="row "
+        ),
+
+
+        # # Dropdown - employees
+        # html.Div([
+        #     dcc.Dropdown(
+        #         id='crm_internal_lead_dropdown',
+        #         options=[{'label': i, 'value': i} for i in internal_leads],
+        #         value=''
+        #     ),
+        # ], style={'width': '49%', 'display': 'inline-block'}),
+
+
+        # Data Table - Upcoming Projects
+        html.Div([
+            dash_table.DataTable(id='upcoming_projects_table',
+                                style_data={'whiteSpace': 'normal',
+                                            'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
+                                style_table={
+                                    'maxHeight': '30',
+                                    'overflowY': 'scroll'
+                                },
+                                style_header={
+                                    'backgroundColor': 'rgb(230, 230, 230)',
+                                    'fontWeight': 'bold'
+                                },
+                                style_cell={
+                                    'textAlign': 'center'
+                                },
+                                style_data_conditional=[
+                                    {
+                                        'if': {'row_index': 'odd'},
+                                        'backgroundColor': 'rgb(248, 248, 248)'
+                                    }
+                                ],
+                                fixed_rows={'headers': True, 'data': 0},
+                                css=[{
+                                    'selector': '.dash-cell div.dash-cell-value',
+                                    'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
+                                }],
+                                filter_action="native",
+                                sort_action="native",
+                                sort_mode="multi",
+                                row_selectable="single",
+                                editable=True,
+                                columns=[{"name": i, "id": i} for i in data_upcoming_projects.columns],
+                                data=data_upcoming_projects.to_dict('records')
+                ),
+                html.Div(id='upcoming_projects_table_container')
+        ], className=" twelve columns"),
+
+
+        # # Date Picker
+        # html.Div([
+        #     dcc.DatePickerRange(
+        #         id='my-date-picker',
+        #         # with_portal=True,
+        #         min_date_allowed=dt(2004, 1, 1),
+        #         max_date_allowed=date_col_converted.max().to_pydatetime(),
+        #         initial_visible_month=dt(date_col_converted.max().to_pydatetime().year, date_col_converted.max().to_pydatetime().month, 1),
+        #         start_date=(date_col_converted.max() - timedelta(6)).date(),
+        #         end_date=date_col_converted.max().date(),
+        #     ),
+        #     html.Div(id='output-container-date-picker')
+        # ], className="row ", style={'marginTop': 30, 'marginBottom': 15}),
+        #
+        # # GRAPH - Sector Wise Orders
+        # html.Div([
+        #     html.Div(
+        #     id='graph_1'
+        #     ),
+        #     html.Div([
+        #         dcc.Graph(
+        #             id='graph_sector_wise_orders',
+        #             figure={
+        #                 'data': [
+        #                     {'x': cols, 'y': values, 'type': 'bar', 'name': 'SF'},
+        #                 ],
+        #                 'layout': {
+        #                     'title': 'Raj Electrical - Service wise Orders'
+        #                 }
+        #             }
+        #         ),
+        #     ], className=" twelve columns"
+        #     ), ], className="row "
+        # ),
+        #
+        # # GRAPH - Monthly Order Booking
+        # html.Div([
+        #     html.Div(
+        #     id='graph_2'
+        #     ),
+        #     html.Div([
+        #         dcc.Graph(
+        #             id='graph_monthly_order_booking',
+        #             figure={
+        #                 'data': [
+        #                     {'x': cols, 'y': values, 'type': 'bar', 'name': 'SF'},
+        #                 ],
+        #                 'layout': {
+        #                     'title': 'Raj Electrical - Service wise Orders'
+        #                 }
+        #             }
+        #         ),
+        #     ], className=" twelve columns"
+        #     ), ], className="row "
+        # ),
+        #
+        # # GRAPH - Geographic Bubble Plot
+        # html.Div([
+        #     html.Div(
+        #     id='graph_3'
+        #     ),
+        #     html.Div([
+        #         dcc.Graph(
+        #             id='graph_geographic_reach'
+        #         ),
+        #     ], className=" twelve columns"
+        #     ), ], className="row "
+        # ),
+
+    ], className="subpage")
+], className="page")
+
+########################  Layout End ########################
+
+@dash_app.callback(Output('upcoming_projects_table_container', 'children'),
+                [Input('upcoming_projects_table', 'data_timestamp'),
+                 Input('upcoming_projects_table', 'active_cell'),
+                 # Input('upcoming_projects_table', 'selected_row_ids'),
+                 Input('upcoming_projects_table', 'data')])
+def get_active_cell_value(time_updated,cell_coordinates,table_data):
+    # active_row_id = active_cell['row_id'] if active_cell else None
+    # print(active_cell)
+    # print(selected_row_ids)
+    # print(time_updated)
+    # print(table_data)
+    if time_updated:
+        if cell_coordinates['column_id']=='call_date' or cell_coordinates['column_id']=='visit_date' or cell_coordinates['column_id']=='followup_comment':
+            print(time_updated)
+            print(cell_coordinates)
+            print(table_data)
+            print(table_data[cell_coordinates['row']][cell_coordinates['column_id']])
+
+            if table_data[cell_coordinates['row']][cell_coordinates['column_id']]!=data_upcoming_projects.ix[cell_coordinates['row_id'],cell_coordinates['column_id']]:
+                print("Data needs to be updated")
+    # print(time_updated)
+    # time_now = round(time.time()) - 2
+    # print(time_now)
+    # if time_updated >= time_now:
+    #     print("IF CONDITION")
+    #     # print("Updated following values: "+str(data_upcoming_projects.ix[active_cell['row_id'],active_cell['column_id']]))
+    # else:
+    #     print("ELSE CONDITION")
+        # print("Not Updated following values: " + str(data_upcoming_projects.ix[active_cell['row_id'],active_cell['column_id']]))
+    # if active_cell['column_id']=='call_date':
+    #     print(data_upcoming_projects.ix[active_cell['row_id'],active_cell['column_id']])
+        # connection.insert_query("Call_Log", fields=fields_call, values=[active_cell['row_id'],])
+    return cell_coordinates
+
+
+@dash_app.callback(
+    dash.dependencies.Output('upcoming_projects_table', 'data'),
+    [dash.dependencies.Input('graph_crm_stages', 'hoverData')])
+def update_upcoming_projects_table(hoverData):
+    if hoverData:
+        print(hoverData['points'][0]['x'])
+        if hoverData['points'][0]['x']=='Lost Opportunities':
+            data = data_upcoming_projects[lost_opportunities].to_dict('records')
+        elif hoverData['points'][0]['x']=='Not contacted':
+            data = data_upcoming_projects[np.logical_and(not_contacted,open_opportunities)].to_dict('records')
+        elif hoverData['points'][0]['x']=='Contacted':
+            data = data_upcoming_projects[np.logical_and(contacted,open_opportunities)].to_dict('records')
+        elif hoverData['points'][0]['x']=='Visited':
+            data = data_upcoming_projects[np.logical_and(visited,open_opportunities)].to_dict('records')
+        elif hoverData['points'][0]['x']=='Enquiries':
+            data = data_upcoming_projects[np.logical_and(enquiries,open_opportunities)].to_dict('records')
+        else:
+            data = data_upcoming_projects.to_dict('records')
+    return data
+
+
+# @dash_app.callback(
+#     dash.dependencies.Output('crossfilter-indicator-scatter', 'figure'),
+#     [dash.dependencies.Input('crm_internal_lead_dropdown', 'value')])
+
+# # Refresh Button Callback
+# @dash_app.callback(Output('upcoming_projects_table', 'data'),
+#                    [Input('button', 'n_clicks')])
+# def update_upcoming_projects_table(n_clicks):
+#     if n_clicks is not None:
+#         connection = AWSMySQLConn()
+#         new_data_upcoming_projects = connection.execute_query("select A.* , B.call_date, C.visit_date, D.followup_comment, E.name \
+#         from Upcoming_Projects as A \
+#         left join \
+#         Call_Log as B \
+#         on A.up_key=B.reference \
+#         left join \
+#         Visit_Log as C \
+#         on A.up_key=C.reference \
+#         left join \
+#         Followup_Log as D \
+#         on A.up_key=D.reference \
+#         left join \
+#         Company_Rep as E \
+#         on A.up_key=E.up_reference;")
+#
+#         data = new_data_upcoming_projects.to_dict('records')
+#         print(data)
+#         return data
+
+
+
+# # Date Picker Callback
+# @dash_app.callback(Output('output-container-date-picker', 'children'),
+#               [Input('my-date-picker', 'start_date'),
+#                Input('my-date-picker', 'end_date')])
+# def update_output(start_date, end_date):
+#     string_prefix = 'You have selected '
+#     print(start_date)
+#     print(end_date)
+#     if start_date is not None:
+#         start_date = dt.strptime(start_date, '%Y-%m-%d')
+#         start_date_string = start_date.strftime('%B %d, %Y')
+#         print(string_prefix + start_date_string)
+#     #     string_prefix = string_prefix + 'a Start Date of ' + start_date_string + ' | '
+#     # if end_date is not None:
+#     #     end_date = dt.strptime(end_date, '%Y-%m-%d')
+#     #     end_date_string = end_date.strftime('%B %d, %Y')
+#     #     days_selected = (end_date - start_date).days
+#     #     prior_start_date = start_date - timedelta(days_selected + 1)
+#     #     prior_start_date_string = datetime.strftime(prior_start_date, '%B %d, %Y')
+#     #     prior_end_date = end_date - timedelta(days_selected + 1)
+#     #     prior_end_date_string = datetime.strftime(prior_end_date, '%B %d, %Y')
+#     #     string_prefix = string_prefix + 'End Date of ' + end_date_string + ', for a total of ' + str(days_selected + 1) + ' Days. The prior period Start Date was ' + \
+#     #     prior_start_date_string + ' | End Date: ' + prior_end_date_string + '.'
+#     # if len(string_prefix) == len('You have selected: '):
+#     #     return 'Select a date to see it displayed here'
+#     # else:
+#     #     return string_prefix
+
+
+# # Callback for the Graph - Sector Wise
+# @dash_app.callback(
+#    Output('graph_sector_wise_orders', 'figure'),
+#    [Input('my-date-picker', 'start_date'),
+#     Input('my-date-picker', 'end_date')])
+# def update_graph_1(start_date, end_date):
+#     new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
+#     fig = update_graph(new_df)
+#     return fig
+#
+#
+# def update_graph(new_df):
+#     cols = list(new_df)[-14:]
+#     values = []
+#     for c in cols:
+#         values.append(new_df[c].sum(axis=0, skipna=True))
+#
+#     bar_total_order = go.Figure([go.Bar(
+#       x=cols,
+#       y=values,
+#       text='Sessions YoY (%)', opacity=0.6
+#     )])
+#
+#     return bar_total_order
+#
+#
+# # Callback for the Graph - Month Wise Order Value
+# @dash_app.callback(
+#    Output('graph_monthly_order_booking', 'figure'),
+#    [Input('my-date-picker', 'start_date'),
+#     Input('my-date-picker', 'end_date')])
+# def update_graph_2(start_date, end_date):
+#     new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
+#     fig = update_graph_montly_order_value(new_df)
+#     return fig
+#
+#
+# def update_graph_montly_order_value(new_df):
+#     cols = list(new_df)[-14:]
+#     values = []
+#     for c in cols:
+#         values.append(new_df[c].sum(axis=0, skipna=True))
+#
+#     bar_total_order = go.Figure([go.Scatter(
+#       x=cols,
+#       y=values,
+#       text='Sessions YoY (%)', opacity=0.6
+#     )])
+#     return bar_total_order
+#
+#
+#
+# # Callback for the Graph - Geographic Reach
+# @dash_app.callback(
+#    Output('graph_geographic_reach', 'figure'),
+#    [Input('my-date-picker', 'start_date'),
+#     Input('my-date-picker', 'end_date')])
+# def update_graph_2(start_date, end_date):
+#     new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
+#     fig = update_geographic_reach(new_df)
+#     return fig
+#
+#
+# def update_geographic_reach(new_df):
+#     cols = list(new_df)[-14:]
+#     values = []
+#     for c in cols:
+#         values.append(new_df[c].sum(axis=0, skipna=True))
+#
+#     # print(new_df.groupby(by=['Location','Client']).apply(list))
+#     # print(dict(new_df.groupby(['Location','Client'])['Location','Client'].apply(list)))
+#     geo_conn = GeoInfoConn()
+#     # locs = ["Surat","Vadodara","Ankleshwar","Dahej","Jhagadia","Vapi","Ahmedabad","Bharuch","Daman","Silvassa",
+#     #         "Jambusar","Gandhidham","Mumbai","Panoli","Ukai","Valia","Jamnagar","Rajpipla","Kosamba","Mangrol",
+#     #         "Palsana","Navsari","Porbandar","Valsad"]
+#     # values = [215,22,173,85,53,35,15,13,5,8,19,25,22,71,5,7,3,20,9,13,8,3,6]
+#     locs = ["Surat"]
+#     values = [215]
+#     lats = []
+#     lons = []
+#     for loc in locs:
+#         lats.append(geo_conn.find_latitude(location=loc))
+#         lons.append(geo_conn.find_longitude(location=loc))
+#
+#
+#     fig = go.Figure()
+#
+#     fig.add_trace(go.Scattergeo(
+#         lat=lats,
+#         lon=lons,
+#         mode="markers+text",
+#         # location=['Surat'],
+#         text=locs,
+#         # hoverinfo="text",
+#         # hovertext=[['Dharmanandan','Ankit Gems']],
+#         marker=dict(
+#             size=values,
+#             sizemode='area',
+#             color='rgb(33,113,181)',
+#             line_width=0
+#         )
+#         # geo='geo'
+#     ))
+#
+#     fig.update_layout(
+#         title=go.layout.Title(
+#             text='Raj Group - Geographic Reach'),
+#         width=1200,
+#         height=1200,
+#         geo=go.layout.Geo(
+#             resolution=50,
+#             scope='asia',
+#             showframe=False,
+#             showcoastlines=True,
+#             showland=True,
+#             landcolor="#F0DC82",
+#             showocean=True,
+#             oceancolor= "#89C5DA",
+#             countrycolor="white",
+#             coastlinecolor="blue",
+#             projection_type='mercator',
+#             lonaxis_range=[67.0, 75.0],
+#             lataxis_range=[20.0, 25.0],
+#             domain=dict(x=[0, 1], y=[0, 1])
+#         ),
+#         legend_traceorder='reversed'
+#     )
+#
+#     return fig
+
+
 
 
 # with Flask-WTF, each web form is represented by a class
@@ -523,7 +634,7 @@ class UPForm(FlaskForm):
     last_call = DateField('Last Call', format='%Y-%m-%d')
     last_visit = DateField('Last Visit', format='%Y-%m-%d')
     last_followup = StringField('Last Follow Up')
-    enquiry = SelectField(label='Enquiry', choices=[('YES', 'YES'), ('NO', 'NO')])
+    enquiry = SelectField(label='Enquiry', choices=[('NO', 'NO'), ('YES', 'YES')])
     final_verdict = SelectField(label='Final Verdict', choices=[('OPEN', 'OPEN'), ('CLOSE', 'CLOSE'), ('HOLD', 'HOLD')])
 
     submit = SubmitField('Submit')
@@ -628,9 +739,8 @@ def upcoming_projects():
 
     up_form = UPForm()
     connection = AWSMySQLConn()
-    # default_val = int(connection.get_max_value("Raj_PO", "PO_Key")) if connection.get_max_value("Raj_PO",
-    #                                                                                              "PO_Key") else 0
-    default_val = 0
+    cnt = connection.execute_query("select count(UP_Key) as cnt from Upcoming_Projects").ix[0]['cnt']
+
     companies = connection.get_unique_values("Raj_PO", "Client")
     companies += ['None']
     locations = connection.get_unique_values("Raj_PO", "Location")
@@ -643,12 +753,11 @@ def upcoming_projects():
     up_form.sector_dropdown.choices = [(x, x) for x in sectors]
 
     if request.method == 'GET':
-        up_form.up_key.data = default_val + 1
-        print("GETTTTTT")
+        default_val = "UP_" + str(dt.now().year) + "_" + str(cnt+1).zfill(4)
+        up_form.up_key.data = default_val
 
     if up_form.validate_on_submit() or request.method == 'POST':
         # flash("Validation in process")
-        print("POSTTTTTT")
         # "=HYPERLINK(/Users/rahuldhakecha/fees/{},{})".format(form.upload_file.name, form.order_no.data)
         raw_values_up = [
                   up_form.up_key.data,
@@ -1125,4 +1234,5 @@ def temp():
 if __name__ == '__main__':
     app.run(port=8000)
     # dash_app.run_server(debug=True)
+
 
