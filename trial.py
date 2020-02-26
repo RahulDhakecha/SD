@@ -5,3 +5,10 @@ print(dt.now().year)
 print(str(101).zfill(4))
 cnt = connection.execute_query("select count(UP_Key) from Upcoming_Projects group by 1")
 print(cnt)
+
+{{wtf.form_field(form.client_dropdown)}}
+{{wtf.form_field(form.client_name)}}
+
+
+
+

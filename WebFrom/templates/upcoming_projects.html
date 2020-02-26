@@ -40,38 +40,65 @@ PO Form
  </nav>
 <body>
 <div class="container">
+  <form action="" method="post" novalidate>
   <div class="row">
-    <div class="col-xs-12">
       <p class="space-above"><strong>{{ response }}</strong></p>
-      <p class="lead">PO entry form. Please enter valid details.</p>
+      <p class="lead">Enquiry entry form. Please enter valid details.</p>
 
-      {{ wtf.quick_form(form) }}
 
-      <script>
-        var client_select = document.getElementById("client_dropdown");
-        var location_select = document.getElementById("location_dropdown");
-        var sector_select = document.getElementById("sector_dropdown");
-        client_select.onchange = function(){
-          client = client_select.value;
-          fetch('/location/' + client).then(function(response){
-            response.json().then(function(data){
-              let optionHTML = '';
-              for(let location of data.locations){
-                optionHTML += '<option value="' + location.name + '">' + location.name + '</option>';
-              }
-              location_select.innerHTML = optionHTML;
-              let optionHTML_sec = '';
-              for(let sector of data.sectors){
-                optionHTML_sec += '<option value="' + sector.name + '">' + sector.name + '</option>';
-              }
+        {{ form.hidden_tag() }}
+
+        <div style="width: 40%">
+        {{wtf.quick_form(form)}}
+        </div>
+
+        <script>
+          var client_select = document.getElementById("client_dropdown");
+          var location_select = document.getElementById("location_dropdown");
+          var sector_select = document.getElementById("sector_dropdown");
+          var client_var = document.getElementById("client_name");
+          client_select.onchange = function()
+          {
+            client = client_select.value;
+            if (client == "None") {
+              $("#client_name").show();
+              $('label[for=client_name], input#client_name').show();
+              $("#sector").show();
+              $('label[for=sector], input#sector').show();
+              $("#location").show();
+              $('label[for=location], input#location').show();
+            } else {
+              $("#client_name").hide();
+              $('label[for=client_name], input#client_name').hide();
+              $("#sector").hide();
+              $('label[for=sector], input#sector').hide();
+              $("#location").hide();
+              $('label[for=location], input#location').hide();
+            }
+            fetch('/location/' + client).then(function(response)
+            {
+              response.json().then(function(data)
+            {
+            let optionHTML = '';
+            for (let location of data.locations)
+            {
+              optionHTML += '<option value="' + location.name + '">' + location.name + '</option>';
+            }
+            location_select.innerHTML = optionHTML;
+            let optionHTML_sec = '';
+            for (let sector of data.sectors)
+           {
+              optionHTML_sec += '<option value="' + sector.name + '">' + sector.name + '</option>';
+            }
               sector_select.innerHTML = optionHTML_sec;
-            });
           });
-        }
-      </script>
+          });
+          }
+          </script>
 
-    </div>
+
   </div>
+  </form>
 </div>
 </body>
 <!--

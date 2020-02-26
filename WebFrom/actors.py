@@ -1,5 +1,5 @@
 # using python 3
-from flask import Flask, render_template, flash, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, flash, request, redirect, url_for, session, jsonify, make_response
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField, IntegerField, FileField, HiddenField
@@ -320,39 +320,39 @@ dash_app.layout = html.Div([
 
 ########################  Layout End ########################
 
+
+# Check if user logged in
+def is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('Unauthorized, Please login', 'danger')
+            return redirect(url_for('login'))
+    return wrap
+
+
+@is_logged_in
+@app.route('/', methods=['GET', 'POST'])
 @dash_app.callback(Output('upcoming_projects_table_container', 'children'),
-                [Input('upcoming_projects_table', 'data_timestamp'),
-                 Input('upcoming_projects_table', 'active_cell'),
-                 # Input('upcoming_projects_table', 'selected_row_ids'),
+                [Input('upcoming_projects_table', 'active_cell'),
+                 Input('upcoming_projects_table', 'derived_virtual_selected_rows'),
                  Input('upcoming_projects_table', 'data')])
-def get_active_cell_value(time_updated,cell_coordinates,table_data):
+def get_active_cell_value(cell_coordinates,derived_virtual_selected_rows,table_data):
     # active_row_id = active_cell['row_id'] if active_cell else None
     # print(active_cell)
-    # print(selected_row_ids)
-    # print(time_updated)
-    # print(table_data)
-    if time_updated:
-        if cell_coordinates['column_id']=='call_date' or cell_coordinates['column_id']=='visit_date' or cell_coordinates['column_id']=='followup_comment':
-            print(time_updated)
-            print(cell_coordinates)
-            print(table_data)
-            print(table_data[cell_coordinates['row']][cell_coordinates['column_id']])
+    print(derived_virtual_selected_rows)
+    print(table_data)
+    if derived_virtual_selected_rows:
+        print(table_data[derived_virtual_selected_rows[0]])
 
-            if table_data[cell_coordinates['row']][cell_coordinates['column_id']]!=data_upcoming_projects.ix[cell_coordinates['row_id'],cell_coordinates['column_id']]:
-                print("Data needs to be updated")
-    # print(time_updated)
-    # time_now = round(time.time()) - 2
-    # print(time_now)
-    # if time_updated >= time_now:
-    #     print("IF CONDITION")
-    #     # print("Updated following values: "+str(data_upcoming_projects.ix[active_cell['row_id'],active_cell['column_id']]))
-    # else:
-    #     print("ELSE CONDITION")
-        # print("Not Updated following values: " + str(data_upcoming_projects.ix[active_cell['row_id'],active_cell['column_id']]))
-    # if active_cell['column_id']=='call_date':
-    #     print(data_upcoming_projects.ix[active_cell['row_id'],active_cell['column_id']])
-        # connection.insert_query("Call_Log", fields=fields_call, values=[active_cell['row_id'],])
     return cell_coordinates
+
+
+# @app.route('/', methods=['GET', 'POST'])
+# def base():
+#     return render_template('base.html')
 
 
 @dash_app.callback(
@@ -614,8 +614,8 @@ class POForm(FlaskForm):
 
 class UPForm(FlaskForm):
     up_key = StringField('UP Key')
-    client_dropdown = SelectField(label='Please select client from drop down', default=None)
-    client_name = StringField('Please enter client name if not found in drop down')
+    client_dropdown = SelectField(label='Please select client from drop down', default='Alstom')
+    client_name = StringField(label='Please enter client name if not found in drop down')
     sector_dropdown = SelectField(label='Please select sector from drop down', default=None)
     sector = StringField('Client Sector')
     location_dropdown = SelectField(label='Please select location from drop down', default=None)
@@ -710,18 +710,6 @@ def signup():
             flash('User email not identified.', 'danger')
             return redirect(url_for('signup'))
     return render_template('signup.html', form=form)
-
-
-# Check if user logged in
-def is_logged_in(f):
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            return f(*args, **kwargs)
-        else:
-            flash('Unauthorized, Please login', 'danger')
-            return redirect(url_for('login'))
-    return wrap
 
 
 # Logout
