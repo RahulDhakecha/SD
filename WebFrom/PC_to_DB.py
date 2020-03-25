@@ -96,40 +96,44 @@ data = data.fillna(0)
 
 
 for index, row in data.iterrows():
-    values = ['',
-          round(row['DD']),
-          round(row['MM']),
-          round(row['YY']),
-          row['Work Order No.'],
-          row['Compny Name'],
-          row.ix[9],
-          '',
-          row['Subject'],
-          row['Total Cost'],
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '']
-    print(values)
-    break
-    # connection.insert_query(table_name="DNSyndicateOrders", fields=fields, values=values)
+    print(index)
+    if index<=743:
+        continue
+    try:
+        values = ['',
+              round(row['DD']),
+              round(row['MM']),
+              round(row['YY']),
+              row['Work Order No.'],
+              row['Compny Name'],
+              row['Location'],
+              '',
+              row['Subject'],
+              row['Total Cost'],
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '']
+        connection.insert_query(table_name="DNSyndicateOrders", fields=fields, values=values)
+    except:
+        continue
 

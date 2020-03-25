@@ -72,6 +72,33 @@ fields = "(po_date \
         ,telecom_construction \
         ,solar)"
 
+sow = ['Turnkey', '66KV Switchyard', 'BBT', 'Solar', 'Civil/Telecom', 'Liaison', 'Testing', 'Maintenance/Servicing',
+       'Retrofitting', 'SITC', 'Supply only', 'ITC only']
+lead_status = ['OPEN', 'CONTACTED', 'VISITED', 'ENQUIRY', 'OFFER', 'WON', 'CLOSE', 'HOLD']
+raj_group_office = ['Raj Vijtech Pvt Ltd', 'Raj Electricals', 'D.N. Syndicate', 'Raj Enterprise', 'Raj Brookite']
+follow_up_person = ['Rahul Dhakecha',
+                    'Rajesh Kunjadiya',
+                    'Ashish Dhakecha',
+                    'Dhiren Sankaliya',
+                    'Umang Sharma',
+                    'Unmil Naik',
+                    'Purvik Mistry',
+                    'Kanubhai Patel',
+                    'Anil Kathiriya',
+                    'Divyesh Patel',
+                    'Kinjal Dhakecha',
+                    'Hiren Paghdal',
+                    'Praful Shyani',
+                    'Sachin Patel',
+                    'Chirag Patel',
+                    'Jitendra Kotnala',
+                    'Ninad',
+                    'Samir']
+
+fields_enquiry_list = "(entry_date, project_description, scope_of_work, client_name, client_location, existing_client, " \
+                      "contact_person_name, contact_person_mobile, contact_person_email, internal_lead, external_lead, " \
+                      "lead_status, contact_date, visit_date, enquiry_date, offer_date, raj_group_office, " \
+                      "follow_up_person, tentative_project_value, quotation_number, remarks)"
 
 fields_up = "(up_key,client,sector,location,existing_work,project_description,work_scope,project_value,start_month, \
              internal_lead,external_lead,competition,enquiry,final_verdict)"
@@ -83,7 +110,7 @@ fields_company_rep = "(up_reference,name,mobile,email)"
 
 
 connection = AWSMySQLConn()
-data1 = connection.execute_query("select * from Raj_PO;")
+enquiry_data = connection.execute_query("select * from RajGroupEnquiryList;")
 data_upcoming_projects = connection.execute_query("select A.* , B.call_date, C.visit_date, D.followup_comment, E.name \
 from Upcoming_Projects as A \
 left join \
@@ -113,209 +140,271 @@ y_crm_stages = [sum(lost_opportunities), sum(not_contacted), sum(contacted), sum
 internal_leads = data_upcoming_projects.Internal_Lead.unique()
 
 
+# data_enquiries = connection.execute_query("select * ")
+
+
 
 
 # data_upcoming_projects['id'] = data_upcoming_projects['UP_Key']
 # data_upcoming_projects.set_index('id', inplace=True, drop=False)
 
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
 dash_app = dash.Dash(__name__,
                      server=app,
                      routes_pathname_prefix='/dash/',
+                     external_stylesheets=external_stylesheets
                      )
 
 
-date_col_converted = pd.to_datetime(data1['PO_Date'])
-filtered_df = data1[date_col_converted >= '2018-04-01']
-cols = list(filtered_df)[-14:-1]
-values = []
-for c in cols:
-    values.append(filtered_df[c].sum(axis=0, skipna=True))
-
+# date_col_converted = pd.to_datetime(data1['PO_Date'])
+# filtered_df = data1[date_col_converted >= '2018-04-01']
+# cols = list(filtered_df)[-14:-1]
+# values = []
+# for c in cols:
+#     values.append(filtered_df[c].sum(axis=0, skipna=True))
 
 
 ######################## Layout ########################
+
 dash_app.layout = html.Div([
 
-    html.Div([
-        # # Refresh Button
-        # html.Button('Refresh', id='button'),
-        #
-        # # First Data Table
-        # html.Div([
-        #     dash_table.DataTable(id='table',
-        #                         style_data={'whiteSpace': 'normal',
-        #                                     'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
-        #                         style_table={
-        #                             'maxHeight': '30',
-        #                             'overflowY': 'scroll'
-        #                         },
-        #                         style_header={
-        #                             'backgroundColor': 'rgb(230, 230, 230)',
-        #                             'fontWeight': 'bold'
-        #                         },
-        #                         style_cell={
-        #                             'textAlign': 'center'
-        #                         },
-        #                         style_data_conditional=[
-        #                             {
-        #                                 'if': {'row_index': 'odd'},
-        #                                 'backgroundColor': 'rgb(248, 248, 248)'
-        #                             }
-        #                         ],
-        #                         fixed_rows={'headers': True, 'data': 0},
-        #                         css=[{
-        #                             'selector': '.dash-cell div.dash-cell-value',
-        #                             'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
-        #                         }],
-        #                         filter_action="native",
-        #                         sort_action="native",
-        #                         sort_mode="multi",
-        #                         columns=[{"name": i, "id": i} for i in data1.columns],
-        #                         data=data1.to_dict('records')
-        #         ),
-        # ], className=" twelve columns"),
+    dcc.Tabs(id='tabs', value='tab-1', children=[
+        dcc.Tab(id='tab1', value='tab-1', label='Raj Group Marketing Dashboard', children=[
+            # GRAPH - CRM Stages
+            # dcc.Graph(
+            #     id='graph_crm_stages',
+            #     figure={
+            #         'data': [
+            #             {'x': x_crm_stages, 'y': y_crm_stages, 'type': 'bar', 'name': 'SF'},
+            #         ],
+            #         'layout': {
+            #             'title': 'Raj Electrical - CRM stages'
+            #         }
+            #     }
+            # ),
 
-        # GRAPH - CRM Stages
-        html.Div([
-            html.Div(
-                id='graph_crm'
-            ),
+            # Modal for marketing form
             html.Div([
-                dcc.Graph(
-                    id='graph_crm_stages',
-                    figure={
-                        'data': [
-                            {'x': x_crm_stages, 'y': y_crm_stages, 'type': 'bar', 'name': 'SF'},
-                        ],
-                        'layout': {
-                            'title': 'Raj Electrical - CRM stages'
-                        }
+                dbc.Modal(
+                [
+                    dbc.ModalHeader("Enquiry Data"),
+                    dbc.ModalBody("This is body of modal."),
+                    dbc.ModalFooter(
+                        dbc.Button(
+                            "Close", id="close", className="ml-auto"
+                        )
+                    ),
+                ],
+                id="modal-centered",
+                scrollable=True,
+                )
+            ]),
+
+            # Data Table - Upcoming Projects
+            dash_table.DataTable(
+                id='upcoming_projects_table',
+                style_data={'whiteSpace': 'normal',
+                            'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
+                style_table={
+                    'maxHeight': '30',
+                    'overflowY': 'scroll'
+                },
+                style_header={
+                    'backgroundColor': 'rgb(230, 230, 230)',
+                    'fontWeight': 'bold'
+                },
+                style_cell={
+                    'textAlign': 'center'
+                },
+                style_data_conditional=[
+                    {
+                        'if': {'row_index': 'odd'},
+                        'backgroundColor': 'rgb(248, 248, 248)'
                     }
+                ],
+                fixed_rows={'headers': True, 'data': 0},
+                css=[{
+                    'selector': '.dash-cell div.dash-cell-value',
+                    'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
+                }],
+                filter_action="native",
+                sort_action="native",
+                sort_mode="multi",
+                row_selectable="single",
+                editable=True,
+                columns=[{"name": i, "id": i} for i in data_upcoming_projects.columns],
+                data=data_upcoming_projects.to_dict('records')
+            ),
+        ]),
+        dcc.Tab(id='tab2', value='tab-2', label='Raj Group Marketing Form', children=[
+            html.H3("Project Details"),
+            html.Header("Entry Date"),
+            dcc.DatePickerSingle(
+                id='entry_date',
+                placeholder='Select a Date',
+                with_portal=True,
+                display_format="DD-MM-YYYY",
+            ),
+            html.Header("Project Description"),
+            dcc.Input(
+                id='project_description',
+                type='text',
+                placeholder='Enter Project Description',
+                required=True,
+                size=50
+            ),
+            html.Header("Scope of Work"),
+            dcc.Dropdown(
+                id='scope_of_work',
+                options=[{'value': i, 'label': i} for i in sow],
+                multi=True
+            ),
+            html.H3("Client Details"),
+            html.Header("Client Name"),
+            dcc.Input(
+                id='client_name',
+                type='text',
+                placeholder='Enter Client Name',
+                required=True,
+                size=50
+            ),
+            html.Header("Client Location"),
+            dcc.Input(
+                id='client_location',
+                type='text',
+                placeholder='Enter Client Location',
+                required=True,
+                size=50
+            ),
+            html.Header("Existing Client"),
+            dcc.RadioItems(
+                id='existing_client',
+                options=[{'value': 'YES', 'label': 'YES'},
+                         {'value': 'NO', 'label': 'NO'}]
+            ),
+            html.Header("Contact Person Name"),
+            dcc.Input(
+                id='contact_person_name',
+                type='text',
+                placeholder='Enter Contact Person Name',
+                required=True,
+                size=50
+            ),
+            html.Header("Contact Person Mobile"),
+            dcc.Input(
+                id='contact_person_mobile',
+                type='text',
+                placeholder='Enter Contact Person Mobile',
+                required=True,
+                size=50
+            ),
+            html.Header("Contact Person Email"),
+            dcc.Input(
+                id='contact_person_email',
+                type='text',
+                placeholder='Enter Contact Person Email',
+                required=True,
+                size=50
+            ),
+            html.H3("Internal Follow Up"),
+            html.Header("Internal Lead"),
+            dcc.Input(
+                id='internal_lead',
+                type='text',
+                placeholder='Internal Lead',
+                required=True,
+                size=50
+            ),
+            html.Header("External Lead"),
+            dcc.Input(
+                id='external_lead',
+                type='text',
+                placeholder='External Lead',
+                required=True,
+                size=50
+            ),
+            html.Header("Status"),
+            dcc.Dropdown(
+                id='lead_status',
+                options=[{'value': i, 'label': i} for i in lead_status],
+                multi=True
+            ),
+            html.Header("Contact Date"),
+            dcc.DatePickerSingle(
+                id='contact_date',
+                placeholder='Contact Date',
+                with_portal=True,
+                display_format="DD-MM-YYYY",
+            ),
+            html.Header("Visit Date"),
+            dcc.DatePickerSingle(
+                id='visit_date',
+                placeholder='Visit Date',
+                with_portal=True,
+                display_format="DD-MM-YYYY",
+            ),
+            html.Header("Enquiry Date"),
+            dcc.DatePickerSingle(
+                id='enquiry_date',
+                placeholder='Enquiry Date',
+                with_portal=True,
+                display_format="DD-MM-YYYY",
+            ),
+            html.Header("Offer Date"),
+            dcc.DatePickerSingle(
+                id='offer_date',
+                placeholder='Offer Date',
+                with_portal=True,
+                display_format="DD-MM-YYYY",
+            ),
+            html.Header("Raj Group Office"),
+            dcc.Dropdown(
+                id='raj_group_office',
+                options=[{'value': i, 'label': i} for i in raj_group_office],
+                multi=True
+            ),
+            html.Header("Follow Up Person"),
+            dcc.Dropdown(
+                id='follow_up_person',
+                options=[{'value': i, 'label': i} for i in follow_up_person],
+                multi=True
+            ),
+            html.Header("Tentative Project Value"),
+            dcc.Input(
+                id='tentative_project_value',
+                type='text',
+                placeholder='Tentative Project Value',
+                required=True,
+                size=50
+            ),
+            html.Header("Quotation Number"),
+            dcc.Input(
+                id='quotation_number',
+                type='text',
+                placeholder='Quotation Number',
+                required=True,
+                size=50
+            ),
+            html.Header("Remarks"),
+            dcc.Input(
+                id='remarks',
+                type='text',
+                placeholder='Remarks',
+                required=True,
+                size=50
+            ),
+            # html.Button(id='submit_button', children='Submit'),
+            dcc.ConfirmDialogProvider(
+                children=html.Button(
+                'Submit',
                 ),
-            ], className=" twelve columns"
-            ), ], className="row "
-        ),
-
-
-        # # Dropdown - employees
-        # html.Div([
-        #     dcc.Dropdown(
-        #         id='crm_internal_lead_dropdown',
-        #         options=[{'label': i, 'value': i} for i in internal_leads],
-        #         value=''
-        #     ),
-        # ], style={'width': '49%', 'display': 'inline-block'}),
-
-
-        # Data Table - Upcoming Projects
-        html.Div([
-            dash_table.DataTable(id='upcoming_projects_table',
-                                style_data={'whiteSpace': 'normal',
-                                            'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
-                                style_table={
-                                    'maxHeight': '30',
-                                    'overflowY': 'scroll'
-                                },
-                                style_header={
-                                    'backgroundColor': 'rgb(230, 230, 230)',
-                                    'fontWeight': 'bold'
-                                },
-                                style_cell={
-                                    'textAlign': 'center'
-                                },
-                                style_data_conditional=[
-                                    {
-                                        'if': {'row_index': 'odd'},
-                                        'backgroundColor': 'rgb(248, 248, 248)'
-                                    }
-                                ],
-                                fixed_rows={'headers': True, 'data': 0},
-                                css=[{
-                                    'selector': '.dash-cell div.dash-cell-value',
-                                    'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
-                                }],
-                                filter_action="native",
-                                sort_action="native",
-                                sort_mode="multi",
-                                row_selectable="single",
-                                editable=True,
-                                columns=[{"name": i, "id": i} for i in data_upcoming_projects.columns],
-                                data=data_upcoming_projects.to_dict('records')
-                ),
-                html.Div(id='upcoming_projects_table_container')
-        ], className=" twelve columns"),
-
-
-        # # Date Picker
-        # html.Div([
-        #     dcc.DatePickerRange(
-        #         id='my-date-picker',
-        #         # with_portal=True,
-        #         min_date_allowed=dt(2004, 1, 1),
-        #         max_date_allowed=date_col_converted.max().to_pydatetime(),
-        #         initial_visible_month=dt(date_col_converted.max().to_pydatetime().year, date_col_converted.max().to_pydatetime().month, 1),
-        #         start_date=(date_col_converted.max() - timedelta(6)).date(),
-        #         end_date=date_col_converted.max().date(),
-        #     ),
-        #     html.Div(id='output-container-date-picker')
-        # ], className="row ", style={'marginTop': 30, 'marginBottom': 15}),
-        #
-        # # GRAPH - Sector Wise Orders
-        # html.Div([
-        #     html.Div(
-        #     id='graph_1'
-        #     ),
-        #     html.Div([
-        #         dcc.Graph(
-        #             id='graph_sector_wise_orders',
-        #             figure={
-        #                 'data': [
-        #                     {'x': cols, 'y': values, 'type': 'bar', 'name': 'SF'},
-        #                 ],
-        #                 'layout': {
-        #                     'title': 'Raj Electrical - Service wise Orders'
-        #                 }
-        #             }
-        #         ),
-        #     ], className=" twelve columns"
-        #     ), ], className="row "
-        # ),
-        #
-        # # GRAPH - Monthly Order Booking
-        # html.Div([
-        #     html.Div(
-        #     id='graph_2'
-        #     ),
-        #     html.Div([
-        #         dcc.Graph(
-        #             id='graph_monthly_order_booking',
-        #             figure={
-        #                 'data': [
-        #                     {'x': cols, 'y': values, 'type': 'bar', 'name': 'SF'},
-        #                 ],
-        #                 'layout': {
-        #                     'title': 'Raj Electrical - Service wise Orders'
-        #                 }
-        #             }
-        #         ),
-        #     ], className=" twelve columns"
-        #     ), ], className="row "
-        # ),
-        #
-        # # GRAPH - Geographic Bubble Plot
-        # html.Div([
-        #     html.Div(
-        #     id='graph_3'
-        #     ),
-        #     html.Div([
-        #         dcc.Graph(
-        #             id='graph_geographic_reach'
-        #         ),
-        #     ], className=" twelve columns"
-        #     ), ], className="row "
-        # ),
-
-    ], className="subpage")
+                id='submit_button',
+                message='Are you sure you want to continue?'
+            )
+        ])
+    ]),
+    html.Div(id='tabs-content')
 ], className="page")
 
 ########################  Layout End ########################
@@ -333,47 +422,121 @@ def is_logged_in(f):
     return wrap
 
 
-@is_logged_in
-@app.route('/', methods=['GET', 'POST'])
-@dash_app.callback(Output('upcoming_projects_table_container', 'children'),
-                [Input('upcoming_projects_table', 'active_cell'),
-                 Input('upcoming_projects_table', 'derived_virtual_selected_rows'),
-                 Input('upcoming_projects_table', 'data')])
-def get_active_cell_value(cell_coordinates,derived_virtual_selected_rows,table_data):
-    # active_row_id = active_cell['row_id'] if active_cell else None
-    # print(active_cell)
-    print(derived_virtual_selected_rows)
-    print(table_data)
-    if derived_virtual_selected_rows:
-        print(table_data[derived_virtual_selected_rows[0]])
-
-    return cell_coordinates
-
-
 # @app.route('/', methods=['GET', 'POST'])
 # def base():
 #     return render_template('base.html')
 
 
-@dash_app.callback(
-    dash.dependencies.Output('upcoming_projects_table', 'data'),
-    [dash.dependencies.Input('graph_crm_stages', 'hoverData')])
-def update_upcoming_projects_table(hoverData):
-    if hoverData:
-        print(hoverData['points'][0]['x'])
-        if hoverData['points'][0]['x']=='Lost Opportunities':
-            data = data_upcoming_projects[lost_opportunities].to_dict('records')
-        elif hoverData['points'][0]['x']=='Not contacted':
-            data = data_upcoming_projects[np.logical_and(not_contacted,open_opportunities)].to_dict('records')
-        elif hoverData['points'][0]['x']=='Contacted':
-            data = data_upcoming_projects[np.logical_and(contacted,open_opportunities)].to_dict('records')
-        elif hoverData['points'][0]['x']=='Visited':
-            data = data_upcoming_projects[np.logical_and(visited,open_opportunities)].to_dict('records')
-        elif hoverData['points'][0]['x']=='Enquiries':
-            data = data_upcoming_projects[np.logical_and(enquiries,open_opportunities)].to_dict('records')
-        else:
-            data = data_upcoming_projects.to_dict('records')
-    return data
+@dash_app.callback([Output('tabs', 'value'),
+                    Output('entry_date', 'date'),
+                    Output('project_description', 'value'),
+                    Output('scope_of_work', 'value'),
+                    Output('client_name', 'value'),
+                    Output('client_location', 'value'),
+                    Output('existing_client', 'value'),
+                    Output('contact_person_name', 'value'),
+                    Output('contact_person_mobile', 'value'),
+                    Output('contact_person_email', 'value'),
+                    Output('internal_lead', 'value'),
+                    Output('external_lead', 'value'),
+                    Output('lead_status', 'value'),
+                    Output('contact_date', 'date'),
+                    Output('visit_date', 'date'),
+                    Output('enquiry_date', 'date'),
+                    Output('offer_date', 'date'),
+                    Output('raj_group_office', 'value'),
+                    Output('follow_up_person', 'value'),
+                    Output('tentative_project_value', 'value'),
+                    Output('quotation_number', 'value'),
+                    Output('remarks', 'value')],
+                  [Input('submit_button', 'submit_n_clicks')],
+                  [State('entry_date', 'date'),
+                   State('project_description', 'value'),
+                   State('scope_of_work', 'value'),
+                   State('client_name', 'value'),
+                   State('client_location', 'value'),
+                   State('existing_client', 'value'),
+                   State('contact_person_name', 'value'),
+                   State('contact_person_mobile', 'value'),
+                   State('contact_person_email', 'value'),
+                   State('internal_lead', 'value'),
+                   State('external_lead', 'value'),
+                   State('lead_status', 'value'),
+                   State('contact_date', 'date'),
+                   State('visit_date', 'date'),
+                   State('enquiry_date', 'date'),
+                   State('offer_date', 'date'),
+                   State('raj_group_office', 'value'),
+                   State('follow_up_person', 'value'),
+                   State('tentative_project_value', 'value'),
+                   State('quotation_number', 'value'),
+                   State('remarks', 'value')])
+def update_output(submit_n_clicks, entry_date, project_description, scope_of_work, client_name, client_location, existing_client,
+                  contact_person_name, contact_person_mobile, contact_person_email, internal_lead, external_lead, lead_status,
+                  contact_date, visit_date, enquiry_date, offer_date, raj_group_office, follow_up_person, tentative_project_value,
+                  quotation_number, remarks):
+    print(submit_n_clicks)
+
+    if submit_n_clicks and submit_n_clicks>0:
+        enquiry_values = [entry_date, project_description, ', '.join(scope_of_work) if scope_of_work else '', client_name,
+              client_location, existing_client,
+              contact_person_name, contact_person_mobile, contact_person_email, internal_lead, external_lead,
+              ', '.join(lead_status) if lead_status else '',
+              contact_date, visit_date, enquiry_date, offer_date, ', '.join(raj_group_office) if raj_group_office else '',
+              ', '.join(follow_up_person) if follow_up_person else '',
+              tentative_project_value, quotation_number, remarks]
+        enquiry_values = [i if i else '' for i in enquiry_values]
+        print(enquiry_values)
+
+        connection.insert_query('RajGroupEnquiryList', fields_enquiry_list, enquiry_values)
+        return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None
+    else:
+        return 'tab-2', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None
+
+
+# @dash_app.callback(
+#     dash.dependencies.Output('upcoming_projects_table', 'data'),
+#     [dash.dependencies.Input('graph_crm_stages', 'hoverData')])
+# def update_upcoming_projects_table(hoverData):
+#     if hoverData:
+#         print(hoverData['points'][0]['x'])
+#         if hoverData['points'][0]['x']=='Lost Opportunities':
+#             data = data_upcoming_projects[lost_opportunities].to_dict('records')
+#         elif hoverData['points'][0]['x']=='Not contacted':
+#             data = data_upcoming_projects[np.logical_and(not_contacted,open_opportunities)].to_dict('records')
+#         elif hoverData['points'][0]['x']=='Contacted':
+#             data = data_upcoming_projects[np.logical_and(contacted,open_opportunities)].to_dict('records')
+#         elif hoverData['points'][0]['x']=='Visited':
+#             data = data_upcoming_projects[np.logical_and(visited,open_opportunities)].to_dict('records')
+#         elif hoverData['points'][0]['x']=='Enquiries':
+#             data = data_upcoming_projects[np.logical_and(enquiries,open_opportunities)].to_dict('records')
+#         else:
+#             data = data_upcoming_projects.to_dict('records')
+#     return data
+
+
+# @dash_app.callback(
+#     [Output('tabs', 'value'),
+#      Output('internal_lead', 'value')],
+#     [Input('upcoming_projects_table', 'selected_rows')]
+# )
+# def row_selection(row_ids):
+#     print(row_ids)
+#     if row_ids:
+#         return 'tab-2', 'Priyank'
+
+
+# @dash_app.callback(
+#     Output('modal-centered', 'is_open'),
+#     [Input('upcoming_projects_table', 'selected_rows'), Input("close", "n_clicks")],
+#     [State("modal-centered", "is_open")]
+# )
+# def row_selection(row_ids, n, is_open):
+#     print(row_ids)
+#     if row_ids or n:
+#         print(row_ids)
+#         return not is_open
+#     return is_open
 
 
 # @dash_app.callback(
@@ -943,7 +1106,7 @@ def data_edit():
     # data = cursor.fetchall() #data from database
     data = connection.execute_query("select * from Raj_PO;")
     # po_list = []
-    result = connection.cursor.execute("select * from Raj_PO;")
+    result = connection.cursor.execute("select * from Raj_PO limit 5;")
     po_list = connection.cursor.fetchall()
     connection.cursor.close()
     return render_template('data_edit.html', po_list=po_list)
