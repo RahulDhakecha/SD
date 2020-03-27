@@ -137,10 +137,12 @@ lead_stages_bar_data = [
         },
     ]
 
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 dash_app = dash.Dash(__name__,
                      server=app,
-                     routes_pathname_prefix='/dash/'
+                     routes_pathname_prefix='/dash/',
+                     external_stylesheets=external_stylesheets
                      )
 
 
