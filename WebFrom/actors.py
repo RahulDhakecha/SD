@@ -150,7 +150,7 @@ dash_app = dash.Dash(__name__,
 ######################## Layout ########################
 
 dash_app.layout = html.Div([
-
+    dcc.Link('HOME', href='/', refresh=True),
     dcc.Tabs(id='tabs', value='tab-1', children=[
         dcc.Tab(id='tab1', value='tab-1', label='Raj Group Marketing Dashboard', children=[
             html.Div([

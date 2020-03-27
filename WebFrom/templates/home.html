@@ -26,8 +26,8 @@ Data Entry
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="{{ url_for('base') }}">Home</a></li>
-            <li class="active"><a href="{{ url_for('home') }}">Data Entry</a></li>
-            <li><a href="{{ url_for('data_edit') }}">Data Edit</a></li>
+            <!--<li class="active"><a href="{{ url_for('home') }}">Data Entry</a></li>-->
+            <!--<li><a href="{{ url_for('data_edit') }}">Data Edit</a></li>-->
             <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -42,11 +42,11 @@ Data Entry
       {% include '_messages.html' %}
       <h1>Raj Group!</h1>
 
-      <p class="lead">Please select the firm.</p>
+      <p class="lead">Please go to the Dashboard.</p>
 
-      {{ wtf.quick_form(form) }}
+      <!--{{ wtf.quick_form(form) }}-->
 
-      <p class="space-above"><strong>{{ message }}</strong></p>
+      <!--<p class="space-above"><strong>{{ message }}</strong></p>-->
 
     </div>
   </div>
