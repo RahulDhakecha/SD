@@ -137,18 +137,25 @@ lead_stages_bar_data = [
         },
     ]
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 dash_app = dash.Dash(__name__,
                      server=app,
-                     routes_pathname_prefix='/dash/',
-                     external_stylesheets=external_stylesheets
+                     routes_pathname_prefix='/dash/'
                      )
 
 
+# Check if user logged in
+def is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('Unauthorized, Please login', 'danger')
+            return redirect(url_for('login'))
+    return wrap
 
 ######################## Layout ########################
-
 dash_app.layout = html.Div([
     dcc.Link('HOME', href='/', refresh=True),
     dcc.Tabs(id='tabs', value='tab-1', children=[
@@ -253,8 +260,7 @@ dash_app.layout = html.Div([
                     dcc.Input(
                         id='enquiry_key',
                         type='text',
-                        placeholder='Enter Enquiry Key',
-                        required=True,
+                        placeholder='Enquiry Key is locked for User',
                         size=50,
                         disabled=True
                     ),
@@ -270,7 +276,6 @@ dash_app.layout = html.Div([
                         id='project_description',
                         type='text',
                         placeholder='Enter Project Description',
-                        required=True,
                         size=50
                     ),
                     html.Header("Scope of Work"),
@@ -286,7 +291,6 @@ dash_app.layout = html.Div([
                         id='client_name',
                         type='text',
                         placeholder='Enter Client Name',
-                        required=True,
                         size=50
                     ),
                     html.Header("Client Location"),
@@ -294,7 +298,6 @@ dash_app.layout = html.Div([
                         id='client_location',
                         type='text',
                         placeholder='Enter Client Location',
-                        required=True,
                         size=50
                     ),
                     html.Header("Existing Client"),
@@ -308,7 +311,6 @@ dash_app.layout = html.Div([
                         id='contact_person_name',
                         type='text',
                         placeholder='Enter Contact Person Name',
-                        required=True,
                         size=50
                     ),
                     html.Header("Contact Person Mobile"),
@@ -316,7 +318,6 @@ dash_app.layout = html.Div([
                         id='contact_person_mobile',
                         type='text',
                         placeholder='Enter Contact Person Mobile',
-                        required=True,
                         size=50
                     ),
                     html.Header("Contact Person Email"),
@@ -324,7 +325,6 @@ dash_app.layout = html.Div([
                         id='contact_person_email',
                         type='text',
                         placeholder='Enter Contact Person Email',
-                        required=True,
                         size=50
                     ),
                 ], className="six columns"),
@@ -339,7 +339,6 @@ dash_app.layout = html.Div([
                         id='internal_lead',
                         type='text',
                         placeholder='Internal Lead',
-                        required=True,
                         size=50
                     ),
                     html.Header("External Lead"),
@@ -347,7 +346,6 @@ dash_app.layout = html.Div([
                         id='external_lead',
                         type='text',
                         placeholder='External Lead',
-                        required=True,
                         size=50
                     ),
                     html.Header("Status"),
@@ -403,7 +401,6 @@ dash_app.layout = html.Div([
                         id='tentative_project_value',
                         type='text',
                         placeholder='Tentative Project Value',
-                        required=True,
                         size=50
                     ),
                     html.Header("Quotation Number"),
@@ -411,7 +408,6 @@ dash_app.layout = html.Div([
                         id='quotation_number',
                         type='text',
                         placeholder='Quotation Number',
-                        required=True,
                         size=50
                     ),
                     html.Header("Remarks"),
@@ -419,7 +415,6 @@ dash_app.layout = html.Div([
                         id='remarks',
                         type='text',
                         placeholder='Remarks',
-                        required=True,
                         size=50
                     ),
                 ], className="four columns"),
@@ -452,16 +447,7 @@ dash_app.layout = html.Div([
 ########################  Layout End ########################
 
 
-# Check if user logged in
-def is_logged_in(f):
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            return f(*args, **kwargs)
-        else:
-            flash('Unauthorized, Please login', 'danger')
-            return redirect(url_for('login'))
-    return wrap
+
 
 
 # @app.route('/', methods=['GET', 'POST'])
