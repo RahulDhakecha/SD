@@ -21,8 +21,16 @@ class AWSMySQLConn:
         self.conn.commit()
         self.conn.close()
 
+    def execute(self, query):
+        print("Following query executed: {}".format(query))
+        self.cursor.execute(query)
+        self.conn.commit()
+
     def execute_query(self, query):
-        return pd.read_sql(query, con=self.conn)
+        data = pd.read_sql(query, con=self.conn)
+        self.conn.commit()
+        return data
+
 
     def insert_query(self, table_name, fields, values=[]):
         tuple_values = tuple(values)

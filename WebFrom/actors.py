@@ -43,34 +43,6 @@ app.config['BOOTSTRAP_SERVE_LOCAL'] = True
 
 login = LoginManager(app)
 
-fields = "(po_date \
-        ,po_key \
-        ,order_no \
-        ,po_no \
-        ,client \
-        ,sector \
-        ,location \
-        ,po_description \
-        ,po_value \
-        ,file_no \
-        ,tender_file_no \
-        ,project_status \
-        ,project_incharge \
-        ,po_file \
-        ,innovative_design \
-        ,electrical_turnkey \
-        ,maintenance_and_testing \
-        ,retrofiting \
-        ,sitc \
-        ,supply \
-        ,itc \
-        ,bbt \
-        ,lighting \
-        ,cable_and_earthing \
-        ,liaison \
-        ,eht \
-        ,telecom_construction \
-        ,solar)"
 
 sow = ['Turnkey', '66KV Switchyard', 'BBT', 'Solar', 'Civil/Telecom', 'Liaison', 'Testing', 'Maintenance/Servicing',
        'Retrofitting', 'SITC', 'Supply only', 'ITC only']
@@ -95,58 +67,75 @@ follow_up_person = ['Rahul Dhakecha',
                     'Ninad',
                     'Samir']
 
-fields_enquiry_list = "(entry_date, project_description, scope_of_work, client_name, client_location, existing_client, " \
+fields_enquiry_list = "(enquiry_key, entry_date, project_description, scope_of_work, client_name, client_location, existing_client, " \
                       "contact_person_name, contact_person_mobile, contact_person_email, internal_lead, external_lead, " \
                       "lead_status, contact_date, visit_date, enquiry_date, offer_date, raj_group_office, " \
                       "follow_up_person, tentative_project_value, quotation_number, remarks)"
 
-fields_up = "(up_key,client,sector,location,existing_work,project_description,work_scope,project_value,start_month, \
-             internal_lead,external_lead,competition,enquiry,final_verdict)"
-
-fields_call = "(reference, call_date)"
-fields_visit = "(reference, visit_date)"
-fields_followup = "(reference, followup_comment)"
-fields_company_rep = "(up_reference,name,mobile,email)"
-
-
 connection = AWSMySQLConn()
-enquiry_data = connection.execute_query("select * from RajGroupEnquiryList;")
-data_upcoming_projects = connection.execute_query("select A.* , B.call_date, C.visit_date, D.followup_comment, E.name \
-from Upcoming_Projects as A \
-left join \
-(select reference, max(call_date) as call_date \
-from Call_Log group by 1) as B \
-on A.up_key=B.reference \
-left join \
-(select reference, max(visit_date) as visit_date \
-from Visit_Log group by 1) as C \
-on A.up_key=C.reference \
-left join \
-Followup_Log as D \
-on A.up_key=D.reference \
-left join \
-Company_Rep as E \
-on A.up_key=E.up_reference;")
+data_upcoming_projects = connection.execute_query("select * from RajGroupEnquiryList;")
 
-lost_opportunities = data_upcoming_projects['Final_Verdict']=='CLOSE'
-open_opportunities = data_upcoming_projects['Final_Verdict']=='OPEN'
-not_contacted = data_upcoming_projects['call_date'].isnull()
-contacted = data_upcoming_projects['call_date'].notnull()
-visited = data_upcoming_projects['visit_date'].notnull()
-enquiries = data_upcoming_projects['Enquiry']=='YES'
-x_crm_stages = ['Lost Opportunities', 'Not contacted', 'Contacted', 'Visited', 'Enquiries']
-y_crm_stages = [sum(lost_opportunities), sum(not_contacted), sum(contacted), sum(visited), sum(enquiries)]
+services = list(connection.execute_query("select scope_of_work, count(*) as cnt from RajGroupEnquiryList group by 1")['scope_of_work'])
+service_wise_data = list(connection.execute_query("select scope_of_work, count(*) as cnt from RajGroupEnquiryList group by 1")['cnt'])
+service_wise_pie_data = [
+        {
+            'labels': services,
+            'values': service_wise_data,
+            'type': 'pie',
+        },
+    ]
 
-internal_leads = data_upcoming_projects.Internal_Lead.unique()
-
-
-# data_enquiries = connection.execute_query("select * ")
+pending_offers = connection.execute_query("select follow_up_person, count(*) as cnt from RajGroupEnquiryList where "
+                                          "lead_status='ENQUIRY' group by 1")
+pending_offers_data = []
+for i in follow_up_person:
+    try:
+        pending_offers_data.append(pending_offers[pending_offers['follow_up_person'] == i]['cnt'].iloc[0])
+    except:
+        pending_offers_data.append(0)
+pending_offers_pie_data = [
+        {
+            'labels': follow_up_person,
+            'values': pending_offers_data,
+            'type': 'pie',
+            'hole': 0.5,
+        },
+    ]
 
 
+submitted_offers = connection.execute_query("select follow_up_person, count(*) as cnt from RajGroupEnquiryList where "
+                                          "lead_status='OFFER' group by 1")
+submitted_offers_data = []
+for i in follow_up_person:
+    try:
+        submitted_offers_data.append(submitted_offers[submitted_offers['follow_up_person'] == i]['cnt'].iloc[0])
+    except:
+        submitted_offers_data.append(0)
+submitted_offers_pie_data = [
+        {
+            'labels': follow_up_person,
+            'values': submitted_offers_data,
+            'type': 'pie',
+            'hole': 0.5,
+        },
+    ]
 
 
-# data_upcoming_projects['id'] = data_upcoming_projects['UP_Key']
-# data_upcoming_projects.set_index('id', inplace=True, drop=False)
+lead_status_data = connection.execute_query("select lead_status, count(*) as cnt from RajGroupEnquiryList group by 1")
+lead_stages_data = []
+for i in lead_status:
+    try:
+        lead_stages_data.append(lead_status_data[lead_status_data['lead_status'] == i]['cnt'].iloc[0])
+    except:
+        lead_stages_data.append(0)
+
+lead_stages_bar_data = [
+        {
+            'x': lead_status,
+            'y': lead_stages_data,
+            'type': 'bar',
+        },
+    ]
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -157,13 +146,6 @@ dash_app = dash.Dash(__name__,
                      )
 
 
-# date_col_converted = pd.to_datetime(data1['PO_Date'])
-# filtered_df = data1[date_col_converted >= '2018-04-01']
-# cols = list(filtered_df)[-14:-1]
-# values = []
-# for c in cols:
-#     values.append(filtered_df[c].sum(axis=0, skipna=True))
-
 
 ######################## Layout ########################
 
@@ -171,41 +153,67 @@ dash_app.layout = html.Div([
 
     dcc.Tabs(id='tabs', value='tab-1', children=[
         dcc.Tab(id='tab1', value='tab-1', label='Raj Group Marketing Dashboard', children=[
-            # GRAPH - CRM Stages
-            # dcc.Graph(
-            #     id='graph_crm_stages',
-            #     figure={
-            #         'data': [
-            #             {'x': x_crm_stages, 'y': y_crm_stages, 'type': 'bar', 'name': 'SF'},
-            #         ],
-            #         'layout': {
-            #             'title': 'Raj Electrical - CRM stages'
-            #         }
-            #     }
-            # ),
-
-            # Modal for marketing form
             html.Div([
-                dbc.Modal(
-                [
-                    dbc.ModalHeader("Enquiry Data"),
-                    dbc.ModalBody("This is body of modal."),
-                    dbc.ModalFooter(
-                        dbc.Button(
-                            "Close", id="close", className="ml-auto"
-                        )
+                html.Div([
+                    # Pie-chart reflecting submitted offer
+                    dcc.Graph(
+                        id='submitted_offers_pie_chart',
+                        figure={
+                            'data': submitted_offers_pie_data,
+                            'layout': {
+                                'title': 'Raj Group - Submitted Offers',
+                                'autosize': True
+                            }
+                        }
                     ),
-                ],
-                id="modal-centered",
-                scrollable=True,
-                )
-            ]),
+                ], className="six columns"),
+
+                html.Div([
+                    # Pie-chart reflecting pending offers
+                    dcc.Graph(
+                        id='pending_offers_pie_chart',
+                        figure={
+                            'data': pending_offers_pie_data,
+                            'layout': {
+                                'title': 'Raj Group - Pending Offers'
+                            }
+                        }
+                    ),
+                ], className="six columns")
+
+            ], className="row"),
+            html.Div([
+                html.Div([
+                # GRAPH - Lead Stages
+                dcc.Graph(
+                    id='graph_lead_stages',
+                    figure={
+                        'data': lead_stages_bar_data,
+                        'layout': {
+                            'title': 'Raj Group - Lead Status'
+                        }
+                    }
+                ),
+                ], className="six columns"),
+                html.Div([
+                    # Pie-chart reflecting service wise enquiries
+                    dcc.Graph(
+                        id='service_wise_pie_chart',
+                        figure={
+                            'data': service_wise_pie_data,
+                            'layout': {
+                                'title': 'Raj Group - Service Wise Enquiries',
+                                'autosize': True
+                            }
+                        }
+                    ),
+                ], className="six columns"),
+            ], className="row"),
 
             # Data Table - Upcoming Projects
             dash_table.DataTable(
                 id='upcoming_projects_table',
-                style_data={'whiteSpace': 'normal',
-                            'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
+                style_data={'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
                 style_table={
                     'maxHeight': '30',
                     'overflowY': 'scroll'
@@ -238,170 +246,204 @@ dash_app.layout = html.Div([
             ),
         ]),
         dcc.Tab(id='tab2', value='tab-2', label='Raj Group Marketing Form', children=[
-            html.H3("Project Details"),
-            html.Header("Entry Date"),
-            dcc.DatePickerSingle(
-                id='entry_date',
-                placeholder='Select a Date',
-                with_portal=True,
-                display_format="DD-MM-YYYY",
-            ),
-            html.Header("Project Description"),
-            dcc.Input(
-                id='project_description',
-                type='text',
-                placeholder='Enter Project Description',
-                required=True,
-                size=50
-            ),
-            html.Header("Scope of Work"),
-            dcc.Dropdown(
-                id='scope_of_work',
-                options=[{'value': i, 'label': i} for i in sow],
-                multi=True
-            ),
-            html.H3("Client Details"),
-            html.Header("Client Name"),
-            dcc.Input(
-                id='client_name',
-                type='text',
-                placeholder='Enter Client Name',
-                required=True,
-                size=50
-            ),
-            html.Header("Client Location"),
-            dcc.Input(
-                id='client_location',
-                type='text',
-                placeholder='Enter Client Location',
-                required=True,
-                size=50
-            ),
-            html.Header("Existing Client"),
-            dcc.RadioItems(
-                id='existing_client',
-                options=[{'value': 'YES', 'label': 'YES'},
-                         {'value': 'NO', 'label': 'NO'}]
-            ),
-            html.Header("Contact Person Name"),
-            dcc.Input(
-                id='contact_person_name',
-                type='text',
-                placeholder='Enter Contact Person Name',
-                required=True,
-                size=50
-            ),
-            html.Header("Contact Person Mobile"),
-            dcc.Input(
-                id='contact_person_mobile',
-                type='text',
-                placeholder='Enter Contact Person Mobile',
-                required=True,
-                size=50
-            ),
-            html.Header("Contact Person Email"),
-            dcc.Input(
-                id='contact_person_email',
-                type='text',
-                placeholder='Enter Contact Person Email',
-                required=True,
-                size=50
-            ),
+            html.Div([
+                html.Div([
+                    html.H3("Project Details"),
+                    html.Header("Enquiry Key"),
+                    dcc.Input(
+                        id='enquiry_key',
+                        type='text',
+                        placeholder='Enter Enquiry Key',
+                        required=True,
+                        size=50,
+                        disabled=True
+                    ),
+                    html.Header("Entry Date"),
+                    dcc.DatePickerSingle(
+                        id='entry_date',
+                        placeholder='Select a Date',
+                        with_portal=True,
+                        display_format="YYYY-MM-DD",
+                    ),
+                    html.Header("Project Description"),
+                    dcc.Input(
+                        id='project_description',
+                        type='text',
+                        placeholder='Enter Project Description',
+                        required=True,
+                        size=50
+                    ),
+                    html.Header("Scope of Work"),
+                    dcc.Dropdown(
+                        id='scope_of_work',
+                        options=[{'value': i, 'label': i} for i in sow]
+                    ),
+                ], className="four columns"),
+                html.Div([
+                    html.H3("Client Details"),
+                    html.Header("Client Name"),
+                    dcc.Input(
+                        id='client_name',
+                        type='text',
+                        placeholder='Enter Client Name',
+                        required=True,
+                        size=50
+                    ),
+                    html.Header("Client Location"),
+                    dcc.Input(
+                        id='client_location',
+                        type='text',
+                        placeholder='Enter Client Location',
+                        required=True,
+                        size=50
+                    ),
+                    html.Header("Existing Client"),
+                    dcc.RadioItems(
+                        id='existing_client',
+                        options=[{'value': 'YES', 'label': 'YES'},
+                                 {'value': 'NO', 'label': 'NO'}]
+                    ),
+                    html.Header("Contact Person Name"),
+                    dcc.Input(
+                        id='contact_person_name',
+                        type='text',
+                        placeholder='Enter Contact Person Name',
+                        required=True,
+                        size=50
+                    ),
+                    html.Header("Contact Person Mobile"),
+                    dcc.Input(
+                        id='contact_person_mobile',
+                        type='text',
+                        placeholder='Enter Contact Person Mobile',
+                        required=True,
+                        size=50
+                    ),
+                    html.Header("Contact Person Email"),
+                    dcc.Input(
+                        id='contact_person_email',
+                        type='text',
+                        placeholder='Enter Contact Person Email',
+                        required=True,
+                        size=50
+                    ),
+                ], className="six columns"),
+            ], className="row"),
+
             html.H3("Internal Follow Up"),
-            html.Header("Internal Lead"),
-            dcc.Input(
-                id='internal_lead',
-                type='text',
-                placeholder='Internal Lead',
-                required=True,
-                size=50
-            ),
-            html.Header("External Lead"),
-            dcc.Input(
-                id='external_lead',
-                type='text',
-                placeholder='External Lead',
-                required=True,
-                size=50
-            ),
-            html.Header("Status"),
-            dcc.Dropdown(
-                id='lead_status',
-                options=[{'value': i, 'label': i} for i in lead_status],
-                multi=True
-            ),
-            html.Header("Contact Date"),
-            dcc.DatePickerSingle(
-                id='contact_date',
-                placeholder='Contact Date',
-                with_portal=True,
-                display_format="DD-MM-YYYY",
-            ),
-            html.Header("Visit Date"),
-            dcc.DatePickerSingle(
-                id='visit_date',
-                placeholder='Visit Date',
-                with_portal=True,
-                display_format="DD-MM-YYYY",
-            ),
-            html.Header("Enquiry Date"),
-            dcc.DatePickerSingle(
-                id='enquiry_date',
-                placeholder='Enquiry Date',
-                with_portal=True,
-                display_format="DD-MM-YYYY",
-            ),
-            html.Header("Offer Date"),
-            dcc.DatePickerSingle(
-                id='offer_date',
-                placeholder='Offer Date',
-                with_portal=True,
-                display_format="DD-MM-YYYY",
-            ),
-            html.Header("Raj Group Office"),
-            dcc.Dropdown(
-                id='raj_group_office',
-                options=[{'value': i, 'label': i} for i in raj_group_office],
-                multi=True
-            ),
-            html.Header("Follow Up Person"),
-            dcc.Dropdown(
-                id='follow_up_person',
-                options=[{'value': i, 'label': i} for i in follow_up_person],
-                multi=True
-            ),
-            html.Header("Tentative Project Value"),
-            dcc.Input(
-                id='tentative_project_value',
-                type='text',
-                placeholder='Tentative Project Value',
-                required=True,
-                size=50
-            ),
-            html.Header("Quotation Number"),
-            dcc.Input(
-                id='quotation_number',
-                type='text',
-                placeholder='Quotation Number',
-                required=True,
-                size=50
-            ),
-            html.Header("Remarks"),
-            dcc.Input(
-                id='remarks',
-                type='text',
-                placeholder='Remarks',
-                required=True,
-                size=50
-            ),
-            # html.Button(id='submit_button', children='Submit'),
-            dcc.ConfirmDialogProvider(
-                children=html.Button(
-                'Submit',
-                ),
-                id='submit_button',
-                message='Are you sure you want to continue?'
-            )
+
+            html.Div([
+                html.Div([
+                    html.Header("Internal Lead"),
+                    dcc.Input(
+                        id='internal_lead',
+                        type='text',
+                        placeholder='Internal Lead',
+                        required=True,
+                        size=50
+                    ),
+                    html.Header("External Lead"),
+                    dcc.Input(
+                        id='external_lead',
+                        type='text',
+                        placeholder='External Lead',
+                        required=True,
+                        size=50
+                    ),
+                    html.Header("Status"),
+                    dcc.Dropdown(
+                        id='lead_status',
+                        options=[{'value': i, 'label': i} for i in lead_status]
+                    ),
+                ], className="four columns"),
+                html.Div([
+                    html.Header("Contact Date"),
+                    dcc.DatePickerSingle(
+                        id='contact_date',
+                        placeholder='Contact Date',
+                        with_portal=True,
+                        display_format="YYYY-MM-DD",
+                    ),
+                    html.Header("Visit Date"),
+                    dcc.DatePickerSingle(
+                        id='visit_date',
+                        placeholder='Visit Date',
+                        with_portal=True,
+                        display_format="YYYY-MM-DD",
+                    ),
+                    html.Header("Enquiry Date"),
+                    dcc.DatePickerSingle(
+                        id='enquiry_date',
+                        placeholder='Enquiry Date',
+                        with_portal=True,
+                        display_format="YYYY-MM-DD",
+                    ),
+                    html.Header("Offer Date"),
+                    dcc.DatePickerSingle(
+                        id='offer_date',
+                        placeholder='Offer Date',
+                        with_portal=True,
+                        display_format="YYYY-MM-DD",
+                        date='0000-00-00'
+                    ),
+                ], className="four columns"),
+                html.Div([
+                    html.Header("Raj Group Office"),
+                    dcc.Dropdown(
+                        id='raj_group_office',
+                        options=[{'value': i, 'label': i} for i in raj_group_office]
+                    ),
+                    html.Header("Follow Up Person"),
+                    dcc.Dropdown(
+                        id='follow_up_person',
+                        options=[{'value': i, 'label': i} for i in follow_up_person]
+                    ),
+                    html.Header("Tentative Project Value"),
+                    dcc.Input(
+                        id='tentative_project_value',
+                        type='text',
+                        placeholder='Tentative Project Value',
+                        required=True,
+                        size=50
+                    ),
+                    html.Header("Quotation Number"),
+                    dcc.Input(
+                        id='quotation_number',
+                        type='text',
+                        placeholder='Quotation Number',
+                        required=True,
+                        size=50
+                    ),
+                    html.Header("Remarks"),
+                    dcc.Input(
+                        id='remarks',
+                        type='text',
+                        placeholder='Remarks',
+                        required=True,
+                        size=50
+                    ),
+                ], className="four columns"),
+            ], className="row"),
+            html.Div([
+                html.Div([
+                    dcc.ConfirmDialogProvider(
+                        children=html.Button(
+                        'Submit',
+                        ),
+                        id='submit_button',
+                        message='Are you sure you want to continue?'
+                    ),
+                ], className="six columns"),
+                html.Div([
+                    dcc.ConfirmDialogProvider(
+                        children=html.Button(
+                        'Close',
+                        ),
+                        id='close_button',
+                        message='Are you sure you want to continue?'
+                    )
+                ], className="six columns"),
+            ], className="row"),
         ])
     ]),
     html.Div(id='tabs-content')
@@ -428,6 +470,7 @@ def is_logged_in(f):
 
 
 @dash_app.callback([Output('tabs', 'value'),
+                    Output('enquiry_key', 'value'),
                     Output('entry_date', 'date'),
                     Output('project_description', 'value'),
                     Output('scope_of_work', 'value'),
@@ -448,9 +491,18 @@ def is_logged_in(f):
                     Output('follow_up_person', 'value'),
                     Output('tentative_project_value', 'value'),
                     Output('quotation_number', 'value'),
-                    Output('remarks', 'value')],
-                  [Input('submit_button', 'submit_n_clicks')],
-                  [State('entry_date', 'date'),
+                    Output('remarks', 'value'),
+                    Output('upcoming_projects_table', 'data')],
+                  [Input('submit_button', 'submit_n_clicks'),
+                   Input('close_button', 'submit_n_clicks'),
+                   Input('upcoming_projects_table', 'selected_rows'),
+                   Input('graph_lead_stages', 'clickData'),
+                   Input('service_wise_pie_chart', 'clickData'),
+                   Input('pending_offers_pie_chart', 'clickData'),
+                   Input('submitted_offers_pie_chart', 'clickData')],
+                  [State('upcoming_projects_table', 'derived_viewport_data'),
+                   State('enquiry_key', 'value'),
+                   State('entry_date', 'date'),
                    State('project_description', 'value'),
                    State('scope_of_work', 'value'),
                    State('client_name', 'value'),
@@ -471,264 +523,132 @@ def is_logged_in(f):
                    State('tentative_project_value', 'value'),
                    State('quotation_number', 'value'),
                    State('remarks', 'value')])
-def update_output(submit_n_clicks, entry_date, project_description, scope_of_work, client_name, client_location, existing_client,
+def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, hoverData_service, hoverData_followup, hoverData_offers,
+                  rows, enquiry_key, entry_date, project_description, scope_of_work, client_name, client_location, existing_client,
                   contact_person_name, contact_person_mobile, contact_person_email, internal_lead, external_lead, lead_status,
                   contact_date, visit_date, enquiry_date, offer_date, raj_group_office, follow_up_person, tentative_project_value,
                   quotation_number, remarks):
-    print(submit_n_clicks)
+    connection = AWSMySQLConn()
+    upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList;").to_dict('records')
+    ctx = dash.callback_context
+    ctx_msg = json.dumps({
+        'states': ctx.states,
+        'triggered': ctx.triggered,
+        'inputs': ctx.inputs
+    }, indent=2)
+    if ctx.triggered:
+        triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
+        print(triggered_input)
 
-    if submit_n_clicks and submit_n_clicks>0:
-        enquiry_values = [entry_date, project_description, ', '.join(scope_of_work) if scope_of_work else '', client_name,
-              client_location, existing_client,
-              contact_person_name, contact_person_mobile, contact_person_email, internal_lead, external_lead,
-              ', '.join(lead_status) if lead_status else '',
-              contact_date, visit_date, enquiry_date, offer_date, ', '.join(raj_group_office) if raj_group_office else '',
-              ', '.join(follow_up_person) if follow_up_person else '',
-              tentative_project_value, quotation_number, remarks]
-        enquiry_values = [i if i else '' for i in enquiry_values]
-        print(enquiry_values)
+        if triggered_input == 'submit_button':
+            print(offer_date)
+            if not enquiry_key:
+                prev_enquiry_key = connection.execute_query("select count(enquiry_key) as cnt from RajGroupEnquiryList").ix[0]['cnt']
+                enquiry_key = "EN_"+str(dt.now().year)+"_"+str(dt.now().month).zfill(2)+"_"+str(prev_enquiry_key+1).zfill(4)
+                enquiry_values = [enquiry_key, entry_date, project_description, str(scope_of_work).replace("[", '').replace("]", '').replace("'", ''),
+                                  client_name,
+                                  client_location, existing_client,
+                                  contact_person_name, contact_person_mobile, contact_person_email, internal_lead,
+                                  external_lead,
+                                  str(lead_status).replace("[", '').replace("]", '').replace("'", ''),
+                                  contact_date, visit_date, enquiry_date, offer_date,
+                                  str(raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
+                                  str(follow_up_person).replace("[", '').replace("]", '').replace("'", ''),
+                                  tentative_project_value, quotation_number, remarks]
+                enquiry_values = [i if i else '' for i in enquiry_values]
+                print(enquiry_values)
 
-        connection.insert_query('RajGroupEnquiryList', fields_enquiry_list, enquiry_values)
-        return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None
+                connection.insert_query('RajGroupEnquiryList', fields_enquiry_list, enquiry_values)
+            else:
+                connection.execute("UPDATE RajGroupEnquiryList "
+                                         "SET entry_date='{}', "
+                                         "project_description='{}', "
+                                         "scope_of_work='{}', "
+                                         "client_name='{}', "
+                                         "client_location='{}', "
+                                         "existing_client='{}', "
+                                         "contact_person_name='{}', "
+                                         "contact_person_mobile='{}', "
+                                         "contact_person_email='{}', "
+                                         "internal_lead='{}', "
+                                         "external_lead ='{}', "
+                                         "lead_status='{}', "
+                                         "contact_date='{}', "
+                                         "visit_date='{}', "
+                                         "enquiry_date='{}', "
+                                         "offer_date='{}', "
+                                         "raj_group_office='{}', "
+                                         "follow_up_person='{}', "
+                                         "tentative_project_value='{}', "
+                                         "quotation_number='{}', "
+                                         "remarks='{}' "
+                                         "where  enquiry_key='{}';".format(entry_date, project_description,
+                                  str(scope_of_work).replace("[", '').replace("]", '').replace("'", ''),
+                                  client_name,
+                                  client_location, existing_client,
+                                  contact_person_name, contact_person_mobile, contact_person_email, internal_lead,
+                                  external_lead,
+                                  str(lead_status).replace("[", '').replace("]", '').replace("'", ''),
+                                  contact_date, visit_date, enquiry_date, offer_date,
+                                  str(raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
+                                  str(follow_up_person).replace("[", '').replace("]", '').replace("'", ''),
+                                  tentative_project_value, quotation_number, remarks, enquiry_key))
+
+            upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList;").to_dict('records')
+
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, upcoming_projects_data_modified
+        # elif row_id and rows:
+        elif triggered_input == 'upcoming_projects_table' and row_id:
+            row_id = row_id[0]
+            return 'tab-2', rows[row_id]['enquiry_key'], \
+                   rows[row_id]['entry_date'] if str(rows[row_id]['entry_date'])!='0000-00-00' else None, \
+                   rows[row_id]['project_description'], str(rows[row_id]['scope_of_work']).split(', '), \
+                   rows[row_id]['client_name'], rows[row_id]['client_location'], rows[row_id]['existing_client'], \
+                   rows[row_id]['contact_person_name'], rows[row_id]['contact_person_mobile'], rows[row_id][
+                       'contact_person_email'], rows[row_id]['internal_lead'], rows[row_id]['external_lead'], rows[row_id][
+                       'lead_status'], \
+                   rows[row_id]['contact_date'] if str(rows[row_id]['contact_date'])!='0000-00-00' else None, \
+                   rows[row_id]['visit_date'] if str(rows[row_id]['visit_date'])!='0000-00-00' else None, \
+                   rows[row_id]['enquiry_date'] if str(rows[row_id]['enquiry_date'])!='0000-00-00' else None,\
+                   rows[row_id]['offer_date'] if str(rows[row_id]['offer_date'])!='0000-00-00' else None, \
+                   rows[row_id]['raj_group_office'], rows[row_id][
+                       'follow_up_person'], rows[row_id]['tentative_project_value'], rows[row_id]['quotation_number'], \
+                   rows[row_id]['remarks'], upcoming_projects_data_modified
+
+        elif triggered_input == 'graph_lead_stages' and hoverData_lead_status:
+            status_var = hoverData_lead_status['points'][0]['x']
+            upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
+                                                                           "lead_status='{}';".format(status_var)).to_dict('records')
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, upcoming_projects_data_modified
+
+        elif triggered_input == 'service_wise_pie_chart' and hoverData_service:
+            # connection = AWSMySQLConn()
+            status_var = hoverData_service['points'][0]['label']
+            upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
+                                                                           "scope_of_work='{}';".format(status_var)).to_dict('records')
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, upcoming_projects_data_modified
+
+        elif triggered_input == 'pending_offers_pie_chart' and hoverData_followup:
+            status_var = hoverData_followup['points'][0]['label']
+            upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
+                                                                           "lead_status='ENQUIRY' and "
+                                                                       "follow_up_person='{}';".format(status_var)).to_dict('records')
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, upcoming_projects_data_modified
+
+        elif triggered_input == 'submitted_offers_pie_chart' and hoverData_offers:
+            status_var = hoverData_offers['points'][0]['label']
+            upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
+                                                                           "lead_status='OFFER' and "
+                                                                       "follow_up_person='{}';".format(status_var)).to_dict('records')
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, upcoming_projects_data_modified
+
+        elif triggered_input == 'close_button':
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, upcoming_projects_data_modified
+        else:
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, upcoming_projects_data_modified
+
     else:
-        return 'tab-2', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None
-
-
-# @dash_app.callback(
-#     dash.dependencies.Output('upcoming_projects_table', 'data'),
-#     [dash.dependencies.Input('graph_crm_stages', 'hoverData')])
-# def update_upcoming_projects_table(hoverData):
-#     if hoverData:
-#         print(hoverData['points'][0]['x'])
-#         if hoverData['points'][0]['x']=='Lost Opportunities':
-#             data = data_upcoming_projects[lost_opportunities].to_dict('records')
-#         elif hoverData['points'][0]['x']=='Not contacted':
-#             data = data_upcoming_projects[np.logical_and(not_contacted,open_opportunities)].to_dict('records')
-#         elif hoverData['points'][0]['x']=='Contacted':
-#             data = data_upcoming_projects[np.logical_and(contacted,open_opportunities)].to_dict('records')
-#         elif hoverData['points'][0]['x']=='Visited':
-#             data = data_upcoming_projects[np.logical_and(visited,open_opportunities)].to_dict('records')
-#         elif hoverData['points'][0]['x']=='Enquiries':
-#             data = data_upcoming_projects[np.logical_and(enquiries,open_opportunities)].to_dict('records')
-#         else:
-#             data = data_upcoming_projects.to_dict('records')
-#     return data
-
-
-# @dash_app.callback(
-#     [Output('tabs', 'value'),
-#      Output('internal_lead', 'value')],
-#     [Input('upcoming_projects_table', 'selected_rows')]
-# )
-# def row_selection(row_ids):
-#     print(row_ids)
-#     if row_ids:
-#         return 'tab-2', 'Priyank'
-
-
-# @dash_app.callback(
-#     Output('modal-centered', 'is_open'),
-#     [Input('upcoming_projects_table', 'selected_rows'), Input("close", "n_clicks")],
-#     [State("modal-centered", "is_open")]
-# )
-# def row_selection(row_ids, n, is_open):
-#     print(row_ids)
-#     if row_ids or n:
-#         print(row_ids)
-#         return not is_open
-#     return is_open
-
-
-# @dash_app.callback(
-#     dash.dependencies.Output('crossfilter-indicator-scatter', 'figure'),
-#     [dash.dependencies.Input('crm_internal_lead_dropdown', 'value')])
-
-# # Refresh Button Callback
-# @dash_app.callback(Output('upcoming_projects_table', 'data'),
-#                    [Input('button', 'n_clicks')])
-# def update_upcoming_projects_table(n_clicks):
-#     if n_clicks is not None:
-#         connection = AWSMySQLConn()
-#         new_data_upcoming_projects = connection.execute_query("select A.* , B.call_date, C.visit_date, D.followup_comment, E.name \
-#         from Upcoming_Projects as A \
-#         left join \
-#         Call_Log as B \
-#         on A.up_key=B.reference \
-#         left join \
-#         Visit_Log as C \
-#         on A.up_key=C.reference \
-#         left join \
-#         Followup_Log as D \
-#         on A.up_key=D.reference \
-#         left join \
-#         Company_Rep as E \
-#         on A.up_key=E.up_reference;")
-#
-#         data = new_data_upcoming_projects.to_dict('records')
-#         print(data)
-#         return data
-
-
-
-# # Date Picker Callback
-# @dash_app.callback(Output('output-container-date-picker', 'children'),
-#               [Input('my-date-picker', 'start_date'),
-#                Input('my-date-picker', 'end_date')])
-# def update_output(start_date, end_date):
-#     string_prefix = 'You have selected '
-#     print(start_date)
-#     print(end_date)
-#     if start_date is not None:
-#         start_date = dt.strptime(start_date, '%Y-%m-%d')
-#         start_date_string = start_date.strftime('%B %d, %Y')
-#         print(string_prefix + start_date_string)
-#     #     string_prefix = string_prefix + 'a Start Date of ' + start_date_string + ' | '
-#     # if end_date is not None:
-#     #     end_date = dt.strptime(end_date, '%Y-%m-%d')
-#     #     end_date_string = end_date.strftime('%B %d, %Y')
-#     #     days_selected = (end_date - start_date).days
-#     #     prior_start_date = start_date - timedelta(days_selected + 1)
-#     #     prior_start_date_string = datetime.strftime(prior_start_date, '%B %d, %Y')
-#     #     prior_end_date = end_date - timedelta(days_selected + 1)
-#     #     prior_end_date_string = datetime.strftime(prior_end_date, '%B %d, %Y')
-#     #     string_prefix = string_prefix + 'End Date of ' + end_date_string + ', for a total of ' + str(days_selected + 1) + ' Days. The prior period Start Date was ' + \
-#     #     prior_start_date_string + ' | End Date: ' + prior_end_date_string + '.'
-#     # if len(string_prefix) == len('You have selected: '):
-#     #     return 'Select a date to see it displayed here'
-#     # else:
-#     #     return string_prefix
-
-
-# # Callback for the Graph - Sector Wise
-# @dash_app.callback(
-#    Output('graph_sector_wise_orders', 'figure'),
-#    [Input('my-date-picker', 'start_date'),
-#     Input('my-date-picker', 'end_date')])
-# def update_graph_1(start_date, end_date):
-#     new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
-#     fig = update_graph(new_df)
-#     return fig
-#
-#
-# def update_graph(new_df):
-#     cols = list(new_df)[-14:]
-#     values = []
-#     for c in cols:
-#         values.append(new_df[c].sum(axis=0, skipna=True))
-#
-#     bar_total_order = go.Figure([go.Bar(
-#       x=cols,
-#       y=values,
-#       text='Sessions YoY (%)', opacity=0.6
-#     )])
-#
-#     return bar_total_order
-#
-#
-# # Callback for the Graph - Month Wise Order Value
-# @dash_app.callback(
-#    Output('graph_monthly_order_booking', 'figure'),
-#    [Input('my-date-picker', 'start_date'),
-#     Input('my-date-picker', 'end_date')])
-# def update_graph_2(start_date, end_date):
-#     new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
-#     fig = update_graph_montly_order_value(new_df)
-#     return fig
-#
-#
-# def update_graph_montly_order_value(new_df):
-#     cols = list(new_df)[-14:]
-#     values = []
-#     for c in cols:
-#         values.append(new_df[c].sum(axis=0, skipna=True))
-#
-#     bar_total_order = go.Figure([go.Scatter(
-#       x=cols,
-#       y=values,
-#       text='Sessions YoY (%)', opacity=0.6
-#     )])
-#     return bar_total_order
-#
-#
-#
-# # Callback for the Graph - Geographic Reach
-# @dash_app.callback(
-#    Output('graph_geographic_reach', 'figure'),
-#    [Input('my-date-picker', 'start_date'),
-#     Input('my-date-picker', 'end_date')])
-# def update_graph_2(start_date, end_date):
-#     new_df = data1[np.logical_and(date_col_converted>=start_date, date_col_converted<=end_date)]
-#     fig = update_geographic_reach(new_df)
-#     return fig
-#
-#
-# def update_geographic_reach(new_df):
-#     cols = list(new_df)[-14:]
-#     values = []
-#     for c in cols:
-#         values.append(new_df[c].sum(axis=0, skipna=True))
-#
-#     # print(new_df.groupby(by=['Location','Client']).apply(list))
-#     # print(dict(new_df.groupby(['Location','Client'])['Location','Client'].apply(list)))
-#     geo_conn = GeoInfoConn()
-#     # locs = ["Surat","Vadodara","Ankleshwar","Dahej","Jhagadia","Vapi","Ahmedabad","Bharuch","Daman","Silvassa",
-#     #         "Jambusar","Gandhidham","Mumbai","Panoli","Ukai","Valia","Jamnagar","Rajpipla","Kosamba","Mangrol",
-#     #         "Palsana","Navsari","Porbandar","Valsad"]
-#     # values = [215,22,173,85,53,35,15,13,5,8,19,25,22,71,5,7,3,20,9,13,8,3,6]
-#     locs = ["Surat"]
-#     values = [215]
-#     lats = []
-#     lons = []
-#     for loc in locs:
-#         lats.append(geo_conn.find_latitude(location=loc))
-#         lons.append(geo_conn.find_longitude(location=loc))
-#
-#
-#     fig = go.Figure()
-#
-#     fig.add_trace(go.Scattergeo(
-#         lat=lats,
-#         lon=lons,
-#         mode="markers+text",
-#         # location=['Surat'],
-#         text=locs,
-#         # hoverinfo="text",
-#         # hovertext=[['Dharmanandan','Ankit Gems']],
-#         marker=dict(
-#             size=values,
-#             sizemode='area',
-#             color='rgb(33,113,181)',
-#             line_width=0
-#         )
-#         # geo='geo'
-#     ))
-#
-#     fig.update_layout(
-#         title=go.layout.Title(
-#             text='Raj Group - Geographic Reach'),
-#         width=1200,
-#         height=1200,
-#         geo=go.layout.Geo(
-#             resolution=50,
-#             scope='asia',
-#             showframe=False,
-#             showcoastlines=True,
-#             showland=True,
-#             landcolor="#F0DC82",
-#             showocean=True,
-#             oceancolor= "#89C5DA",
-#             countrycolor="white",
-#             coastlinecolor="blue",
-#             projection_type='mercator',
-#             lonaxis_range=[67.0, 75.0],
-#             lataxis_range=[20.0, 25.0],
-#             domain=dict(x=[0, 1], y=[0, 1])
-#         ),
-#         legend_traceorder='reversed'
-#     )
-#
-#     return fig
-
+        return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, upcoming_projects_data_modified
 
 
 

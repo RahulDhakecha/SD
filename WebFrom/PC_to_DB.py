@@ -15,9 +15,15 @@ fields = "(sr_no, day_value, month_value, year_value, po_no, company, location, 
          "management_person, management_contact_number, management_contact_email," \
          "purchase_person, purchase_contact_number, purchase_contact_email)"
 
+fields_enquiry_list = "(enquiry_key, entry_date, project_description, scope_of_work, client_name, client_location, existing_client, " \
+                      "contact_person_name, contact_person_mobile, contact_person_email, internal_lead, external_lead, " \
+                      "lead_status, contact_date, visit_date, enquiry_date, offer_date, raj_group_office, " \
+                      "follow_up_person, tentative_project_value, quotation_number, remarks)"
+
 # data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/RajElectricalOrders.xls")
 # data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/RajEnterpriseOrders.xlsx")
-data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/DNSyndicateOrders.xlsx")
+# data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/DNSyndicateOrders.xlsx")
+data = pd.read_excel("/Users/rahuldhakecha/RajGroup/EnquiryList/RajGroupEnquiryList.xlsx")
 data = data.fillna(0)
 # print(data.head)
 
@@ -95,45 +101,75 @@ data = data.fillna(0)
 #     connection.insert_query(table_name="RajEnterpriseOrders", fields=fields, values=values)
 
 
+# for index, row in data.iterrows():
+#     print(index)
+#     if index<=743:
+#         continue
+#     try:
+#         values = ['',
+#               round(row['DD']),
+#               round(row['MM']),
+#               round(row['YY']),
+#               row['Work Order No.'],
+#               row['Compny Name'],
+#               row['Location'],
+#               '',
+#               row['Subject'],
+#               row['Total Cost'],
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '',
+#               '']
+#         connection.insert_query(table_name="DNSyndicateOrders", fields=fields, values=values)
+#     except:
+#         continue
+
+
 for index, row in data.iterrows():
     print(index)
-    if index<=743:
-        continue
     try:
-        values = ['',
-              round(row['DD']),
-              round(row['MM']),
-              round(row['YY']),
-              row['Work Order No.'],
-              row['Compny Name'],
-              row['Location'],
-              '',
-              row['Subject'],
-              row['Total Cost'],
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              '']
-        connection.insert_query(table_name="DNSyndicateOrders", fields=fields, values=values)
+        values = [row['Enquiry Key'],
+                  row['Entry Date'],
+                  row['Project Description'],
+                  row['Scope of Work'],
+                  row['Client'],
+                  row['Location'],
+                  row['Existing Client'],
+                  row['Contact Person Name'],
+                  row['Contact Person Mobile'],
+                  row['Contact Person Email'],
+                  row['Internal Lead'],
+                  row['External Lead'],
+                  row['Status'],
+                  row['Contact Date'],
+                  row['Visit Date'],
+                  row['Enquiry Date'],
+                  row['Offer Date'],
+                  row['Raj Group Office'],
+                  row['Follow Up Person'],
+                  row['Tentative Project Value'],
+                  row['Quotation Number'],
+                  row['Remarks']]
+        connection.insert_query(table_name="RajGroupEnquiryList", fields=fields_enquiry_list, values=values)
     except:
         continue
 
