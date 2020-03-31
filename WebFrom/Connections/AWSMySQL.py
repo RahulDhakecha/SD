@@ -31,7 +31,6 @@ class AWSMySQLConn:
         self.conn.commit()
         return data
 
-
     def insert_query(self, table_name, fields, values=[]):
         tuple_values = tuple(values)
         query = "INSERT INTO {} {} VALUES {};".format(table_name, fields, tuple_values)
@@ -50,6 +49,9 @@ class AWSMySQLConn:
     def get_unique_values(self, table_name, column_name):
         query = "SELECT {} FROM {} GROUP BY 1;".format(column_name, table_name)
         return list(pd.read_sql(query, con=self.conn).iloc[:, 0])
+
+    def close_connection(self):
+        self.conn.close()
 
 
 if __name__ == '__main__':
