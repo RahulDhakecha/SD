@@ -10,7 +10,8 @@ from functools import wraps
 from passlib.hash import sha256_crypt
 from werkzeug import secure_filename
 from Connections.AWSMySQL import AWSMySQLConn
-from Connections.GeographicInfo import GeoInfoConn
+# import DashLayouts
+
 from datetime import datetime as dt
 from datetime import date, timedelta
 from datetime import datetime
@@ -80,18 +81,11 @@ connection = AWSMySQLConn()
 data_upcoming_projects = connection.execute_query("select * from RajGroupEnquiryList;")
 
 
-# def run_mysql(function, query):
-#     connection_var = AWSMySQLConn()
-#     return connection_var.function(query)
-#
-#
-# def connect_to_mysql(function):
-#     p = multiprocessing.process(target=run_mysql, args=function)
-#     p.start()
-#     p.join()
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 
 def service_wise_pie_data():
+    # connection = AWSMySQLConn()
     services = list(connection.execute_query("select scope_of_work, count(*) as cnt from RajGroupEnquiryList group by 1")['scope_of_work'])
     service_wise_data = list(connection.execute_query("select scope_of_work, count(*) as cnt from RajGroupEnquiryList group by 1")['cnt'])
     service_wise_pie_data = [
@@ -112,6 +106,7 @@ def service_wise_pie_data():
 
 
 def pending_offers_pie_data():
+    # connection = AWSMySQLConn()
     pending_offers = connection.execute_query("select follow_up_person, count(*) as cnt from RajGroupEnquiryList where "
                                               "lead_status='ENQUIRY' group by 1")
     pending_offers_data = []
@@ -230,9 +225,6 @@ def weekly_leads_line_data():
             }
         }
     return fig
-
-
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 
 # Check if user logged in
@@ -1001,4 +993,4 @@ def dashboard():
 # keep this as is
 if __name__ == '__main__':
     app.run(port=8000)
-    # dash_app.run_server(debug=True)
+    # # dash_app.run_server(debug=True)
