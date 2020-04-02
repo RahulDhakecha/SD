@@ -22,6 +22,7 @@ import json
 import pprint
 import pandas as pd
 import numpy as np
+import multiprocessing
 sys.path.append('~/RajGroup/SD/')
 
 
@@ -77,6 +78,17 @@ fields_followup_log = "(enquiry_key, offer_key, offer_location)"
 
 connection = AWSMySQLConn()
 data_upcoming_projects = connection.execute_query("select * from RajGroupEnquiryList;")
+
+
+# def run_mysql(function, query):
+#     connection_var = AWSMySQLConn()
+#     return connection_var.function(query)
+#
+#
+# def connect_to_mysql(function):
+#     p = multiprocessing.process(target=run_mysql, args=function)
+#     p.start()
+#     p.join()
 
 
 def service_wise_pie_data():
@@ -618,10 +630,10 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 1: "+str(triggered_input))
         print("Enquiry Key: "+str(enquiry_key))
-        if triggered_input == 'submit_button' and triggered_input != 'graph_lead_stages' and triggered_input != 'service_wise_pie_chart'\
-                and triggered_input != 'pending_offers_pie_chart' and triggered_input != 'submitted_offers_pie_chart':
+        if triggered_input == 'submit_button' and submit_clicks:
             if not enquiry_key:
-                prev_enquiry_key = connection.execute_query("select count(enquiry_key) as cnt from RajGroupEnquiryList").ix[0]['cnt']
+                prev_enquiry_key = connection.execute_query("select count(enquiry_key) as cnt from RajGroupEnquiryList "
+                                                            "where substr(enquiry_key, 9, 2) = '{}'".format(str(dt.now().month))).ix[0]['cnt']
                 enquiry_key = "EN_"+str(dt.now().year)+"_"+str(dt.now().month).zfill(2)+"_"+str(prev_enquiry_key+1).zfill(4)
                 enquiry_values = [enquiry_key, entry_date, project_description, str(scope_of_work).replace("[", '').replace("]", '').replace("'", ''),
                                   client_name,
@@ -724,7 +736,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
                    upcoming_projects_data_modified
 
-        elif triggered_input == 'close_button':
+        elif triggered_input == 'close_button' and close_clicks:
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
                    upcoming_projects_data_modified
         else:
@@ -747,7 +759,7 @@ def offer_submission(date):
     }, indent=2)
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
-        print(triggered_input)
+        print("Triggeredd Input 2: "+str(triggered_input))
         # followup_log_values = []
         if triggered_input == 'offer_date' and date:
             return {'display': 'block'}
@@ -805,6 +817,7 @@ def add_offer_entry(existing_offer_entries, new_offer_entry):
                     State('upcoming_projects_table', 'derived_virtual_data'),
                     State('add_offer_div', 'children')])
 def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquiry_key, rows, add_offer_div_value):
+    connection = AWSMySQLConn()
     ctx = dash.callback_context
     ctx_msg = json.dumps({
         'states': ctx.states,
@@ -813,7 +826,7 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
     }, indent=2)
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
-        print("Triggered Input 2: "+str(triggered_input))
+        print("Triggered Input 3: "+str(triggered_input))
         if triggered_input == 'add_another_offer' and offer_click:
             existing_offer_entries = []
             row_id = row_id[0]
@@ -859,7 +872,10 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
                     followup_log_values = [enquiry_key, dispatch_no, offer_location]
                     connection.insert_query('RajGroupFollowUpLog', fields_followup_log, followup_log_values)
             else:
-                connection.execute("delete from RajGroupFollowUpLog where enquiry_key='{}'".format(enquiry_key))
+                try:
+                    connection.execute("delete from RajGroupFollowUpLog where enquiry_key='{}'".format(enquiry_key))
+                except:
+                    pass
                 for i in add_offer_div_value:
                     dispatch_no = i['props']['children'][1]['props']['children'][1]['props']['value']
                     offer_location = i['props']['children'][2]['props']['children'][1]['props']['value']
@@ -873,29 +889,30 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
             return None
 
 
-# @dash_app.callback(
-#                     # Output('weekly_leads', 'figure'),
-#                     # Output('submitted_offers_pie_chart', 'figure'),
-#                     Output('pending_offers_pie_chart', 'figure')
-#                     # Output('graph_lead_stages', 'figure'),
-#                     # Output('service_wise_pie_chart', 'figure')
-#                     ,
-#                   [Input('submit_button', 'submit_n_clicks')])
-# def update_graphs(submit_clicks):
-#     ctx = dash.callback_context
-#     ctx_msg = json.dumps({
-#         'states': ctx.states,
-#         'triggered': ctx.triggered,
-#         'inputs': ctx.inputs
-#     }, indent=2)
-#     if ctx.triggered:
-#         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
-#         print("Triggered Input: "+str(triggered_input))
-#
-#         if triggered_input == 'submit_button':
-#             return pending_offers_pie_data()
-#             # return weekly_leads_line_data(), submitted_offers_pie_data(), pending_offers_pie_data(), \
-#             # lead_stages_bar_data(), service_wise_pie_data()
+@dash_app.callback(
+                    # Output('weekly_leads', 'figure'),
+                    # Output('submitted_offers_pie_chart', 'figure'),
+                    Output('pending_offers_pie_chart', 'figure')
+                    # Output('graph_lead_stages', 'figure'),
+                    # Output('service_wise_pie_chart', 'figure')
+                    ,
+                  [Input('submit_button', 'submit_n_clicks')])
+def update_graphs(submit_clicks):
+    ctx = dash.callback_context
+    ctx_msg = json.dumps({
+        'states': ctx.states,
+        'triggered': ctx.triggered,
+        'inputs': ctx.inputs
+    }, indent=2)
+    if ctx.triggered:
+        triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
+        print("Triggered Input 4: "+str(triggered_input))
+
+        if triggered_input == 'submit_button' and submit_clicks:
+            print("Updating Graphs")
+            return pending_offers_pie_data()
+            # return weekly_leads_line_data(), submitted_offers_pie_data(), pending_offers_pie_data(), \
+            # lead_stages_bar_data(), service_wise_pie_data()
 
 
 class LoginForm(FlaskForm):
@@ -925,7 +942,7 @@ def login():
             if sha256_crypt.verify(form.password.data, password):
                 session['logged_in'] = True
                 session['username'] = form.username.data
-                return redirect(url_for('home'))
+                return redirect(url_for('base'))
             else:
                 flash('Invalid Username or Password!', 'danger')
                 # return '<h1> Invalid Username or Password! </h1>'
@@ -973,10 +990,12 @@ def logout():
 def base():
     return render_template('base.html')
 
-@app.route('/dashboard.html', methods=['GET', 'POST'])
+
+@app.route('/dashboard', methods=['GET', 'POST'])
 @is_logged_in
 def dashboard():
     return redirect('/dash')
+    # return redirect(url_for('base'))
 
 
 # keep this as is
