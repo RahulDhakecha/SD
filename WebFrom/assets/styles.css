@@ -1,33 +1,3 @@
-/* to override Bootstrap styles for some things */
-
-.space-above {
-  margin-top: 20px;
-  padding-top: 20px;
-}
-
-.blocker {
-  display: block;
-}
-
-.js-plotly-plot .plotly .modebar {
-  padding-top: 5%;
-  margin-right: 3.5%;
-}
-
-body {
-  background-color: #f2f2f2;
-  margin: 5%;
-}
-
-.two.columns {
-  width: 16.25%;
-}
-
-.column,
-.columns {
-  margin-left: 0.5%;
-}
-
 .pretty_container {
   border-radius: 5px;
   background-color: #f9f9f9;
@@ -36,6 +6,16 @@ body {
   position: relative;
   box-shadow: 2px 2px 2px lightgrey;
 }
+
+.mini_container {
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin: 10px;
+  padding: 15px;
+  position: relative;
+  box-shadow: 2px 2px 2px lightgrey;
+}
+
 
 .bare_container {
   margin: 0 0 0 0;
@@ -142,14 +122,3 @@ body {
   display: flex;
   flex: 3;
 }
-
-#mainContainer {
-  display: flex;
-  flex-direction: column;
-}
-
-#pie_graph > div > div > svg:nth-child(3) > g.infolayer > g.legend {
-  pointer-events: all;
-  transform: translate(30px, 349px);
-}
-

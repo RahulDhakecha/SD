@@ -27,4 +27,9 @@ fields_enquiry_list = "(enquiry_key, entry_date, project_description, scope_of_w
                       "lead_status, contact_date, visit_date, enquiry_date, offer_date, raj_group_office, " \
                       "follow_up_person, tentative_project_value, quotation_number, remarks)"
 
-fields_followup_log = "(enquiry_key, offer_key, offer_location)"
+fields_followup_log = "(enquiry_key, offer_key, offer_location, submitted_by, remarks)"
+
+fields_client_list = "(client_name, client_location, enquiry_key, po_key)"
+
+fields_client_rep_list = "(contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation, " \
+                         "client_name, client_location, enquiry_key, po_key)"

@@ -1,22 +1,15 @@
-from datetime import datetime as dt
-# from Connections.AWSMySQL import AWSMySQLConn
-# connection = AWSMySQLConn()
-# print(dt.now().year)
-# print(str(101).zfill(4))
-# cnt = connection.execute_query("select count(UP_Key) from Upcoming_Projects group by 1")
-# print(cnt)
+import sys
+sys.path.append("/Users/rahuldhakecha/RajGroup/SD/WebFrom/")
+from Connections.AWSMySQL import AWSMySQLConn
 
 
-def getDateRangeFromWeek(p_year,p_week):
-    firstdayofweek = dt.strptime(f'{p_year}-W{int(p_week )- 1}-1', "%Y-W%W-%w").date()
-    # lastdayofweek = firstdayofweek + datetime.timedelta(days=6.9)
-    return firstdayofweek
 
+connection = AWSMySQLConn()
+data = connection.execute_query("select enquiry_key, offer_date from RajGroupEnquiryList where offer_date!='0000-00-00';")
+for index, row in data.iterrows():
+    print(row['enquiry_key'], row['offer_date'])
+    connection.insert_query("RajGroupFollowUpLog", "(time_stamp, enquiry_key)", [str(row['offer_date']), row['enquiry_key']])
 
-#Call function to get dates range
-firstdate =  getDateRangeFromWeek('2019','2')
-
-print('print function ',firstdate)
 
 
 
