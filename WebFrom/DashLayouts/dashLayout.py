@@ -141,9 +141,10 @@ def weekly_leads_line_data(data):
     # weekly_leads_data = connection.execute_query("select years, weeks, count(*) as leads_cnt "
     #                                              "from (select time_stamp, entry_date, year(entry_date) as years, week(entry_date, 5) as weeks "
     #                                              "from RajGroupEnquiryList) as temp where years=2020 group by 1,2;")
-    data['years'] = pd.DatetimeIndex(data['entry_date']).year
-    data['weeks'] = pd.DatetimeIndex(data['entry_date']).week
-    weekly = data[['enquiry_key', 'years', 'weeks']].groupby(['years', 'weeks'],
+    data1 = data.copy()
+    data1['years'] = pd.DatetimeIndex(data1['entry_date']).year
+    data1['weeks'] = pd.DatetimeIndex(data1['entry_date']).week
+    weekly = data1[['enquiry_key', 'years', 'weeks']].groupby(['years', 'weeks'],
                                                                                as_index=False).count().rename(
         columns={'enquiry_key': 'leads_cnt'})
     weekly_leads_data = weekly[weekly['years'] == 2020]

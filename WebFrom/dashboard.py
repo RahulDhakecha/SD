@@ -256,9 +256,12 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
                     followup_log_values = [enquiry_key, dispatch_no, offer_location, submitted_by, remarks]
                     followup_log_mod_values = ['' if i is None else i for i in followup_log_values]
 
-                    count = connection.execute_query("select enquiry_key, count(*) as cnt from "
+                    try:
+                        count = connection.execute_query("select enquiry_key, count(*) as cnt from "
                                                      "RajGroupFollowUpLog where enquiry_key='{}'"
                                                      "group by 1;".format(enquiry_key)).iloc[0]['cnt']
+                    except:
+                        count = 0
 
                     if len(add_offer_div_value) > count:
                         connection.insert_query('RajGroupFollowUpLog', fields_followup_log, followup_log_mod_values)
