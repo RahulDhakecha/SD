@@ -7,12 +7,18 @@ import dash_core_components as dcc
 import dash_table
 from fixedVariables import sow, lead_status, raj_group_office, follow_up_person, fields_enquiry_list, fields_followup_log
 from Connections.AWSMySQL import AWSMySQLConn
+import pandas as pd
 
 
-def service_wise_pie_data(connection):
+def service_wise_pie_data(data):
     # connection = AWSMySQLConn()
-    services = list(connection.execute_query("select scope_of_work, count(*) as cnt from RajGroupEnquiryList group by 1")['scope_of_work'])
-    service_wise_data = list(connection.execute_query("select scope_of_work, count(*) as cnt from RajGroupEnquiryList group by 1")['cnt'])
+    # services = list(connection.execute_query("select scope_of_work, count(*) as cnt from RajGroupEnquiryList group by 1")['scope_of_work'])
+    # service_wise_data = list(connection.execute_query("select scope_of_work, count(*) as cnt from RajGroupEnquiryList group by 1")['cnt'])
+    data_mod = data[['enquiry_key', 'scope_of_work']].groupby('scope_of_work',
+                                            as_index=False).count().rename(columns={'enquiry_key':'cnt'})
+    services = list(data_mod['scope_of_work'])
+    service_wise_data = list(data_mod['cnt'])
+
     service_wise_pie_data = [
             {
                 'labels': services,
@@ -30,10 +36,14 @@ def service_wise_pie_data(connection):
     return fig
 
 
-def pending_offers_pie_data(connection):
+def pending_offers_pie_data(data):
     # connection = AWSMySQLConn()
-    pending_offers = connection.execute_query("select follow_up_person, count(*) as cnt from RajGroupEnquiryList where "
-                                              "lead_status='ENQUIRY' group by 1")
+    # pending_offers = connection.execute_query("select follow_up_person, count(*) as cnt from RajGroupEnquiryList where "
+    #                                           "lead_status='ENQUIRY' group by 1")
+    data = data[data['lead_status'] == 'ENQUIRY']
+    pending_offers = data[['enquiry_key', 'follow_up_person']].groupby('follow_up_person',
+                                                                 as_index=False).count().rename(
+        columns={'enquiry_key': 'cnt'})
     pending_offers_data = []
     for i in follow_up_person:
         try:
@@ -57,10 +67,16 @@ def pending_offers_pie_data(connection):
     return fig
 
 
-def submitted_offers_pie_data(connection):
+def submitted_offers_pie_data(data):
     # connection = AWSMySQLConn()
-    submitted_offers = connection.execute_query("select follow_up_person, count(*) as cnt from RajGroupEnquiryList where "
-                                              "lead_status='OFFER' group by 1")
+    # submitted_offers = connection.execute_query("select follow_up_person, count(*) as cnt from RajGroupEnquiryList where "
+    #                                           "lead_status='OFFER' group by 1")
+
+    data = data[data['lead_status'] == 'OFFER']
+    submitted_offers = data[['enquiry_key', 'follow_up_person']].groupby('follow_up_person',
+                                                                 as_index=False).count().rename(
+        columns={'enquiry_key': 'cnt'})
+
     submitted_offers_data = []
     for i in follow_up_person:
         try:
@@ -85,9 +101,12 @@ def submitted_offers_pie_data(connection):
     return fig
 
 
-def lead_stages_bar_data(connection):
+def lead_stages_bar_data(data):
     # connection = AWSMySQLConn()
-    lead_status_data = connection.execute_query("select lead_status, count(*) as cnt from RajGroupEnquiryList group by 1")
+    # lead_status_data = connection.execute_query("select lead_status, count(*) as cnt from RajGroupEnquiryList group by 1")
+    lead_status_data = data[['enquiry_key', 'lead_status']].groupby('lead_status',
+                                                            as_index=False).count().rename(
+        columns={'enquiry_key': 'cnt'})
     lead_stages_data = []
     for i in lead_status:
         try:
@@ -117,11 +136,18 @@ def getDateRangeFromWeek(p_year,p_week):
     return firstdayofweek.strftime("%Y-%m-%d")
 
 
-def weekly_leads_line_data(connection):
+def weekly_leads_line_data(data):
     # connection = AWSMySQLConn()
-    weekly_leads_data = connection.execute_query("select years, weeks, count(*) as leads_cnt "
-                                                 "from (select time_stamp, entry_date, year(entry_date) as years, week(entry_date, 5) as weeks "
-                                                 "from RajGroupEnquiryList) as temp where years=2020 group by 1,2;")
+    # weekly_leads_data = connection.execute_query("select years, weeks, count(*) as leads_cnt "
+    #                                              "from (select time_stamp, entry_date, year(entry_date) as years, week(entry_date, 5) as weeks "
+    #                                              "from RajGroupEnquiryList) as temp where years=2020 group by 1,2;")
+    data['years'] = pd.DatetimeIndex(data['entry_date']).year
+    data['weeks'] = pd.DatetimeIndex(data['entry_date']).week
+    weekly = data[['enquiry_key', 'years', 'weeks']].groupby(['years', 'weeks'],
+                                                                               as_index=False).count().rename(
+        columns={'enquiry_key': 'leads_cnt'})
+    weekly_leads_data = weekly[weekly['years'] == 2020]
+
     # print(weekly_leads_data)
     current_year, current_week, current_day = date.today().isocalendar()
     weeks = [getDateRangeFromWeek('2020', p_week) for p_week in range(1, current_week)]
@@ -207,7 +233,6 @@ def new_offer_entry_layout(offer_timestamp_id=None,
                             type='text',
                             placeholder='Offer Submitted By',
                             size=50,
-                            disabled=True,
                             value=offer_submitted_by
                         ),
                     ], className="four columns"),
@@ -282,6 +307,33 @@ def main_layout():
     data_upcoming_projects = connection.execute_query(
         "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
         "client_location, lead_status, follow_up_person from RajGroupEnquiryList;")
+    response_time_val = connection.execute_query("select (sum(time_diff)/count(time_diff)) as response_time from "
+                                                 "( select A.enquiry_key, A.time_stamp as A_time_stamp, B.lead_status, "
+                                                 "B.time_stamp as B_time_stamp, TIMESTAMPDIFF(HOUR, B.time_stamp, "
+                                                 "A.time_stamp) as time_diff from  (select enquiry_key, min(time_stamp) "
+                                                 "as time_stamp from RajGroupFollowUpLog group by 1) A inner join "
+                                                 "RajGroupLeadStatus B on A.enquiry_key=B.enquiry_key where B.lead_"
+                                                 "status='ENQUIRY') T1;").iloc[0]['response_time']
+    lead_to_enquiry_val = \
+    connection.execute_query("select  (select count(*) as total_enquiries from RajGroupEnquiryList"
+                             " where lead_status in ('ENQUIRY' , 'OFFER', 'WON', 'CLOSE', 'HOLD'))"
+                             " / (select count(*) as total_leads from RajGroupEnquiryList) as "
+                             "lead_to_enquiry;").iloc[0]['lead_to_enquiry']
+    enquiry_to_offer_val = connection.execute_query("select  "
+                                                    "(select count(*) as total_enquiries from "
+                                                    "RajGroupEnquiryList "
+                                                    "where lead_status in ('OFFER', 'WON', 'CLOSE', 'HOLD')) / "
+                                                    "(select count(*) as total_enquiries from "
+                                                    "RajGroupEnquiryList "
+                                                    "where lead_status in ('ENQUIRY' , 'OFFER', 'WON', 'CLOSE', 'HOLD'))"
+                                                    " as enquiry_to_offer ;").iloc[0]['enquiry_to_offer']
+    offer_to_won_val = connection.execute_query("select  "
+                                                "(select count(*) as total_enquiries from "
+                                                "RajGroupEnquiryList "
+                                                "where lead_status in ('WON')) / "
+                                                "(select count(*) as total_enquiries from "
+                                                "RajGroupEnquiryList "
+                                                "where lead_status in ('WON', 'CLOSE', 'HOLD')) as offer_to_won;").iloc[0]['offer_to_won']
     return html.Div([
     html.Div([
         html.Div([
@@ -298,29 +350,29 @@ def main_layout():
                     # GRAPH - Lead Stages
                     dcc.Graph(
                         id='weekly_leads',
-                        figure=weekly_leads_line_data(connection)
+                        figure=weekly_leads_line_data(data_upcoming_projects)
                     ),
                 ]),
             ], className="row"),
             html.Div(
                 [
                     html.Div(
-                        [html.H6(id="response_time_val"), html.P("Response Time(in hours)")],
+                        [html.H6(id="response_time_val", children=response_time_val), html.P("Response Time(in hours)")],
                         id="response_time",
                         className="mini_container three columns",
                     ),
                     html.Div(
-                        [html.H6(id="lead_to_enquiry_val"), html.P("Leads to Enquiries")],
+                        [html.H6(id="lead_to_enquiry_val", children=lead_to_enquiry_val), html.P("Leads to Enquiries")],
                         id="lead_to_enquiry",
                         className="mini_container three columns",
                     ),
                     html.Div(
-                        [html.H6(id="enquiry_to_offer_val"), html.P("Enquiries to Offer")],
+                        [html.H6(id="enquiry_to_offer_val", children=enquiry_to_offer_val), html.P("Enquiries to Offer")],
                         id="enquiry_to_offer",
                         className="mini_container three columns",
                     ),
                     html.Div(
-                        [html.H6(id="offer_to_won_val"), html.P("Offer to Won")],
+                        [html.H6(id="offer_to_won_val", children=offer_to_won_val), html.P("Offer to Won")],
                         id="offer_to_won",
                         className="mini_container three columns",
                     ),
@@ -333,7 +385,7 @@ def main_layout():
                     # Pie-chart reflecting submitted offer
                     dcc.Graph(
                         id='submitted_offers_pie_chart',
-                        figure=submitted_offers_pie_data(connection)
+                        figure=submitted_offers_pie_data(data_upcoming_projects)
                     ),
                 ], className="six columns"),
 
@@ -341,7 +393,7 @@ def main_layout():
                     # Pie-chart reflecting pending offers
                     dcc.Graph(
                         id='pending_offers_pie_chart',
-                        figure=pending_offers_pie_data(connection)
+                        figure=pending_offers_pie_data(data_upcoming_projects)
                     ),
                 ], className="pretty_container six columns")
 
@@ -351,14 +403,14 @@ def main_layout():
                 # GRAPH - Lead Stages
                 dcc.Graph(
                     id='graph_lead_stages',
-                    figure=lead_stages_bar_data(connection)
+                    figure=lead_stages_bar_data(data_upcoming_projects)
                 ),
                 ], className="six columns"),
                 html.Div([
                     # Pie-chart reflecting service wise enquiries
                     dcc.Graph(
                         id='service_wise_pie_chart',
-                        figure=service_wise_pie_data(connection)
+                        figure=service_wise_pie_data(data_upcoming_projects)
                     ),
                 ], className="six columns"),
             ], className="row"),
