@@ -307,6 +307,10 @@ def main_layout():
     data_upcoming_projects = connection.execute_query(
         "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
         "client_location, lead_status, follow_up_person from RajGroupEnquiryList;")
+    # response_time_val = 0
+    # lead_to_enquiry_val = 0
+    # enquiry_to_offer_val = 0
+    # offer_to_won_val = 0
     response_time_val = connection.execute_query("select (sum(time_diff)/count(time_diff)) as response_time from "
                                                  "( select A.enquiry_key, A.time_stamp as A_time_stamp, B.lead_status, "
                                                  "B.time_stamp as B_time_stamp, TIMESTAMPDIFF(HOUR, B.time_stamp, "

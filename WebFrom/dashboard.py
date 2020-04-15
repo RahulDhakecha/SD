@@ -51,8 +51,8 @@ app.config['BOOTSTRAP_SERVE_LOCAL'] = True
 login = LoginManager(app)
 
 connection = AWSMySQLConn()
-data_upcoming_projects = connection.execute_query("select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
-                                                  "client_location, lead_status, follow_up_person from RajGroupEnquiryList;")
+# data_upcoming_projects = connection.execute_query("select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
+#                                                   "client_location, lead_status, follow_up_person from RajGroupEnquiryList;")
 
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -143,7 +143,6 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
                   internal_lead, external_lead, lead_status,
                   contact_date, visit_date, enquiry_date, offer_date, raj_group_office, follow_up_person, tentative_project_value,
                   quotation_number, remarks, add_offer_div_value, add_contact_div_value):
-    # connection = AWSMySQLConn()
     upcoming_projects_data_modified = connection.execute_query("select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
                                                   "client_location, lead_status, follow_up_person from RajGroupEnquiryList;").to_dict('records')
     ctx = dash.callback_context
@@ -174,6 +173,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
                                   tentative_project_value, quotation_number, remarks]
                 enquiry_values = [i if i else '' for i in enquiry_values]
                 client_values = [client_name, client_location, enquiry_key]
+                client_values = [i if i else '' for i in client_values]
                 connection.insert_query('RajGroupClientList', "(client_name, client_location, enquiry_key)", client_values)
                 connection.insert_query('RajGroupEnquiryList', fields_enquiry_list, enquiry_values)
                 ## update RajGroupFollowUpLog
