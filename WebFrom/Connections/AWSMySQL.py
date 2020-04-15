@@ -1,8 +1,6 @@
 import pandas as pd
 import pymysql
 import os
-# import mysql
-import mysql.connector as mc
 import time
 start_time = time.time()
 
