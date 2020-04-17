@@ -24,8 +24,6 @@ Sign Up
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="{{ url_for('base') }}">Home</a></li>
-            <!--<li><a href="{{ url_for('home') }}">Data Entry</a></li>-->
-            <!--<li><a href="{{ url_for('data_edit') }}">Data Edit</a></li>-->
             <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -38,7 +36,6 @@ Sign Up
     </nav>
     <div class="container" align="justify">
         {padding-top: 50px;}
-        {% include '_messages.html' %}
         <form class="form-signin" method="post" action="/signup">
             <h2 class="form-signin-heading">Sign Up</h2>
             {{ form.hidden_tag() }}
@@ -47,5 +44,6 @@ Sign Up
             {{ wtf.form_field(form.password) }}
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
         </form>
+        {% include '_messages.html' %}
     </div>
 {% endblock %}

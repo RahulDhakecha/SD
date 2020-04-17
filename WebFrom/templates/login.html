@@ -35,11 +35,8 @@ Login
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-
+    {padding-top: 2px;}
     <div class="container">
-        {padding-top: 10px;}
-        {margin-top: 100px;}
-        {% include '_messages.html' %}
         <form class="form-signin" method="post" action="/login">
             <h2 class="form-signin-heading">Please sign in</h2>
             {{ form.hidden_tag() }}
@@ -47,6 +44,7 @@ Login
             {{ wtf.form_field(form.password) }}
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         </form>
+        {% include '_messages.html' %}
     </div>
 {% endblock %}
 
