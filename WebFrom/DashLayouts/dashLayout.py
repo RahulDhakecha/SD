@@ -549,36 +549,36 @@ def main_layout():
                         options=[{'value': i, 'label': i} for i in lead_status]
                     ),
                 ], className="four columns"),
-                html.Div([
-                    html.Header("Contact Date"),
-                    dcc.DatePickerSingle(
-                        id='contact_date',
-                        placeholder='Contact Date',
-                        with_portal=True,
-                        display_format="YYYY-MM-DD",
-                    ),
-                    html.Header("Visit Date"),
-                    dcc.DatePickerSingle(
-                        id='visit_date',
-                        placeholder='Visit Date',
-                        with_portal=True,
-                        display_format="YYYY-MM-DD",
-                    ),
-                    html.Header("Enquiry Date"),
-                    dcc.DatePickerSingle(
-                        id='enquiry_date',
-                        placeholder='Enquiry Date',
-                        with_portal=True,
-                        display_format="YYYY-MM-DD",
-                    ),
-                    html.Header("Offer Date"),
-                    dcc.DatePickerSingle(
-                        id='offer_date',
-                        placeholder='Offer Date',
-                        with_portal=True,
-                        display_format="YYYY-MM-DD"
-                    ),
-                ], className="four columns"),
+                # html.Div([
+                #     html.Header("Contact Date"),
+                #     dcc.DatePickerSingle(
+                #         id='contact_date',
+                #         placeholder='Contact Date',
+                #         with_portal=True,
+                #         display_format="YYYY-MM-DD",
+                #     ),
+                #     html.Header("Visit Date"),
+                #     dcc.DatePickerSingle(
+                #         id='visit_date',
+                #         placeholder='Visit Date',
+                #         with_portal=True,
+                #         display_format="YYYY-MM-DD",
+                #     ),
+                #     html.Header("Enquiry Date"),
+                #     dcc.DatePickerSingle(
+                #         id='enquiry_date',
+                #         placeholder='Enquiry Date',
+                #         with_portal=True,
+                #         display_format="YYYY-MM-DD",
+                #     ),
+                #     html.Header("Offer Date"),
+                #     dcc.DatePickerSingle(
+                #         id='offer_date',
+                #         placeholder='Offer Date',
+                #         with_portal=True,
+                #         display_format="YYYY-MM-DD"
+                #     ),
+                # ], className="four columns"),
                 html.Div([
                     html.Header("Raj Group Office"),
                     dcc.Dropdown(

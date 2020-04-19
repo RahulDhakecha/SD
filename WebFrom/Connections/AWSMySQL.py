@@ -35,6 +35,7 @@ class AWSMySQLConn:
     def execute_query(self, query):
         conn = pymysql.connect(self.host, user=self.user, port=self.port, passwd=self.password, db=self.dbname)
         data = pd.read_sql(query, con=conn)
+        print("Following query executed: {}".format(query))
         # self.cursor.execute(query)
         # rows = self.cursor.fetchall()
         # data = pd.DataFrame(rows)

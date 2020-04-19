@@ -97,10 +97,10 @@ dash_app.layout = main_layout
                     Output('internal_lead', 'value'),
                     Output('external_lead', 'value'),
                     Output('lead_status', 'value'),
-                    Output('contact_date', 'date'),
-                    Output('visit_date', 'date'),
-                    Output('enquiry_date', 'date'),
-                    Output('offer_date', 'date'),
+                    # Output('contact_date', 'date'),
+                    # Output('visit_date', 'date'),
+                    # Output('enquiry_date', 'date'),
+                    # Output('offer_date', 'date'),
                     Output('raj_group_office', 'value'),
                     Output('follow_up_person', 'value'),
                     Output('tentative_project_value', 'value'),
@@ -125,10 +125,10 @@ dash_app.layout = main_layout
                    State('internal_lead', 'value'),
                    State('external_lead', 'value'),
                    State('lead_status', 'value'),
-                   State('contact_date', 'date'),
-                   State('visit_date', 'date'),
-                   State('enquiry_date', 'date'),
-                   State('offer_date', 'date'),
+                   # State('contact_date', 'date'),
+                   # State('visit_date', 'date'),
+                   # State('enquiry_date', 'date'),
+                   # State('offer_date', 'date'),
                    State('raj_group_office', 'value'),
                    State('follow_up_person', 'value'),
                    State('tentative_project_value', 'value'),
@@ -141,7 +141,7 @@ dash_app.layout = main_layout
 def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, hoverData_service, hoverData_followup, hoverData_offers,
                   rows, enquiry_key, entry_date, project_description, scope_of_work, client_name, client_location, existing_client,
                   internal_lead, external_lead, lead_status,
-                  contact_date, visit_date, enquiry_date, offer_date, raj_group_office, follow_up_person, tentative_project_value,
+                  raj_group_office, follow_up_person, tentative_project_value,
                   quotation_number, remarks, add_offer_div_value, add_contact_div_value):
     upcoming_projects_data_modified = connection.execute_query("select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
                                                   "client_location, lead_status, follow_up_person from RajGroupEnquiryList;").to_dict('records')
@@ -167,7 +167,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
                                   '', '', '', internal_lead,
                                   external_lead,
                                   str(lead_status).replace("[", '').replace("]", '').replace("'", ''),
-                                  contact_date, visit_date, enquiry_date, offer_date,
+                                  '', '', '', '',
                                   str(raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
                                   str(follow_up_person).replace("[", '').replace("]", '').replace("'", ''),
                                   tentative_project_value, quotation_number, remarks]
@@ -239,7 +239,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
                                   client_location, existing_client, internal_lead,
                                   external_lead,
                                   str(lead_status).replace("[", '').replace("]", '').replace("'", ''),
-                                  contact_date, visit_date, enquiry_date, offer_date,
+                                  '', '', '', '',
                                   str(raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
                                   str(follow_up_person).replace("[", '').replace("]", '').replace("'", ''),
                                   tentative_project_value, quotation_number, remarks, enquiry_key))
@@ -300,7 +300,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
             # upcoming_projects_data_modified = connection.execute_query("select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
             #                                       "client_location, lead_status, follow_up_person from RajGroupEnquiryList;").to_dict('records')
 
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
                    upcoming_projects_data_modified
         # elif row_id and rows:
         elif triggered_input == 'upcoming_projects_table' and row_id:
@@ -313,19 +313,15 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
                    row_data.iloc[0]['internal_lead'], row_data.iloc[0]['external_lead'], \
                    row_data.iloc[0][
                        'lead_status'], \
-                   row_data.iloc[0]['contact_date'] if str(row_data.iloc[0]['contact_date']) != '0000-00-00' else None, \
-                   row_data.iloc[0]['visit_date'] if str(row_data.iloc[0]['visit_date']) != '0000-00-00' else None, \
-                   row_data.iloc[0]['enquiry_date'] if str(row_data.iloc[0]['enquiry_date']) != '0000-00-00' else None, \
-                   row_data.iloc[0]['offer_date'] if str(row_data.iloc[0]['offer_date']) != '0000-00-00' else None, \
                    row_data.iloc[0]['raj_group_office'], row_data.iloc[0][
                        'follow_up_person'], row_data.iloc[0]['tentative_project_value'], row_data.iloc[0]['quotation_number'], \
-                   row_data.iloc[0]['remarks'], upcoming_projects_data_modified
+                   row_data.iloc[0]['remarks'], rows
 
         elif triggered_input == 'graph_lead_stages' and hoverData_lead_status:
             status_var = hoverData_lead_status['points'][0]['x']
             upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
                                                                            "lead_status='{}';".format(status_var)).to_dict('records')
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
                    upcoming_projects_data_modified
 
         elif triggered_input == 'service_wise_pie_chart' and hoverData_service:
@@ -333,7 +329,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
             status_var = hoverData_service['points'][0]['label']
             upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
                                                                            "scope_of_work='{}';".format(status_var)).to_dict('records')
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
                    upcoming_projects_data_modified
 
         elif triggered_input == 'pending_offers_pie_chart' and hoverData_followup:
@@ -341,7 +337,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
             upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
                                                                            "lead_status='ENQUIRY' and "
                                                                        "follow_up_person='{}';".format(status_var)).to_dict('records')
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
                    upcoming_projects_data_modified
 
         elif triggered_input == 'submitted_offers_pie_chart' and hoverData_offers:
@@ -349,17 +345,17 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
             upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
                                                                            "lead_status='OFFER' and "
                                                                        "follow_up_person='{}';".format(status_var)).to_dict('records')
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
                    upcoming_projects_data_modified
 
         elif triggered_input == 'close_button' and close_clicks:
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
                    upcoming_projects_data_modified
         else:
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
                    upcoming_projects_data_modified
     else:
-        return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
+        return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
                upcoming_projects_data_modified
 
 
@@ -407,7 +403,7 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
             if row_id:
                 row_id = row_id[0]
                 offer_data = connection.execute_query(
-                    "select * from RajGroupFollowUpLog where enquiry_key='{}'".format(rows[row_id]['enquiry_key']))
+                    "select * from RajGroupFollowUpLog where enquiry_key='{}';".format(rows[row_id]['enquiry_key']))
                 index = 0
                 for index, row in offer_data.iterrows():
                     existing_offer_entries.append(new_offer_entry_layout("offer_timestamp_id_{}".format(index),
