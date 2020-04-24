@@ -3,9 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebFrom/Connections/AWSMySQL.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/Connections/AWSMySQL.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebFrom/PC_to_DB.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/PC_to_DB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebFrom/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/dashboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trial.py" beforeDir="false" afterPath="$PROJECT_DIR$/trial.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +32,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/WebFrom" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
@@ -60,11 +62,12 @@
     </option>
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/WebFrom" />
+      <recent name="$PROJECT_DIR$/WebFrom/templates" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/WebFrom" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/WebFrom/templates" />
     </key>
   </component>
   <component name="RunManager" selected="Python.dashboard">
@@ -94,22 +97,19 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="GMail" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="PC_to_DB" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SD" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
-        <env name="SENDER_EMAIL" value="business.dev.rajgroup@gmail.com" />
-        <env name="SENDER_PASSWORD" value="Raj.business123" />
-        <env name="EMAIL_PORT" value="465" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/WebFrom/Connections" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/WebFrom" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/WebFrom/Connections/GMail.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/WebFrom/PC_to_DB.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -136,6 +136,32 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Update_Clients" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SD" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DB_HOST" value="rajgroup.cyjtpl2nvnjr.us-west-2.rds.amazonaws.com" />
+        <env name="DB_PORT" value="3306" />
+        <env name="DB_NAME" value="RajGroup" />
+        <env name="DB_USER" value="raj_2004" />
+        <env name="DB_PASSWORD" value="India123" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/WebFrom" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/WebFrom/Update_Clients.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -255,14 +281,16 @@
       <item itemvalue="Python.dataEntryNewTable" />
       <item itemvalue="Python.dashboard" />
       <item itemvalue="Python.trial" />
-      <item itemvalue="Python.GMail" />
+      <item itemvalue="Python.Update_Clients" />
+      <item itemvalue="Python.PC_to_DB" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.dashboard" />
         <item itemvalue="Python.trial" />
+        <item itemvalue="Python.Update_Clients" />
+        <item itemvalue="Python.PC_to_DB" />
         <item itemvalue="Python.dataEntryNewTable" />
-        <item itemvalue="Python.GMail" />
       </list>
     </recent_temporary>
   </component>
@@ -292,34 +320,34 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.css" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="184" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586851973248">
+    <state x="184" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587548751088">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="184" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1586851973248" />
-    <state x="579" y="187" key="EnvironmentVariablesDialog" timestamp="1586851969571">
+    <state x="184" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1587548751088" />
+    <state x="579" y="187" key="EnvironmentVariablesDialog" timestamp="1587548749059">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="579" y="187" key="EnvironmentVariablesDialog/0.0.1440.900@0.0.1440.900" timestamp="1586851969571" />
+    <state x="579" y="187" key="EnvironmentVariablesDialog/0.0.1440.900@0.0.1440.900" timestamp="1587548749059" />
     <state x="508" y="211" key="FileChooserDialogImpl" timestamp="1586787404328">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="508" y="211" key="FileChooserDialogImpl/0.0.1440.900@0.0.1440.900" timestamp="1586787404328" />
-    <state width="1419" height="286" key="GridCell.Tab.0.bottom" timestamp="1587287993420">
+    <state width="1419" height="286" key="GridCell.Tab.0.bottom" timestamp="1587714477108">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1419" height="286" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1587287993420" />
-    <state width="1419" height="286" key="GridCell.Tab.0.center" timestamp="1587287993419">
+    <state width="1419" height="286" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1587714477108" />
+    <state width="1419" height="286" key="GridCell.Tab.0.center" timestamp="1587714477106">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1419" height="286" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1587287993419" />
-    <state width="1419" height="286" key="GridCell.Tab.0.left" timestamp="1587287993418">
+    <state width="1419" height="286" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1587714477106" />
+    <state width="1419" height="286" key="GridCell.Tab.0.left" timestamp="1587714477106">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1419" height="286" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1587287993418" />
-    <state width="1419" height="286" key="GridCell.Tab.0.right" timestamp="1587287993420">
+    <state width="1419" height="286" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1587714477106" />
+    <state width="1419" height="286" key="GridCell.Tab.0.right" timestamp="1587714477107">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1419" height="286" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1587287993420" />
+    <state width="1419" height="286" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1587714477107" />
     <state x="124" y="178" key="SettingsEditor" timestamp="1586839857749">
       <screen x="0" y="0" width="1440" height="900" />
     </state>

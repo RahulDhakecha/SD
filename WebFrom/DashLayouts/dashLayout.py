@@ -191,7 +191,9 @@ def new_offer_entry_layout(offer_timestamp_id=None,
                            offer_submitted_id=None,
                            offer_submitted_by=None,
                            offer_remarks_id=None,
-                           offer_remarks=None):
+                           offer_remarks=None,
+                           offer_submitted_to_id=None,
+                           offer_submitted_to=None):
     return html.Div([
                 html.Div([
                     html.Div([
@@ -246,7 +248,17 @@ def new_offer_entry_layout(offer_timestamp_id=None,
                             size=50,
                             value=offer_remarks
                         ),
-                    ], className="six columns"),
+                    ], className="four columns"),
+                    html.Div([
+                        html.Header("Submitted To"),
+                        dcc.Input(
+                            id=offer_submitted_to_id,
+                            type='text',
+                            placeholder='Offer Submitted To',
+                            size=50,
+                            value=offer_submitted_to
+                        ),
+                    ], className="four columns"),
                 ], className="row")
             ])
 
@@ -450,7 +462,7 @@ def main_layout():
                 sort_action="native",
                 sort_mode="multi",
                 row_selectable="single",
-                editable=True,
+                editable=False,
                 columns=[{"name": i, "id": i} for i in data_upcoming_projects.columns],
                 data=data_upcoming_projects.to_dict('records')
             ),

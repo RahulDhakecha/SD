@@ -15,7 +15,7 @@ from passlib.hash import sha256_crypt
 from werkzeug.utils import secure_filename
 from Connections.AWSMySQL import AWSMySQLConn
 from fixedVariables import sow, lead_status, raj_group_office, follow_up_person, fields_enquiry_list, fields_followup_log, \
-    fields_client_list, fields_client_rep_list
+    fields_client_list, fields_client_rep_list, sow_code, raj_group_office_code
 from dashLayout import service_wise_pie_data, pending_offers_pie_data, submitted_offers_pie_data, lead_stages_bar_data, \
     weekly_leads_line_data, main_layout, new_offer_entry_layout, new_contact_entry_layout
 
@@ -187,7 +187,9 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
                             'value']
                         remarks = i['props']['children'][1]['props']['children'][1]['props']['children'][1]['props'][
                             'value']
-                        followup_log_values = [enquiry_key, dispatch_no, offer_location, submitted_by, remarks]
+                        submitted_to = i['props']['children'][1]['props']['children'][2]['props']['children'][1]['props'][
+                            'value']
+                        followup_log_values = [enquiry_key, dispatch_no, offer_location, submitted_by, remarks, submitted_to]
                         followup_log_mod_values = ['' if i is None else i for i in followup_log_values]
                         connection.insert_query('RajGroupFollowUpLog', fields_followup_log, followup_log_mod_values)
                 ## update RajGroupClientRepresentativeList
@@ -253,7 +255,9 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
                     submitted_by = add_offer_div_value[-1]['props']['children'][1]['props']['children'][0]['props']['children'][1]['props'][
                         'value']
                     remarks = add_offer_div_value[-1]['props']['children'][1]['props']['children'][1]['props']['children'][1]['props']['value']
-                    followup_log_values = [enquiry_key, dispatch_no, offer_location, submitted_by, remarks]
+                    submitted_to = add_offer_div_value[-1]['props']['children'][1]['props']['children'][2]['props']['children'][1]['props'][
+                        'value']
+                    followup_log_values = [enquiry_key, dispatch_no, offer_location, submitted_by, remarks, submitted_to]
                     followup_log_mod_values = ['' if i is None else i for i in followup_log_values]
 
                     try:
@@ -386,8 +390,13 @@ def offer_submission(lead_status):
                     Input('close_button', 'submit_n_clicks')],
                    [State('enquiry_key', 'value'),
                     State('upcoming_projects_table', 'data'),
-                    State('add_offer_div', 'children')])
-def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquiry_key, rows, add_offer_div_value):
+                    State('add_offer_div', 'children'),
+                    State('scope_of_work', 'value'),
+                    State('client_name', 'value'),
+                    State('client_location', 'value'),
+                    State('raj_group_office', 'value')])
+def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquiry_key, rows, add_offer_div_value,
+                        scope_of_work, client_name, client_location, raj_group_office):
     # connection = AWSMySQLConn()
     ctx = dash.callback_context
     ctx_msg = json.dumps({
@@ -399,6 +408,17 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 3: "+str(triggered_input))
         if triggered_input == 'add_another_offer' and offer_click:
+            prev_sr_no = connection.execute_query("select B.raj_group_office, count(*) as cnt  "
+                                                  "from "
+                                                  "(select enquiry_key "
+                                                  "from RajGroupFollowUpLog "
+                                                  "group by 1) as A "
+                                                  "left join "
+                                                  "RajGroupEnquiryList as B "
+                                                  "on A.enquiry_key=B.enquiry_key "
+                                                  "where raj_group_office='{}' "
+                                                  "group by 1;".format(str(raj_group_office))).iloc[0]['cnt']
+            rev_no = 1
             existing_offer_entries = []
             if row_id:
                 row_id = row_id[0]
@@ -415,32 +435,62 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
                                                                   "offer_submitted_id_{}".format(index),
                                                                   row['submitted_by'],
                                                                   "offer_remarks_id_{}".format(index),
-                                                                  row['remarks']
+                                                                  row['remarks'],
+                                                                  "offer_submitted_to_id_{}".format(index),
+                                                                  row['submitted_to']
                                                                   ))
-                if index > 0:
+
+                if not offer_data.empty:
+                    prev_rev_no = len(offer_data.index)
+                    prev_dispatch_no = connection.execute_query(
+                        "select offer_key from RajGroupFollowUpLog where enquiry_key='{}' "
+                        "order by time_stamp desc limit 1;".format(rows[row_id]['enquiry_key'])).iloc[0]['offer_key']
+                    try:
+                        new_dispatch_no = prev_dispatch_no.replace(prev_dispatch_no.strip().split("-")[-1],
+                                                                   "v{}".format(prev_rev_no + 1))
+                    except:
+                        new_dispatch_no = str(prev_dispatch_no) + "-v{}".format(prev_rev_no + 1)
                     existing_offer_entries.append(new_offer_entry_layout("offer_timestamp_id_{}".format(index+1),
                                                                   '',
                                                                   "dispatch_id_{}".format(index+1),
-                                                                  '',
+                                                                  new_dispatch_no,
                                                                   "offer_location_id_{}".format(index+1),
                                                                   '',
                                                                   "offer_submitted_id_{}".format(index+1),
                                                                   '',
                                                                   "offer_remarks_id_{}".format(index+1),
+                                                                  '',
+                                                                  "offer_submitted_to_id_{}".format(index + 1),
                                                                   ''
                                                                   ))
                 else:
+                    new_dispatch_no = "{}-{}-{}-QTN-{}-{}-{}-v{}".format(raj_group_office_code[raj_group_office],
+                                                                         client_name.strip().split(" ")[0],
+                                                                         client_location.strip().split(" ")[0],
+                                                                         sow_code[scope_of_work],
+                                                                         str(dt.now().year),
+                                                                         str(prev_sr_no + 1).zfill(4),
+                                                                         rev_no)
                     existing_offer_entries.append(new_offer_entry_layout("offer_timestamp_id_0", '',
-                                                                         "dispatch_id_0", '',
+                                                                         "dispatch_id_0", new_dispatch_no,
                                                                          "offer_location_id_0", '',
                                                                          "offer_submitted_id_0", '',
-                                                                         "offer_remarks_id_0", ''))
+                                                                         "offer_remarks_id_0", '',
+                                                                         "offer_submitted_to_id_0", ''))
             else:
+                new_dispatch_no = "{}-{}-{}-QTN-{}-{}-{}-v{}".format(raj_group_office_code[raj_group_office],
+                                                                    client_name.strip().split(" ")[0],
+                                                                    client_location.strip().split(" ")[0],
+                                                                    sow_code[scope_of_work],
+                                                                    str(dt.now().year),
+                                                                    str(prev_sr_no + 1).zfill(4),
+                                                                    rev_no)
                 existing_offer_entries.append(new_offer_entry_layout("offer_timestamp_id_0", '',
-                                                                     "dispatch_id_0", '',
+                                                                     "dispatch_id_0", new_dispatch_no,
                                                                      "offer_location_id_0", '',
                                                                      "offer_submitted_id_0", '',
-                                                                     "offer_remarks_id_0", ''))
+                                                                     "offer_remarks_id_0", '',
+                                                                     "offer_submitted_to_id_0", ''))
             return existing_offer_entries
 
         elif triggered_input == 'upcoming_projects_table' and row_id:
@@ -458,7 +508,9 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
                                                               "offer_submitted_id_{}".format(index),
                                                               row['submitted_by'],
                                                               "offer_remarks_id_{}".format(index),
-                                                              row['remarks']
+                                                              row['remarks'],
+                                                              "offer_submitted_to_id_{}".format(index),
+                                                              row['submitted_to']
                 ))
             return existing_offer_entries
         # elif triggered_input == 'submit_button' and submit_button:

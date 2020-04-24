@@ -144,32 +144,32 @@ data = data.fillna(0)
 #         continue
 
 
-for index, row in data.iterrows():
-    print(index)
-    try:
-        values = [row['Enquiry Key'],
-                  row['Entry Date'],
-                  row['Project Description'],
-                  row['Scope of Work'],
-                  row['Client'],
-                  row['Location'],
-                  row['Existing Client'],
-                  row['Contact Person Name'],
-                  row['Contact Person Mobile'],
-                  row['Contact Person Email'],
-                  row['Internal Lead'],
-                  row['External Lead'],
-                  row['Status'],
-                  row['Contact Date'],
-                  row['Visit Date'],
-                  row['Enquiry Date'],
-                  row['Offer Date'],
-                  row['Raj Group Office'],
-                  row['Follow Up Person'],
-                  row['Tentative Project Value'],
-                  row['Quotation Number'],
-                  row['Remarks']]
-        connection.insert_query(table_name="RajGroupEnquiryList", fields=fields_enquiry_list, values=values)
-    except:
-        continue
+# for index, row in data.iterrows():
+#     print(index)
+#     try:
+#         values = [row['Enquiry Key'],
+#                   row['Entry Date'],
+#                   row['Project Description'],
+#                   row['Scope of Work'],
+#                   row['Client'],
+#                   row['Location'],
+#                   row['Existing Client'],
+#                   row['Contact Person Name'],
+#                   row['Contact Person Mobile'],
+#                   row['Contact Person Email'],
+#                   row['Internal Lead'],
+#                   row['External Lead'],
+#                   row['Status'],
+#                   row['Contact Date'],
+#                   row['Visit Date'],
+#                   row['Enquiry Date'],
+#                   row['Offer Date'],
+#                   row['Raj Group Office'],
+#                   row['Follow Up Person'],
+#                   row['Tentative Project Value'],
+#                   row['Quotation Number'],
+#                   row['Remarks']]
+#         connection.insert_query(table_name="RajGroupEnquiryList", fields=fields_enquiry_list, values=values)
+#     except:
+#         continue
 
