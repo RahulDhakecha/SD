@@ -93,6 +93,10 @@
   box-shadow: 2px 2px 2px lightgrey;
 }
 
+.required {
+  color: red;
+}
+
 #right-column {
   display: flex;
   flex-direction: column;

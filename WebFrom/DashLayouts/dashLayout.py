@@ -351,6 +351,10 @@ def main_layout():
                                                 "(select count(*) as total_enquiries from "
                                                 "RajGroupEnquiryList "
                                                 "where lead_status in ('WON', 'CLOSE', 'HOLD')) as offer_to_won;").iloc[0]['offer_to_won']
+
+    # client_data = list(
+    #     connection.execute_query("select client_name from RajGroupClientList group by 1;")['client_name'])
+
     return html.Div([
     html.Div([
         html.Div([
@@ -479,7 +483,7 @@ def main_layout():
                         size=50,
                         disabled=True
                     ),
-                    html.Header("Entry Date"),
+                    html.Header("Entry Date", className="required"),
                     dcc.DatePickerSingle(
                         id='entry_date',
                         placeholder='Select a Date',
@@ -493,22 +497,27 @@ def main_layout():
                         placeholder='Enter Project Description',
                         size=50
                     ),
-                    html.Header("Scope of Work"),
+                    html.Header("Scope of Work", className="required"),
                     dcc.Dropdown(
                         id='scope_of_work',
-                        options=[{'value': i, 'label': i} for i in sow]
+                        options=[{'value': i, 'label': i} for i in sow],
                     ),
                 ], className="four columns"),
                 html.Div([
                     html.H3("Client Details"),
-                    html.Header("Client Name"),
+                    html.Header("Client Name", className="required"),
                     dcc.Input(
                         id='client_name',
                         type='text',
                         placeholder='Enter Client Name',
-                        size=50
+                        size=50,
                     ),
-                    html.Header("Client Location"),
+                    # html.Header("Client Dropdown"),
+                    # dcc.Dropdown(
+                    #     id='client_dropdown',
+                    #     options=[{'value': i, 'label': i} for i in client_data]
+                    # ),
+                    html.Header("Client Location", className="required"),
                     dcc.Input(
                         id='client_location',
                         type='text',
@@ -555,7 +564,7 @@ def main_layout():
                         placeholder='External Lead',
                         size=50
                     ),
-                    html.Header("Status"),
+                    html.Header("Status", className="required"),
                     dcc.Dropdown(
                         id='lead_status',
                         options=[{'value': i, 'label': i} for i in lead_status]
@@ -592,12 +601,12 @@ def main_layout():
                 #     ),
                 # ], className="four columns"),
                 html.Div([
-                    html.Header("Raj Group Office"),
+                    html.Header("Raj Group Office", className="required"),
                     dcc.Dropdown(
                         id='raj_group_office',
                         options=[{'value': i, 'label': i} for i in raj_group_office]
                     ),
-                    html.Header("Follow Up Person"),
+                    html.Header("Follow Up Person", className="required"),
                     dcc.Dropdown(
                         id='follow_up_person',
                         options=[{'value': i, 'label': i} for i in follow_up_person]
@@ -660,6 +669,10 @@ def main_layout():
                         message='Are you sure you want to continue?'
                     )
                 ], className="six columns"),
+                dcc.ConfirmDialog(
+                    id='modal_display',
+                    message='Please fill all required values marked in RED!!',
+                ),
             ], className="row"),
         ])
     ]),

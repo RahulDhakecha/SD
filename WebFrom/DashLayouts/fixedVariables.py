@@ -1,6 +1,5 @@
-
 sow = ['Turnkey', '66KV Switchyard', 'BBT', 'Solar', 'Civil/Telecom', 'Liaison', 'Testing', 'Maintenance/Servicing',
-       'Retrofitting', 'SITC', 'Supply only', 'ITC only']
+       'Retrofitting', 'SITC', 'Supply only', 'ITC only', '']
 lead_status = ['OPEN', 'CONTACTED', 'VISITED', 'ENQUIRY', 'OFFER', 'WON', 'CLOSE', 'HOLD']
 raj_group_office = ['Raj Vijtech Pvt Ltd', 'Raj Electricals', 'D.N. Syndicate', 'Raj Enterprise', 'Raj Brookite']
 follow_up_person = ['Rahul Dhakecha',
