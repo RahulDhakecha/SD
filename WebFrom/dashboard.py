@@ -144,8 +144,8 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
                   internal_lead, external_lead, lead_status,
                   raj_group_office, follow_up_person, tentative_project_value,
                   quotation_number, remarks, add_offer_div_value, add_contact_div_value):
-    upcoming_projects_data_modified = connection.execute_query("select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
-                                                  "client_location, lead_status, follow_up_person from RajGroupEnquiryList;").to_dict('records')
+    # upcoming_projects_data_modified = connection.execute_query("select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
+    #                                               "client_location, lead_status, follow_up_person from RajGroupEnquiryList;").to_dict('records')
     ctx = dash.callback_context
     ctx_msg = json.dumps({
         'states': ctx.states,
@@ -163,7 +163,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
                 return 'tab-2',enquiry_key, entry_date, project_description, scope_of_work, client_name, client_location, existing_client, \
                        internal_lead, external_lead, lead_status, \
                        raj_group_office, follow_up_person, tentative_project_value, \
-                       quotation_number, remarks, True, upcoming_projects_data_modified
+                       quotation_number, remarks, True, rows
             if not enquiry_key:
                 prev_enquiry_key = connection.execute_query("select count(enquiry_key) as cnt from RajGroupEnquiryList "
                                                             "where substr(enquiry_key, 9, 2) = '{}'".format(str(dt.now().month).zfill(2))).iloc[0]['cnt']
@@ -313,7 +313,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
             #                                       "client_location, lead_status, follow_up_person from RajGroupEnquiryList;").to_dict('records')
 
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
-                   upcoming_projects_data_modified
+                   rows
         # elif row_id and rows:
         elif triggered_input == 'upcoming_projects_table' and row_id:
             row_id = row_id[0]
@@ -362,13 +362,13 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
 
         elif triggered_input == 'close_button' and close_clicks:
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
-                   upcoming_projects_data_modified
+                   rows
         else:
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
-                   upcoming_projects_data_modified
+                   rows
     else:
         return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
-               upcoming_projects_data_modified
+               rows
 
 
 @dash_app.callback(Output('add_offer_hide', 'style'),

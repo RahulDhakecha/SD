@@ -320,37 +320,29 @@ def main_layout():
     data_upcoming_projects = connection.execute_query(
         "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
         "client_location, lead_status, follow_up_person from RajGroupEnquiryList;")
-    # response_time_val = 0
-    # lead_to_enquiry_val = 0
-    # enquiry_to_offer_val = 0
-    # offer_to_won_val = 0
-    response_time_val = connection.execute_query("select (sum(time_diff)/count(time_diff)) as response_time from "
-                                                 "( select A.enquiry_key, A.time_stamp as A_time_stamp, B.lead_status, "
-                                                 "B.time_stamp as B_time_stamp, TIMESTAMPDIFF(HOUR, B.time_stamp, "
-                                                 "A.time_stamp) as time_diff from  (select enquiry_key, min(time_stamp) "
-                                                 "as time_stamp from RajGroupFollowUpLog group by 1) A inner join "
-                                                 "RajGroupLeadStatus B on A.enquiry_key=B.enquiry_key where B.lead_"
-                                                 "status='ENQUIRY') T1;").iloc[0]['response_time']
-    lead_to_enquiry_val = \
-    connection.execute_query("select  (select count(*) as total_enquiries from RajGroupEnquiryList"
-                             " where lead_status in ('ENQUIRY' , 'OFFER', 'WON', 'CLOSE', 'HOLD'))"
-                             " / (select count(*) as total_leads from RajGroupEnquiryList) as "
-                             "lead_to_enquiry;").iloc[0]['lead_to_enquiry']
-    enquiry_to_offer_val = connection.execute_query("select  "
-                                                    "(select count(*) as total_enquiries from "
-                                                    "RajGroupEnquiryList "
-                                                    "where lead_status in ('OFFER', 'WON', 'CLOSE', 'HOLD')) / "
-                                                    "(select count(*) as total_enquiries from "
-                                                    "RajGroupEnquiryList "
-                                                    "where lead_status in ('ENQUIRY' , 'OFFER', 'WON', 'CLOSE', 'HOLD'))"
-                                                    " as enquiry_to_offer ;").iloc[0]['enquiry_to_offer']
-    offer_to_won_val = connection.execute_query("select  "
-                                                "(select count(*) as total_enquiries from "
-                                                "RajGroupEnquiryList "
-                                                "where lead_status in ('WON')) / "
-                                                "(select count(*) as total_enquiries from "
-                                                "RajGroupEnquiryList "
-                                                "where lead_status in ('WON', 'CLOSE', 'HOLD')) as offer_to_won;").iloc[0]['offer_to_won']
+
+    raj_group_followup = connection.execute_query("select * from RajGroupFollowUpLog;")
+    raj_group_lead_status = connection.execute_query("select * from RajGroupLeadStatus;")
+
+    raj_followup_min = raj_group_followup[['enquiry_key', 'time_stamp']].groupby('enquiry_key', as_index=False).min()
+    lead_follow_join = raj_followup_min.merge(raj_group_lead_status, on='enquiry_key')
+    lead_follow_join = lead_follow_join[lead_follow_join['lead_status'] == 'ENQUIRY']
+
+    def calc_diff(v1, v2):
+        time_diff = v1 - v2
+        return time_diff.total_seconds() / 3600
+
+    response_time_val = round(lead_follow_join.apply(lambda row: calc_diff(row['time_stamp_x'], row['time_stamp_y']), axis=1).mean(), 0)
+
+    lead_to_enquiry_val = round(sum(data_upcoming_projects['lead_status'].isin(['ENQUIRY', 'OFFER', 'WON', 'CLOSE', 'HOLD'])) / len(
+        list(data_upcoming_projects['enquiry_key'])), 2)
+
+    enquiry_to_offer_val = round(sum(data_upcoming_projects['lead_status'].isin(['OFFER', 'WON', 'CLOSE', 'HOLD'])) / sum(
+        data_upcoming_projects['lead_status'].isin(['ENQUIRY', 'OFFER', 'WON', 'CLOSE', 'HOLD'])), 2)
+
+    offer_to_won_val = round(sum(data_upcoming_projects['lead_status'] == 'WON') / sum(
+        data_upcoming_projects['lead_status'].isin(['WON', 'CLOSE', 'HOLD'])), 2)
+
 
     # client_data = list(
     #     connection.execute_query("select client_name from RajGroupClientList group by 1;")['client_name'])
