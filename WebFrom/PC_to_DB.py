@@ -1,5 +1,6 @@
 from Connections.AWSMySQL import AWSMySQLConn
 import pandas as pd
+from datetime import datetime as dt
 
 connection = AWSMySQLConn()
 # data = connection.execute_query("select * from RajGroupPOoverall limit 10")
@@ -23,8 +24,8 @@ fields_enquiry_list = "(enquiry_key, entry_date, project_description, scope_of_w
 # data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/RajElectricalOrders.xls")
 # data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/RajEnterpriseOrders.xlsx")
 # data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/DNSyndicateOrders.xlsx")
-data = pd.read_excel("/Users/rahuldhakecha/RajGroup/EnquiryList/RajGroupEnquiryList.xlsx")
-data = data.fillna(0)
+# data = pd.read_excel("/Users/rahuldhakecha/RajGroup/EnquiryList/RajGroupEnquiryList.xlsx")
+# data = data.fillna(0)
 # print(data.head)
 
 # for index, row in data.iterrows():
@@ -173,3 +174,59 @@ data = data.fillna(0)
 #     except:
 #         continue
 
+############################################################################################################
+#  PUSHING RAJ ENTERPRISE BILLING DATA FROM 2008 TO 2016 TO RAJENTERPRISEORDERS TABLE ON DB. HERE WE ARE USING BILLING
+#  INFORMATION TO POPULATE ORDERS TABLE SO THERE MIGHT ME SOME DEFINITE DISCREPANCIES ESPECIALLY IN DATES
+############################################################################################################
+
+
+data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/RajEnterpriseOrders/Bill Records - v2/RajEntr/bill 2015-16.xlsx", sheet_name=0)
+data = data.fillna(0)
+# print(data)
+data['DATE'] = pd.to_datetime(data['DATE'], errors='coerce')
+data = data.fillna(0)
+# print(data['DATE'])
+for index, row in data.iterrows():
+    try:
+        # print(dt.strftime(row['DATE']))
+        date = row['DATE'].strftime("%d-%m-%Y")
+        day = date.split("-")[0]
+        month = date.split("-")[1]
+        year = date.split("-")[2]
+        print(day, month, year)
+        values = ['',
+                  day,
+                  month,
+                  year,
+                  '',
+                  row['COMPANY NAME'],
+                  '',
+                  '',
+                  row['WORK'],
+                  row['Amount'],
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '']
+        connection.insert_query(table_name="RajEnterpriseOrders", fields=fields, values=values)
+    except:
+        continue

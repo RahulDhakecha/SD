@@ -1,6 +1,10 @@
 sow = ['Turnkey', '66KV Switchyard', 'BBT', 'Solar', 'Civil/Telecom', 'Liaison', 'Testing', 'Maintenance/Servicing',
        'Retrofitting', 'SITC', 'Supply only', 'ITC only']
-lead_status = ['OPEN', 'CONTACTED', 'VISITED', 'ENQUIRY', 'OFFER', 'WON', 'CLOSE', 'HOLD']
+lead_status = ['OPEN', 'CONTACTED', 'VISITED', 'ENQUIRY', 'OFFER', 'WON', 'CLOSE', 'HOLD', 'REGRET']
+order_status = ['ON HAND', 'COMPLETE', 'CANCEL', 'REGRET']
+
+master_users = ['rahul.dhakecha@rajgrouponline.com']
+
 raj_group_office = ['Raj Vijtech Pvt Ltd', 'Raj Electricals', 'D.N. Syndicate', 'Raj Enterprise', 'Raj Brookite']
 follow_up_person = ['Rahul Dhakecha',
                     'Rajesh Kunjadiya',
@@ -32,6 +36,10 @@ fields_client_list = "(client_name, client_location, enquiry_key, po_key)"
 
 fields_client_rep_list = "(contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation, " \
                          "client_name, client_location, enquiry_key, po_key)"
+
+fields_rj_orders_list = "(enquiry_key, order_key, order_date, po_no, project_description, scope_of_work, client_name, " \
+                        "client_location, existing_client, order_no, file_no, order_status, project_incharge, " \
+                        "raj_group_office, project_value, remarks, comp_location)"
 
 sow_code = {
     'Turnkey': 'TRNK',
