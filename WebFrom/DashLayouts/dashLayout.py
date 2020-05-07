@@ -175,6 +175,8 @@ def weekly_leads_line_data(data):
     fig.add_trace(go.Scatter(x=weekly_offers_line_data()[0]['x'], y=weekly_offers_line_data()[0]['y'], name='Offers'))
     fig.update_layout(title={
                             'text': "Weekly Leads and Offers",
+                            'y': 0.9,
+                            'x': 0.45,
                             'xanchor': 'center',
                             'yanchor': 'top'},
                       xaxis_title='Weeks',
