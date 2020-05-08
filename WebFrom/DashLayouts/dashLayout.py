@@ -170,28 +170,28 @@ def weekly_leads_line_data(data):
             },
         ]
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=weekly_leads_line_data[0]['x'], y=weekly_leads_line_data[0]['y'], name='Leads'))
-    fig.add_trace(go.Scatter(x=weekly_offers_line_data()[0]['x'], y=weekly_offers_line_data()[0]['y'], name='Offers'))
-    fig.update_layout(title={
-                            'text': "Weekly Leads and Offers",
-                            'y': 0.9,
-                            'x': 0.45,
-                            'xanchor': 'center',
-                            'yanchor': 'top'},
-                      xaxis_title='Weeks',
-                      yaxis_title='Leads and Offers')
-    # fig = {
-    #         'data': weekly_leads_line_data,
-    #         'layout': {
-    #             'title': 'Raj Group - Weekly Leads',
-    #             'xaxis': {
-    #                 'title': 'Weeks',
-    #                 'range': weeks,
-    #                 'type': "category"
-    #             }
-    #         }
-    #     }
+    # fig = go.Figure()
+    # fig.add_trace(go.Scatter(x=weekly_leads_line_data[0]['x'], y=weekly_leads_line_data[0]['y'], name='Leads'))
+    # fig.add_trace(go.Scatter(x=weekly_offers_line_data()[0]['x'], y=weekly_offers_line_data()[0]['y'], name='Offers'))
+    # fig.update_layout(title={
+    #                         'text': "Weekly Leads and Offers",
+    #                         'y': 0.9,
+    #                         'x': 0.45,
+    #                         'xanchor': 'center',
+    #                         'yanchor': 'top'},
+    #                   xaxis_title='Weeks',
+    #                   yaxis_title='Leads and Offers')
+    fig = {
+            'data': weekly_leads_line_data,
+            'layout': {
+                'title': 'Raj Group - Weekly Leads',
+                'xaxis': {
+                    'title': 'Weeks',
+                    'range': weeks,
+                    'type': "category"
+                }
+            }
+        }
 
     return fig
 
