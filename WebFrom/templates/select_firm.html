@@ -26,11 +26,11 @@ Login
           <ul class="nav navbar-nav">
             <li><a href="{{ url_for('base') }}">Home</a></li>
             <li><a href="{{ url_for('dashboard') }}">Marketing Dashboard</a></li>
-              <li><a href="{{ url_for('select_firm') }}">Order Entry</a></li>
+              <li class="active"><a href="{{ url_for('select_firm') }}">Order Entry</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="{{ url_for('signup') }}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li class="active"><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
               <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->

@@ -240,6 +240,61 @@ def weekly_offers_line_data():
     return weekly_offers_line_data
 
 
+def orders_scope_pie_data(data):
+
+    orders_scope = data[['order_key', 'scope_of_work']].groupby('scope_of_work',
+                                                                 as_index=False).count().rename(
+        columns={'order_key': 'cnt'})
+    orders_scope_data = []
+    for i in sow:
+        try:
+            orders_scope_data.append(orders_scope[orders_scope['scope_of_work'] == i]['cnt'].iloc[0])
+        except:
+            orders_scope_data.append(0)
+    orders_scope_pie_data_var = [
+            {
+                'labels': sow,
+                'values': orders_scope_data,
+                'type': 'pie',
+                'hole': 0.5,
+            },
+        ]
+    fig = {
+        'data': orders_scope_pie_data_var,
+        'layout': {
+            'title': 'Work Order Scope'
+        }
+    }
+    return fig
+
+
+def orders_status_pie_data(data):
+    orders_status = data[['order_key', 'order_status']].groupby('order_status',
+                                                                as_index=False).count().rename(
+        columns={'order_key': 'cnt'})
+    orders_status_data = []
+    for i in order_status:
+        try:
+            orders_status_data.append(orders_status[orders_status['order_status'] == i]['cnt'].iloc[0])
+        except:
+            orders_status_data.append(0)
+    orders_status_pie_data_var = [
+        {
+            'labels': order_status,
+            'values': orders_status_data,
+            'type': 'pie',
+            'hole': 0.5,
+        },
+    ]
+    fig = {
+        'data': orders_status_pie_data_var,
+        'layout': {
+            'title': 'Work Order Status'
+        }
+    }
+    return fig
+
+
 def new_offer_entry_layout(offer_timestamp_id=None,
                            offer_timestamp=None,
                            dispatch_id=None,
@@ -741,11 +796,16 @@ def main_layout():
 ], className="page")
 
 
-def order_layout():
+def order_layout(company):
     connection = AWSMySQLConn()
-    data_orders = connection.execute_query(
-        "select order_key, order_date, project_description, client_name,"
-        "client_location, project_value, scope_of_work, order_status, project_incharge from RajElectricalsOrdersNew order by time_stamp desc;")
+    if company == "RJ":
+        data_orders = connection.execute_query(
+            "select order_key, order_date, project_description, client_name,"
+            "client_location, project_value, scope_of_work, order_status, project_incharge from RajElectricalsOrdersNew order by order_date desc;")
+    elif company == "DN":
+        data_orders = connection.execute_query(
+            "select order_key, order_date, project_description, client_name,"
+            "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
 
     data_upcoming_projects = connection.execute_query(
         "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
@@ -766,12 +826,30 @@ def order_layout():
             dcc.Link('HOME', href='/', refresh=True),
         ], className="one columns"),
         html.Div([
-            dcc.Link('REFRESH', href='/dash2/', refresh=True),
+            dcc.Link('REFRESH', href='/dash2/' if company == 'RJ' else '/dash3', refresh=True),
         ], className="one columns"),
     ], className="row"),
     dcc.Tabs(id='tabs', value='tab-1', children=[
-        dcc.Tab(id='tab1', value='tab-1', label='Raj Electricals Order Form', children=[
-            # Data Table - Upcoming Projects
+        dcc.Tab(id='tab1', value='tab-1', label='Work Order Dashboard', children=[
+            html.Div([
+                html.Div([
+                    # Pie-chart reflecting scope wise orders
+                    dcc.Graph(
+                        id='orders_scope_pie_chart',
+                        figure=orders_scope_pie_data(data_orders)
+                    ),
+                ], className="pretty_container six columns"),
+
+                html.Div([
+                    # Pie-chart reflecting status wise orders
+                    dcc.Graph(
+                        id='orders_status_pie_chart',
+                        figure=orders_status_pie_data(data_orders)
+                    ),
+                ], className="pretty_container six columns")
+
+            ], className="row"),
+            # Data Table - Work Orders
             dash_table.DataTable(
                 id='orders_table',
                 style_data={'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
@@ -784,7 +862,10 @@ def order_layout():
                     'fontWeight': 'bold'
                 },
                 style_cell={
-                    'textAlign': 'center'
+                    'textAlign': 'center',
+                    # 'height': 'auto',
+                    # 'overflow': 'scroll',
+                    # 'textOverflow': 'ellipsis',
                 },
                 style_data_conditional=[
                     {
@@ -793,17 +874,17 @@ def order_layout():
                     }
                 ],
                 fixed_rows={'headers': True, 'data': 0},
-                tooltip_data=[
-                    {
-                        column: {'value': str(value), 'type': 'markdown'}
-                        for column, value in row.items()
-                    } for row in data_orders.to_dict('rows')
-                ],
-                tooltip_duration=None,
-                css=[{
-                    'selector': '.dash-cell div.dash-cell-value',
-                    'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
-                }],
+                # tooltip_data=[
+                #     {
+                #         column: {'value': str(value), 'type': 'markdown'}
+                #         for column, value in row.items()
+                #     } for row in data_orders.to_dict('rows')
+                # ],
+                # tooltip_duration=None,
+                # css=[{
+                #     'selector': '.dash-cell div.dash-cell-value',
+                #     'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
+                # }],
                 filter_action="native",
                 sort_action="native",
                 sort_mode="multi",
