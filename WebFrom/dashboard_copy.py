@@ -123,7 +123,7 @@ dash_app3.layout = dn_order_layout
                      Input('orders_table', 'selected_rows'),
                      Input('orders_scope_pie_chart', 'clickData'),
                      Input('orders_status_pie_chart', 'clickData'), ],
-                    [State('orders_table', 'data')]
+                    [State('order_key', 'value')]
                   )
 def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_dropdown, row_id, clickData_scope, clickData_status, rows):
     print("Coming Here for trigger1")
