@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/WebFrom/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/dashboard.py" afterDir="false" />
-    </list>
+    <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +13,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="794" column="41" selection-start-line="794" selection-start-column="41" selection-end-line="794" selection-end-column="41" />
+            <state relative-caret-position="-6252">
+              <caret line="974" column="8" selection-start-line="974" selection-start-column="8" selection-end-line="974" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -716,8 +714,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="794" column="41" selection-start-line="794" selection-start-column="41" selection-end-line="794" selection-end-column="41" />
+        <state relative-caret-position="-6252">
+          <caret line="974" column="8" selection-start-line="974" selection-start-column="8" selection-end-line="974" selection-end-column="8" />
         </state>
       </provider>
     </entry>

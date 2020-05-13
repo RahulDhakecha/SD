@@ -93,7 +93,7 @@ def call_dash_app(href):
 
 
 dash_app = call_dash_app('/dash/')
-dash_app3 = call_dash_app('/dash3/')
+dash_app3 = call_dash_app('/dash2/')
 # dash_app2 = call_dash_app('/dash2/')
 
 
