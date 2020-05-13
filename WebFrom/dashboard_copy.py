@@ -123,9 +123,17 @@ dash_app3.layout = dn_order_layout
                      Input('orders_table', 'selected_rows'),
                      Input('orders_scope_pie_chart', 'clickData'),
                      Input('orders_status_pie_chart', 'clickData'), ],
-                    [State('order_key', 'value')]
+                    [State('order_key', 'value'),
+                     State('order_date', 'date'),
+                     State('order_po_no', 'value'),
+                     State('order_project_description', 'value'),
+                     State('order_scope_of_work', 'value'),
+                     State('order_client_name', 'value'),
+                     State('order_client_location', 'value'),
+                     State('order_existing_client', 'value')]
                   )
-def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_dropdown, row_id, clickData_scope, clickData_status, rows):
+def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_dropdown, row_id, clickData_scope, clickData_status, order_key, order_date, order_po_no,
+                        order_project_description, order_scope_of_work, order_client_name, order_client_location, order_existing_client):
     print("Coming Here for trigger1")
     ctx = dash.callback_context
     ctx_msg = json.dumps({

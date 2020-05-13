@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="" />
+    <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/WebFrom/dashboard_copy.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/dashboard_copy.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,8 +15,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="349">
-              <caret line="782" column="102" selection-start-line="779" selection-start-column="132" selection-end-line="782" selection-end-column="102" />
+            <state relative-caret-position="281">
+              <caret line="780" column="135" selection-start-line="779" selection-start-column="138" selection-end-line="780" selection-end-column="135" />
             </state>
           </provider>
         </entry>
@@ -22,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard_copy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="134" column="16" lean-forward="true" selection-start-line="134" selection-start-column="16" selection-end-line="134" selection-end-column="16" />
+            <state relative-caret-position="383">
+              <caret line="137" column="31" lean-forward="true" selection-start-line="137" selection-start-column="31" selection-end-line="137" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -712,15 +714,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="782" column="102" selection-start-line="779" selection-start-column="132" selection-end-line="782" selection-end-column="102" />
+        <state relative-caret-position="281">
+          <caret line="780" column="135" selection-start-line="779" selection-start-column="138" selection-end-line="780" selection-end-column="135" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/dashboard_copy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="134" column="16" lean-forward="true" selection-start-line="134" selection-start-column="16" selection-end-line="134" selection-end-column="16" />
+        <state relative-caret-position="383">
+          <caret line="137" column="31" lean-forward="true" selection-start-line="137" selection-start-column="31" selection-end-line="137" selection-end-column="31" />
         </state>
       </provider>
     </entry>
