@@ -1106,24 +1106,24 @@ def dn_order_layout():
     ], className="row"),
     dcc.Tabs(id='tabs', value='tab-1', children=[
         dcc.Tab(id='tab1', value='tab-1', label='Work Order Dashboard', children=[
-            # html.Div([
-            #     html.Div([
-            #         # Pie-chart reflecting scope wise orders
-            #         dcc.Graph(
-            #             id='orders_scope_pie_chart',
-            #             figure=orders_scope_pie_data(data_orders_dn)
-            #         ),
-            #     ], className="pretty_container six columns"),
-            #
-            #     html.Div([
-            #         # Pie-chart reflecting status wise orders
-            #         dcc.Graph(
-            #             id='orders_status_pie_chart',
-            #             figure=orders_status_pie_data(data_orders_dn)
-            #         ),
-            #     ], className="pretty_container six columns")
-            #
-            # ], className="row"),
+            html.Div([
+                html.Div([
+                    # Pie-chart reflecting scope wise orders
+                    dcc.Graph(
+                        id='orders_scope_pie_chart',
+                        figure=orders_scope_pie_data(data_orders_dn)
+                    ),
+                ], className="pretty_container six columns"),
+
+                html.Div([
+                    # Pie-chart reflecting status wise orders
+                    dcc.Graph(
+                        id='orders_status_pie_chart',
+                        figure=orders_status_pie_data(data_orders_dn)
+                    ),
+                ], className="pretty_container six columns")
+
+            ], className="row"),
             # Data Table - Work Orders
             dash_table.DataTable(
                 id='orders_table',
