@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="" />
+    <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/WebFrom/dashboard_copy.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/dashboard_copy.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -10,20 +12,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="786" column="29" selection-start-line="786" selection-start-column="29" selection-end-line="786" selection-end-column="29" />
+            <state relative-caret-position="1960">
+              <caret line="794" column="58" selection-start-line="794" selection-start-column="58" selection-end-line="794" selection-end-column="58" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard_copy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="429" column="23" selection-start-line="429" selection-start-column="23" selection-end-line="429" selection-end-column="23" />
+            <state relative-caret-position="212">
+              <caret line="537" column="29" selection-start-line="537" selection-start-column="29" selection-end-line="537" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -450,6 +452,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24947146" />
@@ -709,17 +712,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard_copy.py">
+    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
-          <caret line="429" column="23" selection-start-line="429" selection-start-column="23" selection-end-line="429" selection-end-column="23" />
+        <state relative-caret-position="1960">
+          <caret line="794" column="58" selection-start-line="794" selection-start-column="58" selection-end-line="794" selection-end-column="58" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
+    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard_copy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="786" column="29" selection-start-line="786" selection-start-column="29" selection-end-line="786" selection-end-column="29" />
+        <state relative-caret-position="212">
+          <caret line="537" column="29" selection-start-line="537" selection-start-column="29" selection-end-line="537" selection-end-column="29" />
         </state>
       </provider>
     </entry>

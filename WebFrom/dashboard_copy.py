@@ -93,12 +93,11 @@ def call_dash_app(href):
 
 
 
-dash_app3 = call_dash_app('/dash3/')
+dash_app = call_dash_app('/dash/')
 
+dash_app.layout = dn_order_layout
 
-dash_app3.layout = dn_order_layout
-
-@dash_app3.callback([Output('tabs', 'value'),
+@dash_app.callback([Output('tabs', 'value'),
                      Output('order_key', 'value'),
                      Output('order_date', 'date'),
                      Output('order_po_no', 'value'),
@@ -332,7 +331,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                rows
 
 
-@dash_app3.callback(Output('order_add_contact_div', 'children'),
+@dash_app.callback(Output('order_add_contact_div', 'children'),
                    [Input('order_add_another_contact', 'submit_n_clicks'),
                     Input('orders_table', 'selected_rows'),
                     Input('order_submit_button', 'submit_n_clicks'),
@@ -537,7 +536,7 @@ def select_firm():
         elif form.firm.data == 'Raj VijTech':
             return redirect('/dash2')
         elif form.firm.data == 'D.N. Syndicate':
-            return redirect('/dash3')
+            return redirect('/dash')
         elif form.firm.data == 'Raj Enterprise':
             return redirect('/dash2')
         elif form.firm.data == 'Raj Brookite':
