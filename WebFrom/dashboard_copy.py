@@ -153,9 +153,10 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
         'triggered': ctx.triggered,
         'inputs': ctx.inputs
     }, indent=2)
-    rows = connection.execute_query(
+    temp_data = connection.execute_query(
         "select order_key, order_date, project_description, client_name,"
         "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
+    rows = temp_data.to_dict('records')
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 1: "+str(triggered_input))
