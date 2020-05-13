@@ -798,7 +798,7 @@ def main_layout():
 
 def order_layout(company):
     connection = AWSMySQLConn()
-    print("company")
+    print("company"+str(company))
     if company == "DN":
         data_orders = connection.execute_query(
             "select order_key, order_date, project_description, client_name,"
