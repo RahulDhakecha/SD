@@ -793,7 +793,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
             # if any of the required field is None, return to the same page
             existing_enquiry_data = connection.execute_query(
                 "select * from RajGroupEnquiryList where enquiry_key='{}';".format(order_enquiry_key))
-            return 'tab-2', '', '', '', \
+            return 'tab-2', '', None, '', \
                    existing_enquiry_data.iloc[0]['project_description'], existing_enquiry_data.iloc[0]['scope_of_work'], \
                    existing_enquiry_data.iloc[0]['client_name'], existing_enquiry_data.iloc[0]['client_location'], existing_enquiry_data.iloc[0][
                        'existing_client'], '', '', '', '', \
@@ -1123,7 +1123,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
             # if any of the required field is None, return to the same page
             existing_enquiry_data = connection.execute_query(
                 "select * from RajGroupEnquiryList where enquiry_key='{}';".format(order_enquiry_key))
-            return 'tab-2', '', '', '', \
+            return 'tab-2', '', None, '', \
                    existing_enquiry_data.iloc[0]['project_description'], existing_enquiry_data.iloc[0]['scope_of_work'], \
                    existing_enquiry_data.iloc[0]['client_name'], existing_enquiry_data.iloc[0]['client_location'], existing_enquiry_data.iloc[0][
                        'existing_client'], '', '', '', '', \

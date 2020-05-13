@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebFrom/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/dashboard.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebFrom/templates/select_firm.html" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/templates/select_firm.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,11 +12,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="1301" column="20" selection-start-line="1301" selection-start-column="20" selection-end-line="1301" selection-end-column="20" />
+            <state relative-caret-position="449">
+              <caret line="1125" column="43" lean-forward="true" selection-start-line="1125" selection-start-column="43" selection-end-line="1125" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -42,7 +39,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="297">
@@ -106,8 +103,8 @@
         <option value="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" />
         <option value="$PROJECT_DIR$/WebFrom/templates/select_firm.html" />
         <option value="$PROJECT_DIR$/WebFrom/Update_Orders.py" />
-        <option value="$PROJECT_DIR$/WebFrom/dashboard.py" />
         <option value="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" />
+        <option value="$PROJECT_DIR$/WebFrom/dashboard.py" />
       </list>
     </option>
   </component>
@@ -457,6 +454,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24947146" />
@@ -709,17 +707,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="1301" column="20" selection-start-line="1301" selection-start-column="20" selection-end-line="1301" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="297">
           <caret line="829" column="36" lean-forward="true" selection-start-line="829" selection-start-column="36" selection-end-line="829" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="1125" column="43" lean-forward="true" selection-start-line="1125" selection-start-column="43" selection-end-line="1125" selection-end-column="43" />
         </state>
       </provider>
     </entry>
