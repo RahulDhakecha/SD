@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2903">
-              <caret line="1092" column="21" selection-start-line="1092" selection-start-column="21" selection-end-line="1092" selection-end-column="50" />
+            <state relative-caret-position="276">
+              <caret line="1296" column="19" lean-forward="true" selection-start-line="1066" selection-end-line="1296" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -24,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard_copy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="369">
-              <caret line="148" column="37" lean-forward="true" selection-start-line="148" selection-start-column="37" selection-end-line="148" selection-end-column="37" />
+            <state relative-caret-position="-1472">
+              <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
             </state>
           </provider>
         </entry>
@@ -51,7 +51,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3026">
+            <state relative-caret-position="2896">
               <caret line="1079" lean-forward="true" selection-start-line="1079" selection-end-line="1079" />
             </state>
           </provider>
@@ -707,22 +707,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3026">
+        <state relative-caret-position="2896">
           <caret line="1079" lean-forward="true" selection-start-line="1079" selection-end-line="1079" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2903">
-          <caret line="1092" column="21" selection-start-line="1092" selection-start-column="21" selection-end-line="1092" selection-end-column="50" />
+        <state relative-caret-position="276">
+          <caret line="1296" column="19" lean-forward="true" selection-start-line="1066" selection-end-line="1296" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/dashboard_copy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="148" column="37" lean-forward="true" selection-start-line="148" selection-start-column="37" selection-end-line="148" selection-end-column="37" />
+        <state relative-caret-position="-1472">
+          <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
         </state>
       </provider>
     </entry>
