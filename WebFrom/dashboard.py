@@ -781,7 +781,6 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                         order_project_description, order_scope_of_work, order_client_name, order_client_location, order_existing_client,
                         order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office,
                         order_project_value, order_remarks, order_comp_location, add_contact_div_value):
-    print("Coming Here for trigger1")
     ctx = dash.callback_context
     ctx_msg = json.dumps({
         'states': ctx.states,
@@ -979,7 +978,6 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                     State('order_client_location', 'value')])
 def order_add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, enquiry_key, rows, add_contact_div_value, client_name, client_location):
     # connection = AWSMySQLConn()
-    print("Coming Here for trigger2")
     ctx = dash.callback_context
     ctx_msg = json.dumps({
         'states': ctx.states,

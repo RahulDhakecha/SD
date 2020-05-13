@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebFrom/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/dashboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebFrom/dashboard_copy.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/dashboard_copy.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,17 +17,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="385">
-              <caret line="101" column="37" lean-forward="true" selection-start-line="101" selection-start-column="37" selection-end-line="101" selection-end-column="37" />
+            <state relative-caret-position="308">
+              <caret line="1061" column="23" lean-forward="true" selection-start-line="734" selection-end-line="1061" selection-end-column="23" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard_copy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1211">
-              <caret line="99" column="35" selection-start-line="99" selection-start-column="35" selection-end-line="99" selection-end-column="35" />
+            <state relative-caret-position="-411">
+              <caret line="164" column="23" selection-start-line="164" selection-start-column="23" selection-end-line="164" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -42,17 +44,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/Update_Orders.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
+            <state relative-caret-position="1380">
               <caret line="99" column="22" lean-forward="true" selection-start-line="99" selection-start-column="22" selection-end-line="99" selection-end-column="22" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="1083" column="17" selection-start-line="1083" selection-start-column="17" selection-end-line="1083" selection-end-column="17" />
+            <state relative-caret-position="206">
+              <caret line="1082" column="140" lean-forward="true" selection-start-line="1080" selection-start-column="21" selection-end-line="1082" selection-end-column="140" />
             </state>
           </provider>
         </entry>
@@ -113,8 +115,8 @@
         <option value="$PROJECT_DIR$/WebFrom/templates/select_firm.html" />
         <option value="$PROJECT_DIR$/WebFrom/Update_Orders.py" />
         <option value="$PROJECT_DIR$/WebFrom/dashboard.py" />
-        <option value="$PROJECT_DIR$/WebFrom/dashboard_copy.py" />
         <option value="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" />
+        <option value="$PROJECT_DIR$/WebFrom/dashboard_copy.py" />
       </list>
     </option>
   </component>
@@ -700,29 +702,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/Update_Orders.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
+        <state relative-caret-position="1380">
           <caret line="99" column="22" lean-forward="true" selection-start-line="99" selection-start-column="22" selection-end-line="99" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard_copy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1211">
-          <caret line="99" column="35" selection-start-line="99" selection-start-column="35" selection-end-line="99" selection-end-column="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="101" column="37" lean-forward="true" selection-start-line="101" selection-start-column="37" selection-end-line="101" selection-end-column="37" />
+        <state relative-caret-position="308">
+          <caret line="1061" column="23" lean-forward="true" selection-start-line="734" selection-end-line="1061" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="1083" column="17" selection-start-line="1083" selection-start-column="17" selection-end-line="1083" selection-end-column="17" />
+        <state relative-caret-position="206">
+          <caret line="1082" column="140" lean-forward="true" selection-start-line="1080" selection-start-column="21" selection-end-line="1082" selection-end-column="140" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard_copy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-411">
+          <caret line="164" column="23" selection-start-line="164" selection-start-column="23" selection-end-line="164" selection-end-column="23" />
         </state>
       </provider>
     </entry>
