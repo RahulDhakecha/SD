@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="" />
+    <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,8 +51,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="1087" column="28" selection-start-line="1087" selection-start-column="28" selection-end-line="1087" selection-end-column="28" />
+            <state relative-caret-position="228">
+              <caret line="1083" column="17" selection-start-line="1083" selection-start-column="17" selection-end-line="1083" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -719,8 +721,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="1087" column="28" selection-start-line="1087" selection-start-column="28" selection-end-line="1087" selection-end-column="28" />
+        <state relative-caret-position="228">
+          <caret line="1083" column="17" selection-start-line="1083" selection-start-column="17" selection-end-line="1083" selection-end-column="17" />
         </state>
       </provider>
     </entry>
