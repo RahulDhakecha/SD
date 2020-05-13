@@ -1153,10 +1153,10 @@ def dn_order_layout():
                 #     } for row in data_orders.to_dict('rows')
                 # ],
                 # tooltip_duration=None,
-                # css=[{
-                #     'selector': '.dash-cell div.dash-cell-value',
-                #     'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
-                # }],
+                css=[{
+                    'selector': '.dash-cell div.dash-cell-value',
+                    'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
+                }],
                 filter_action="native",
                 sort_action="native",
                 sort_mode="multi",
