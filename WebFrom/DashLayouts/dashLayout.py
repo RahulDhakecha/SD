@@ -1077,7 +1077,11 @@ def dn_order_layout():
 
     data_orders_dn = connection.execute_query(
         "select order_key, order_date, project_description, client_name,"
-        "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
+        "client_location, project_value, scope_of_work, order_status, project_incharge from RajElectricalsOrdersNew order by order_date desc;")
+
+    # data_orders_dn = connection.execute_query(
+    #     "select order_key, order_date, project_description, client_name,"
+    #     "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
 
     data_upcoming_projects = connection.execute_query(
         "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
