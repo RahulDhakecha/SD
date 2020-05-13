@@ -1074,13 +1074,13 @@ def order_layout(company):
 
 def dn_order_layout():
     connection = AWSMySQLConn()
-    data_orders_dn = connection.execute_query(
-        "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
-        "client_location, lead_status, follow_up_person from RajGroupEnquiryList order by 1 desc;")
-    
     # data_orders_dn = connection.execute_query(
-    #     "select order_key, order_date, project_description, client_name,"
-    #     "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
+    #     "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
+    #     "client_location, lead_status, follow_up_person from RajGroupEnquiryList order by 1 desc;")
+
+    data_orders_dn = connection.execute_query(
+        "select order_key, order_date, project_description, client_name,"
+        "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
 
     data_upcoming_projects = connection.execute_query(
         "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
@@ -1106,24 +1106,24 @@ def dn_order_layout():
     ], className="row"),
     dcc.Tabs(id='tabs', value='tab-1', children=[
         dcc.Tab(id='tab1', value='tab-1', label='Work Order Dashboard', children=[
-            html.Div([
-                html.Div([
-                    # Pie-chart reflecting scope wise orders
-                    dcc.Graph(
-                        id='orders_scope_pie_chart',
-                        figure=orders_scope_pie_data(data_orders_dn)
-                    ),
-                ], className="pretty_container six columns"),
-
-                html.Div([
-                    # Pie-chart reflecting status wise orders
-                    dcc.Graph(
-                        id='orders_status_pie_chart',
-                        figure=orders_status_pie_data(data_orders_dn)
-                    ),
-                ], className="pretty_container six columns")
-
-            ], className="row"),
+            # html.Div([
+            #     html.Div([
+            #         # Pie-chart reflecting scope wise orders
+            #         dcc.Graph(
+            #             id='orders_scope_pie_chart',
+            #             figure=orders_scope_pie_data(data_orders_dn)
+            #         ),
+            #     ], className="pretty_container six columns"),
+            #
+            #     html.Div([
+            #         # Pie-chart reflecting status wise orders
+            #         dcc.Graph(
+            #             id='orders_status_pie_chart',
+            #             figure=orders_status_pie_data(data_orders_dn)
+            #         ),
+            #     ], className="pretty_container six columns")
+            #
+            # ], className="row"),
             # Data Table - Work Orders
             dash_table.DataTable(
                 id='orders_table',
