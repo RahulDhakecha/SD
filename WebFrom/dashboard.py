@@ -17,7 +17,7 @@ from Connections.AWSMySQL import AWSMySQLConn
 from fixedVariables import sow, lead_status, raj_group_office, follow_up_person, fields_enquiry_list, fields_followup_log, \
     fields_client_list, fields_client_rep_list, sow_code, raj_group_office_code, fields_rj_orders_list, master_users
 from dashLayout import service_wise_pie_data, pending_offers_pie_data, submitted_offers_pie_data, lead_stages_bar_data, \
-    weekly_leads_line_data, main_layout, new_offer_entry_layout, new_contact_entry_layout, order_layout
+    weekly_leads_line_data, main_layout, new_offer_entry_layout, new_contact_entry_layout, order_layout, dn_order_layout
 
 from datetime import datetime as dt
 from datetime import date, timedelta
@@ -98,7 +98,7 @@ dash_app3 = call_dash_app('/dash3/')
 
 
 dash_app.layout = main_layout
-dash_app3.layout = order_layout("DN")
+dash_app3.layout = dn_order_layout
 # dash_app2.layout = order_layout("RJ")
 
 
