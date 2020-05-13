@@ -93,11 +93,11 @@ def call_dash_app(href):
 
 
 
-dash_app = call_dash_app('/dash/')
+dash_app3 = call_dash_app('/dash3/')
 
-dash_app.layout = dn_order_layout
+dash_app3.layout = dn_order_layout
 
-@dash_app.callback([Output('tabs', 'value'),
+@dash_app3.callback([Output('tabs', 'value'),
                      Output('order_key', 'value'),
                      Output('order_date', 'date'),
                      Output('order_po_no', 'value'),
@@ -116,9 +116,15 @@ dash_app.layout = dn_order_layout
                      Output('order_comp_location', 'value'),
                      Output('order_modal_display', 'displayed'),
                      Output('orders_table', 'data')],
-                  [Input('order_client_dropdown', 'value')],
+                    [Input('order_submit_button', 'submit_n_clicks'),
+                     Input('order_close_button', 'submit_n_clicks'),
+                     Input('order_enquiry_key', 'value'),
+                     Input('order_client_dropdown', 'value'),
+                     Input('orders_table', 'selected_rows'),
+                     Input('orders_scope_pie_chart', 'clickData'),
+                     Input('orders_status_pie_chart', 'clickData'), ],
                   )
-def update_order_values(client_dropdown):
+def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_dropdown, row_id, clickData_scope, clickData_status):
     print("Coming Here for trigger1")
     ctx = dash.callback_context
     ctx_msg = json.dumps({
@@ -259,7 +265,7 @@ def select_firm():
         elif form.firm.data == 'Raj VijTech':
             return redirect('/dash2')
         elif form.firm.data == 'D.N. Syndicate':
-            return redirect('/dash')
+            return redirect('/dash3')
         elif form.firm.data == 'Raj Enterprise':
             return redirect('/dash2')
         elif form.firm.data == 'Raj Brookite':
