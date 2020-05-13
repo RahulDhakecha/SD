@@ -1075,7 +1075,7 @@ def order_layout(company):
 def dn_order_layout():
     connection = AWSMySQLConn()
 
-    data_orders = connection.execute_query(
+    data_orders_dn = connection.execute_query(
         "select order_key, order_date, project_description, client_name,"
         "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
 
@@ -1108,7 +1108,7 @@ def dn_order_layout():
                     # Pie-chart reflecting scope wise orders
                     dcc.Graph(
                         id='orders_scope_pie_chart',
-                        figure=orders_scope_pie_data(data_orders)
+                        figure=orders_scope_pie_data(data_orders_dn)
                     ),
                 ], className="pretty_container six columns"),
 
@@ -1116,7 +1116,7 @@ def dn_order_layout():
                     # Pie-chart reflecting status wise orders
                     dcc.Graph(
                         id='orders_status_pie_chart',
-                        figure=orders_status_pie_data(data_orders)
+                        figure=orders_status_pie_data(data_orders_dn)
                     ),
                 ], className="pretty_container six columns")
 
@@ -1153,17 +1153,17 @@ def dn_order_layout():
                 #     } for row in data_orders.to_dict('rows')
                 # ],
                 # tooltip_duration=None,
-                css=[{
-                    'selector': '.dash-cell div.dash-cell-value',
-                    'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
-                }],
+                # css=[{
+                #     'selector': '.dash-cell div.dash-cell-value',
+                #     'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
+                # }],
                 filter_action="native",
                 sort_action="native",
                 sort_mode="multi",
                 row_selectable="single",
                 editable=False,
-                columns=[{"name": i, "id": i} for i in data_orders.columns],
-                data=data_orders.to_dict('records')
+                columns=[{"name": i, "id": i} for i in data_orders_dn.columns],
+                data=data_orders_dn.to_dict('records')
             ),
         ]),
         dcc.Tab(id='tab2', value='tab-2', label='Raj Group Order Form', children=[
