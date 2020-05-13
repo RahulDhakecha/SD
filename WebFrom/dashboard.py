@@ -973,12 +973,13 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                     Input('orders_table', 'selected_rows'),
                     Input('order_submit_button', 'submit_n_clicks'),
                     Input('order_close_button', 'submit_n_clicks'),
-                    Input('order_client_dropdown', 'value')],
+                    Input('order_client_dropdown', 'value'),
+                    Input('order_enquiry_key', 'value')],
                    [State('order_key', 'value'),
                     State('order_add_contact_div', 'children'),
                     State('order_client_name', 'value'),
                     State('order_client_location', 'value')])
-def order_add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, enquiry_key, add_contact_div_value, client_name, client_location):
+def order_add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, order_enquiry_key, enquiry_key, add_contact_div_value, client_name, client_location):
     # connection = AWSMySQLConn()
     ctx = dash.callback_context
     ctx_msg = json.dumps({
@@ -1042,6 +1043,25 @@ def order_add_new_contact_entry(contact_click, row_id, submit_button, close_butt
                                                               row['contact_person_designation']
                                                               ))
             return existing_contact_entries
+
+        elif triggered_input == 'order_enquiry_key' and order_enquiry_key:
+            existing_contact_entries = []
+            contact_data = connection.execute_query(
+                "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
+                " from RajGroupClientRepresentativeList where enquiry_key='{}'".format(order_enquiry_key))
+            for index, row in contact_data.iterrows():
+                existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
+                                                                         row['contact_person_name'],
+                                                                         "contact_person_mobile_id_{}".format(index),
+                                                                         row['contact_person_mobile'],
+                                                                         "contact_person_email_id_{}".format(index),
+                                                                         row['contact_person_email'],
+                                                                         "contact_person_designation_id_{}".format(
+                                                                             index),
+                                                                         row['contact_person_designation']
+                                                                         ))
+            return existing_contact_entries
+
 
         elif triggered_input == 'order_client_dropdown' and client_dropdown and client_dropdown != 'Other':
             cl_nm = str(client_dropdown).split(" -- ")[0]
@@ -1306,13 +1326,14 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                     Input('orders_table', 'selected_rows'),
                     Input('order_submit_button', 'submit_n_clicks'),
                     Input('order_close_button', 'submit_n_clicks'),
-                    Input('order_client_dropdown', 'value')],
+                    Input('order_client_dropdown', 'value'),
+                    Input('order_enquiry_key', 'value')],
                    [State('order_key', 'value'),
                     State('orders_table', 'data'),
                     State('order_add_contact_div', 'children'),
                     State('order_client_name', 'value'),
                     State('order_client_location', 'value')])
-def order_add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, enquiry_key, rows, add_contact_div_value, client_name, client_location):
+def order_add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, order_enquiry_key, enquiry_key, rows, add_contact_div_value, client_name, client_location):
     # connection = AWSMySQLConn()
     ctx = dash.callback_context
     ctx_msg = json.dumps({
@@ -1371,6 +1392,24 @@ def order_add_new_contact_entry(contact_click, row_id, submit_button, close_butt
                                                               "contact_person_designation_id_{}".format(index),
                                                               row['contact_person_designation']
                                                               ))
+            return existing_contact_entries
+
+        elif triggered_input == 'order_enquiry_key' and order_enquiry_key:
+            existing_contact_entries = []
+            contact_data = connection.execute_query(
+                "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
+                " from RajGroupClientRepresentativeList where enquiry_key='{}'".format(order_enquiry_key))
+            for index, row in contact_data.iterrows():
+                existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
+                                                                         row['contact_person_name'],
+                                                                         "contact_person_mobile_id_{}".format(index),
+                                                                         row['contact_person_mobile'],
+                                                                         "contact_person_email_id_{}".format(index),
+                                                                         row['contact_person_email'],
+                                                                         "contact_person_designation_id_{}".format(
+                                                                             index),
+                                                                         row['contact_person_designation']
+                                                                         ))
             return existing_contact_entries
 
         elif triggered_input == 'order_client_dropdown' and client_dropdown and client_dropdown != 'Other':

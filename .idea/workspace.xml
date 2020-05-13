@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="792" column="21" lean-forward="true" selection-start-line="792" selection-start-column="21" selection-end-line="792" selection-end-column="21" />
+            <state relative-caret-position="300">
+              <caret line="1051" column="106" selection-start-line="1051" selection-start-column="106" selection-end-line="1051" selection-end-column="106" />
             </state>
           </provider>
         </entry>
@@ -51,8 +51,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
-              <caret line="1168" column="36" lean-forward="true" selection-start-line="1168" selection-start-column="36" selection-end-line="1168" selection-end-column="54" />
+            <state relative-caret-position="231">
+              <caret line="1082" column="56" lean-forward="true" selection-start-line="1082" selection-start-column="56" selection-end-line="1082" selection-end-column="56" />
             </state>
           </provider>
         </entry>
@@ -698,13 +698,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="1168" column="36" lean-forward="true" selection-start-line="1168" selection-start-column="36" selection-end-line="1168" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/templates/select_firm.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="620">
@@ -719,10 +712,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="1082" column="56" lean-forward="true" selection-start-line="1082" selection-start-column="56" selection-end-line="1082" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="792" column="21" lean-forward="true" selection-start-line="792" selection-start-column="21" selection-end-line="792" selection-end-column="21" />
+        <state relative-caret-position="300">
+          <caret line="1051" column="106" selection-start-line="1051" selection-start-column="106" selection-end-line="1051" selection-end-column="106" />
         </state>
       </provider>
     </entry>
