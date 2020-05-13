@@ -802,7 +802,7 @@ def order_layout(company):
     # if company == "DN":
     data_orders = connection.execute_query(
         "select order_key, order_date, project_description, client_name,"
-        "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
+        "client_location, project_value, scope_of_work, order_status, project_incharge from RajElectricalsOrdersNew order by order_date desc;")
     # elif company == "RJ":
     # data_orders = connection.execute_query(
     #     "select order_key, order_date, project_description, client_name,"
@@ -1074,11 +1074,10 @@ def order_layout(company):
 
 def dn_order_layout():
     connection = AWSMySQLConn()
-
     data_orders_dn = connection.execute_query(
-        "select order_key, order_date, project_description, client_name,"
-        "client_location, project_value, scope_of_work, order_status, project_incharge from RajElectricalsOrdersNew order by order_date desc;")
-
+        "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
+        "client_location, lead_status, follow_up_person from RajGroupEnquiryList order by 1 desc;")
+    
     # data_orders_dn = connection.execute_query(
     #     "select order_key, order_date, project_description, client_name,"
     #     "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
