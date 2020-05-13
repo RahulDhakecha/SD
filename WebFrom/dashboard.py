@@ -693,7 +693,7 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
             existing_contact_entries = []
             contact_data = connection.execute_query(
                 "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
-                " from RajGroupClientRepresentativeList where client_name='{}' and client_location='{}'".format(cl_nm, cl_lc))
+                " from RajGroupClientRepresentativeList where client_name='{}' and client_location='{}' group by 1,2,3,4;".format(cl_nm, cl_lc))
             for index, row in contact_data.iterrows():
                 existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
                                                               row['contact_person_name'],
@@ -1048,7 +1048,7 @@ def order_add_new_contact_entry(contact_click, row_id, submit_button, close_butt
             existing_contact_entries = []
             contact_data = connection.execute_query(
                 "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
-                " from RajGroupClientRepresentativeList where enquiry_key='{}'".format(order_enquiry_key))
+                " from RajGroupClientRepresentativeList where enquiry_key='{}';".format(order_enquiry_key))
             for index, row in contact_data.iterrows():
                 existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
                                                                          row['contact_person_name'],
@@ -1069,7 +1069,7 @@ def order_add_new_contact_entry(contact_click, row_id, submit_button, close_butt
             existing_contact_entries = []
             contact_data = connection.execute_query(
                 "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
-                " from RajGroupClientRepresentativeList where client_name='{}' and client_location='{}'".format(cl_nm, cl_lc))
+                " from RajGroupClientRepresentativeList where client_name='{}' and client_location='{}' group by 1,2,3,4;".format(cl_nm, cl_lc))
             for index, row in contact_data.iterrows():
                 existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
                                                               row['contact_person_name'],
@@ -1381,7 +1381,7 @@ def order_add_new_contact_entry(contact_click, row_id, submit_button, close_butt
             row_id = row_id[0]
             contact_data = connection.execute_query(
                 "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
-                " from RajGroupClientRepresentativeList where po_key='{}'".format(rows[row_id]['order_key']))
+                " from RajGroupClientRepresentativeList where po_key='{}';".format(rows[row_id]['order_key']))
             for index, row in contact_data.iterrows():
                 existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
                                                               row['contact_person_name'],
@@ -1398,7 +1398,7 @@ def order_add_new_contact_entry(contact_click, row_id, submit_button, close_butt
             existing_contact_entries = []
             contact_data = connection.execute_query(
                 "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
-                " from RajGroupClientRepresentativeList where enquiry_key='{}'".format(order_enquiry_key))
+                " from RajGroupClientRepresentativeList where enquiry_key='{}';".format(order_enquiry_key))
             for index, row in contact_data.iterrows():
                 existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
                                                                          row['contact_person_name'],
@@ -1418,7 +1418,7 @@ def order_add_new_contact_entry(contact_click, row_id, submit_button, close_butt
             existing_contact_entries = []
             contact_data = connection.execute_query(
                 "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
-                " from RajGroupClientRepresentativeList where client_name='{}' and client_location='{}'".format(cl_nm, cl_lc))
+                " from RajGroupClientRepresentativeList where client_name='{}' and client_location='{}' group by 1,2,3,4;".format(cl_nm, cl_lc))
             for index, row in contact_data.iterrows():
                 existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
                                                               row['contact_person_name'],
