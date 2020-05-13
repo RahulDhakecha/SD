@@ -96,7 +96,7 @@ def call_dash_app(href):
 dash_app3 = call_dash_app('/dash3/')
 dash_app2 = call_dash_app('/dash2/')
 
-dash_app3.layout = dn_order_layout
+dash_app3.layout = order_layout("RJ")
 dash_app2.layout = order_layout("RJ")
 
 @dash_app3.callback([Output('tabs', 'value'),
@@ -141,12 +141,13 @@ dash_app2.layout = order_layout("RJ")
                      State('order_project_value', 'value'),
                      State('order_remarks', 'value'),
                      State('order_comp_location', 'value'),
-                     State('order_add_contact_div', 'children')]
+                     State('order_add_contact_div', 'children'),
+                     State('orders_table', 'data')]
                   )
 def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_dropdown, row_id, clickData_scope, clickData_status, order_key, order_date, order_po_no,
                         order_project_description, order_scope_of_work, order_client_name, order_client_location, order_existing_client,
                         order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office,
-                        order_project_value, order_remarks, order_comp_location, add_contact_div_value):
+                        order_project_value, order_remarks, order_comp_location, add_contact_div_value, rows):
     print("Coming Here for trigger1")
     ctx = dash.callback_context
     ctx_msg = json.dumps({
