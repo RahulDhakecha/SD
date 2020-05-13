@@ -758,8 +758,7 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
                    Input('orders_table', 'selected_rows'),
                    Input('orders_scope_pie_chart', 'clickData'),
                    Input('orders_status_pie_chart', 'clickData'),],
-                    [State('orders_table', 'data'),
-                     State('order_key', 'value'),
+                    [State('order_key', 'value'),
                      State('order_date', 'date'),
                      State('order_po_no', 'value'),
                      State('order_project_description', 'value'),
@@ -777,7 +776,7 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
                      State('order_comp_location', 'value'),
                      State('order_add_contact_div', 'children')]
                   )
-def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_dropdown, row_id, clickData_scope, clickData_status, rows, order_key, order_date, order_po_no,
+def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_dropdown, row_id, clickData_scope, clickData_status, order_key, order_date, order_po_no,
                         order_project_description, order_scope_of_work, order_client_name, order_client_location, order_existing_client,
                         order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office,
                         order_project_value, order_remarks, order_comp_location, add_contact_div_value):
@@ -787,6 +786,10 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
         'triggered': ctx.triggered,
         'inputs': ctx.inputs
     }, indent=2)
+    temp_data = connection.execute_query(
+        "select order_key, order_date, project_description, client_name,"
+        "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
+    rows = temp_data.to_dict('records')
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 1: "+str(triggered_input))
@@ -972,11 +975,10 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                     Input('order_close_button', 'submit_n_clicks'),
                     Input('order_client_dropdown', 'value')],
                    [State('order_key', 'value'),
-                    State('orders_table', 'data'),
                     State('order_add_contact_div', 'children'),
                     State('order_client_name', 'value'),
                     State('order_client_location', 'value')])
-def order_add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, enquiry_key, rows, add_contact_div_value, client_name, client_location):
+def order_add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, enquiry_key, add_contact_div_value, client_name, client_location):
     # connection = AWSMySQLConn()
     ctx = dash.callback_context
     ctx_msg = json.dumps({
@@ -984,6 +986,10 @@ def order_add_new_contact_entry(contact_click, row_id, submit_button, close_butt
         'triggered': ctx.triggered,
         'inputs': ctx.inputs
     }, indent=2)
+    temp_data = connection.execute_query(
+        "select order_key, order_date, project_description, client_name,"
+        "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
+    rows = temp_data.to_dict('records')
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 4: " + str(triggered_input))
