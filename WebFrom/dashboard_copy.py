@@ -96,8 +96,8 @@ def call_dash_app(href):
 dash_app3 = call_dash_app('/dash3/')
 dash_app2 = call_dash_app('/dash2/')
 
-dash_app3.layout = order_layout("RJ")
-dash_app2.layout = order_layout("DN")
+dash_app3.layout = order_layout("DN")
+dash_app2.layout = order_layout("RJ")
 
 @dash_app3.callback([Output('tabs', 'value'),
                      Output('order_key', 'value'),
