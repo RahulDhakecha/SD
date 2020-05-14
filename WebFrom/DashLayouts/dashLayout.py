@@ -50,7 +50,7 @@ def pending_offers_pie_data(data):
         try:
             pending_offers_data.append(pending_offers[pending_offers['follow_up_person'] == i]['cnt'].iloc[0])
         except:
-            pending_offers_data.append(0)
+            pending_offers_data.append(None)
     pending_offers_pie_data_var = [
             {
                 'labels': follow_up_person,
@@ -83,7 +83,7 @@ def submitted_offers_pie_data(data):
         try:
             submitted_offers_data.append(submitted_offers[submitted_offers['follow_up_person'] == i]['cnt'].iloc[0])
         except:
-            submitted_offers_data.append(0)
+            submitted_offers_data.append(None)
     submitted_offers_pie_data = [
             {
                 'labels': follow_up_person,
@@ -113,7 +113,7 @@ def lead_stages_bar_data(data):
         try:
             lead_stages_data.append(lead_status_data[lead_status_data['lead_status'] == i]['cnt'].iloc[0])
         except:
-            lead_stages_data.append(0)
+            lead_stages_data.append(None)
 
     lead_stages_bar_data = [
             {
@@ -250,7 +250,7 @@ def orders_scope_pie_data(data):
         try:
             orders_scope_data.append(orders_scope[orders_scope['scope_of_work'] == i]['cnt'].iloc[0])
         except:
-            orders_scope_data.append(0)
+            orders_scope_data.append(None)
     orders_scope_pie_data_var = [
             {
                 'labels': sow,
@@ -277,7 +277,7 @@ def orders_status_pie_data(data):
         try:
             orders_status_data.append(orders_status[orders_status['order_status'] == i]['cnt'].iloc[0])
         except:
-            orders_status_data.append(0)
+            orders_status_data.append(None)
     orders_status_pie_data_var = [
         {
             'labels': order_status,
@@ -432,7 +432,7 @@ def main_layout():
     connection = AWSMySQLConn()
     data_upcoming_projects = connection.execute_query(
         "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
-        "client_location, lead_status, follow_up_person from RajGroupEnquiryList order by 1 desc;")
+        "client_location, lead_status, follow_up_person, tentative_project_value  from RajGroupEnquiryList order by 1 desc;")
 
     en_keys = list(data_upcoming_projects['enquiry_key'])
 
@@ -796,9 +796,8 @@ def main_layout():
 ], className="page")
 
 
-def order_layout(company):
+def order_layout():
     connection = AWSMySQLConn()
-    print("company"+str(company))
     # if company == "DN":
     data_orders = connection.execute_query(
         "select order_key, order_date, project_description, client_name,"
@@ -827,7 +826,7 @@ def order_layout(company):
             dcc.Link('HOME', href='/', refresh=True),
         ], className="one columns"),
         html.Div([
-            dcc.Link('REFRESH', href='/dash2/' if company == 'RJ' else '/dash3', refresh=True),
+            dcc.Link('REFRESH', href='/dash2/', refresh=True),
         ], className="one columns"),
     ], className="row"),
     dcc.Tabs(id='tabs', value='tab-1', children=[

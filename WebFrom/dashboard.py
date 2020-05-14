@@ -99,7 +99,7 @@ dash_app2 = call_dash_app('/dash2/')
 
 dash_app.layout = main_layout
 dash_app3.layout = dn_order_layout
-dash_app2.layout = order_layout("RJ")
+dash_app2.layout = order_layout
 
 
 
@@ -814,7 +814,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                        order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office, \
                        order_project_value, order_remarks, order_comp_location, True, rows
             if not order_key:
-                prev_order_key = connection.execute_query("select order_key from DNSyndicateOrdersNew order by time_stamp "
+                prev_order_key = connection.execute_query("select order_key from DNSyndicateOrdersNew order by order_date "
                                                           "desc limit 1;").iloc[0]['order_key']
                 prev_order_key_no = prev_order_key.strip().split("-")[-1]
                 new_order_key_no = str(int(prev_order_key_no)+1).zfill(4)
@@ -1167,7 +1167,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                        order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office, \
                        order_project_value, order_remarks, order_comp_location, True, rows
             if not order_key:
-                prev_order_key = connection.execute_query("select order_key from RajElectricalsOrdersNew order by time_stamp "
+                prev_order_key = connection.execute_query("select order_key from RajElectricalsOrdersNew order by order_date "
                                                           "desc limit 1;").iloc[0]['order_key']
                 prev_order_key_no = prev_order_key.strip().split("-")[-1]
                 new_order_key_no = str(int(prev_order_key_no)+1).zfill(4)
