@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebFrom/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/dashboard.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebFrom/dashboard_copy.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebFrom/Update_Orders.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/Update_Orders.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,8 +16,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4607">
-              <caret line="369" column="59" selection-start-line="369" selection-start-column="59" selection-end-line="369" selection-end-column="59" />
+            <state relative-caret-position="157">
+              <caret line="621" column="50" lean-forward="true" selection-start-line="621" selection-start-column="50" selection-end-line="621" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -34,31 +32,28 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WebFrom/Update_Clients.py">
+        <entry file="file://$PROJECT_DIR$/WebFrom/Update_Orders.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1050">
-              <caret line="70" column="22" lean-forward="true" selection-start-line="70" selection-start-column="22" selection-end-line="70" selection-end-column="22" />
-              <folding>
-                <element signature="e#0#45#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-78">
+              <caret line="225" lean-forward="true" selection-start-line="225" selection-end-line="225" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WebFrom/Update_Orders.py">
+        <entry file="file://$PROJECT_DIR$/WebFrom/Marketing Analytics/Client_Analytics.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1313">
-              <caret line="99" column="22" lean-forward="true" selection-start-line="99" selection-start-column="22" selection-end-line="99" selection-end-column="22" />
+            <state relative-caret-position="390">
+              <caret line="26" column="9" lean-forward="true" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/PC_to_DB.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="937">
-              <caret line="229" column="36" lean-forward="true" selection-start-line="229" selection-start-column="36" selection-end-line="229" selection-end-column="36" />
+            <state relative-caret-position="675">
+              <caret line="207" column="21" lean-forward="true" selection-start-line="207" selection-start-column="21" selection-end-line="207" selection-end-column="21" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
               </folding>
@@ -75,11 +70,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="38" selection-start-line="11" selection-start-column="38" selection-end-line="11" selection-end-column="38" />
+            <state relative-caret-position="90">
+              <caret line="6" column="52" selection-start-line="6" selection-start-column="52" selection-end-line="6" selection-end-column="52" />
             </state>
           </provider>
         </entry>
@@ -127,12 +122,12 @@
         <option value="$PROJECT_DIR$/WebFrom/templates/signup.html" />
         <option value="$PROJECT_DIR$/WebFrom/templates/base.html" />
         <option value="$PROJECT_DIR$/trial.py" />
-        <option value="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" />
         <option value="$PROJECT_DIR$/WebFrom/templates/select_firm.html" />
-        <option value="$PROJECT_DIR$/WebFrom/Update_Orders.py" />
         <option value="$PROJECT_DIR$/WebFrom/dashboard_copy.py" />
         <option value="$PROJECT_DIR$/WebFrom/dashboard.py" />
         <option value="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" />
+        <option value="$PROJECT_DIR$/WebFrom/Update_Orders.py" />
+        <option value="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" />
       </list>
     </option>
   </component>
@@ -222,7 +217,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.dashboard">
+  <component name="RunManager" selected="Python.Update_Orders">
     <configuration name="AWSMySQL" type="PythonConfigurationType" factoryName="Python">
       <module name="SD" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -438,9 +433,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Update_Orders" />
         <item itemvalue="Python.dashboard" />
         <item itemvalue="Python.dashboard_copy" />
-        <item itemvalue="Python.Update_Orders" />
         <item itemvalue="Python.DownloadFile" />
         <item itemvalue="Python.trial" />
       </list>
@@ -473,7 +468,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24947146" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24947146" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
@@ -665,24 +660,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="38" selection-start-line="11" selection-start-column="38" selection-end-line="11" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/opt/anaconda3/lib/python3.7/site-packages/dash/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="22" selection-start-column="18" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/templates/select_firm.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="620">
-          <caret line="48" selection-start-line="48" selection-end-line="48" />
         </state>
       </provider>
     </entry>
@@ -700,22 +681,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4607">
-          <caret line="369" column="59" selection-start-line="369" selection-start-column="59" selection-end-line="369" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/dataEntryNewTable.py">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/Marketing Analytics/Client_Analytics.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="28" lean-forward="true" selection-start-line="34" selection-start-column="28" selection-end-line="34" selection-end-column="28" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/Update_Clients.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -727,20 +694,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/Update_Orders.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1313">
-          <caret line="99" column="22" lean-forward="true" selection-start-line="99" selection-start-column="22" selection-end-line="99" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/PC_to_DB.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="937">
-          <caret line="229" column="36" lean-forward="true" selection-start-line="229" selection-start-column="36" selection-end-line="229" selection-end-column="36" />
+        <state relative-caret-position="675">
+          <caret line="207" column="21" lean-forward="true" selection-start-line="207" selection-start-column="21" selection-end-line="207" selection-end-column="21" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/templates/select_firm.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="620">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/Marketing Analytics/Client_Analytics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="26" column="9" lean-forward="true" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/Update_Orders.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-78">
+          <caret line="225" lean-forward="true" selection-start-line="225" selection-end-line="225" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="621" column="50" lean-forward="true" selection-start-line="621" selection-start-column="50" selection-end-line="621" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="52" selection-start-line="6" selection-start-column="52" selection-end-line="6" selection-end-column="52" />
         </state>
       </provider>
     </entry>

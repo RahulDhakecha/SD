@@ -3,7 +3,8 @@ sow = ['Turnkey', '66KV Switchyard', 'BBT', 'Solar', 'Civil/Telecom', 'Liaison',
 lead_status = ['OPEN', 'CONTACTED', 'VISITED', 'ENQUIRY', 'OFFER', 'WON', 'CLOSE', 'HOLD', 'REGRET']
 order_status = ['ON HAND', 'COMPLETE', 'CANCEL', 'REGRET']
 
-master_users = ['rahul.dhakecha@rajgrouponline.com']
+master_users = ['rahul.dhakecha@rajgrouponline.com', 'anil.kathiriya@rajgrouponline.com', 'kinjal.dhakecha@rajgrouponline.com',
+                'rajesh.kunjadiya@rajgrouponline.com']
 
 raj_group_office = ['Raj Vijtech Pvt Ltd', 'Raj Electricals', 'D.N. Syndicate', 'Raj Enterprise', 'Raj Brookite']
 follow_up_person = ['Rahul Dhakecha',
