@@ -219,7 +219,8 @@ fields_dn_syn_orders =  "(enquiry_key, order_key, order_date, po_no, project_des
 
 
 #######################   Raj Enterprise    ################################################
-data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/RajEnterpriseOrders/Bill Records - v2/RajEntr/bill 2015-16.xlsx", sheet_name=0)
+# data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/RajEnterpriseOrders/Bill Records - v2/RajEntr/bill 2015-16.xlsx", sheet_name=0)
+data = connection.execute_query("select * from RajEnterpriseOrders;")
 data = data.fillna(0)
 print(data.shape)
 # print(data.head())
@@ -245,51 +246,107 @@ def split_row(v1, v2, v3, v4, v5, v6):
             connection.insert_query(table_name="RajGroupClientRepresentativeList",
                                     fields=fields_client_rep_list, values=values)
 
-ctr = 1161
+ctr = 1419
 for index, row in data.iterrows():
-    if index < 5:
+    if index <= 100:
         continue
-    # if index > 10:
+    # if index > 200:
     #     break
+
     try:
-        try:
-            date = row['DATE'].strftime("%d-%m-%Y")
-            day = str(date).split("-")[0]
-            month = str(date).split("-")[1]
-            year = str(date).split("-")[2]
-        except:
-            day = str(row['DATE']).split("-")[0]
-            month = str(row['DATE']).split("-")[1]
-            year = str(row['DATE']).split("-")[2]
+        if int(row['year_value'])==4:
+            yr = 2004
+        elif int(row['year_value'])==5:
+            yr = 2005
+        elif int(row['year_value'])==6:
+            yr = 2006
+        elif int(row['year_value'])==7:
+            yr = 2007
+        elif int(row['year_value'])==8:
+            yr = 2008
+        elif int(row['year_value'])==9:
+            yr = 2009
+        elif int(row['year_value'])==10:
+            yr = 2010
+        elif int(row['year_value'])==11:
+            yr = 2011
+        elif int(row['year_value'])==12:
+            yr = 2012
+        elif int(row['year_value'])==13:
+            yr = 2013
+        elif int(row['year_value'])==14:
+            yr = 2014
+        elif int(row['year_value'])==15:
+            yr = 2015
+        elif int(row['year_value'])==16:
+            yr = 2016
+        elif int(row['year_value'])==17:
+            yr = 2017
+        elif int(row['year_value'])==18:
+            yr = 2018
+        elif int(row['year_value'])==19:
+            yr = 2019
+        elif int(row['year_value'])==20:
+            yr = 2020
+        else:
+            yr = 0
+        order_date = str(yr) + "-" + str(int(row['month_value'])).zfill(2) + "-" + str(int(row['day_value'])).zfill(2)
+        # try:
+        #     date = row['DATE'].strftime("%d-%m-%Y")
+        #     day = str(date).split("-")[0]
+        #     month = str(date).split("-")[1]
+        #     year = str(date).split("-")[2]
+        # except:
+        #     day = str(row['DATE']).split("-")[0]
+        #     month = str(row['DATE']).split("-")[1]
+        #     year = str(row['DATE']).split("-")[2]
         ## update RajElectricalsOrdersNew
 
-        order_date = str(year) + "-" + str(int(month)).zfill(2) + "-" + str(int(day)).zfill(2)
+        # order_date = str(year) + "-" + str(int(month)).zfill(2) + "-" + str(int(day)).zfill(2)
 
         ## generate order key
         order_key = "{}-{}-{}-ORD-{}-{}-{}".format("RE",
-                                                   str(row['COMPANY NAME']).strip().split(" ")[0],
-                                                   '',
+                                                   str(row['company']).strip().split(" ")[0],
+                                                   str(row['location']).strip().split(" ")[0],
                                                    '',
                                                    str(dt.now().year),
                                                    str(ctr + 1).zfill(4))
         ctr += 1
 
 
+        # values_re_orders = ['',
+        #                   order_key,
+        #                   order_date,
+        #                   '',
+        #                   row['WORK'],
+        #                   '',
+        #                   row['COMPANY NAME'],
+        #                   '',
+        #                   '',
+        #                   '',
+        #                   '',
+        #                   'COMPLETED',
+        #                   '',
+        #                   "Raj Enterprise",
+        #                   row['Amount'],
+        #                   '',
+        #                   ''
+        #                   ]
         values_re_orders = ['',
                           order_key,
                           order_date,
+                          row['po_no'],
+                          row['project_description'],
                           '',
-                          row['WORK'],
-                          '',
-                          row['COMPANY NAME'],
-                          '',
+                          row['company'],
+                          row['location'],
                           '',
                           '',
                           '',
-                          'COMPLETED',
+                          row['project_status'],
                           '',
                           "Raj Enterprise",
-                          row['Amount'],
+                          row['po_value'],
                           '',
                           ''
                           ]
@@ -298,8 +355,8 @@ for index, row in data.iterrows():
 
         ## update RajGroupClientList
         connection.insert_query(table_name="RajGroupClientList", fields=fields_client_list,
-                                values=[row['COMPANY NAME'],
-                                        '',
+                                values=[row['company'],
+                                        row['location'],
                                         order_key])
 
     except:
