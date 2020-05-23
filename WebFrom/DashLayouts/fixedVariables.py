@@ -61,6 +61,6 @@ raj_group_office_code = {
     'Raj Electricals': 'RJ',
     'D.N. Syndicate': 'DN',
     'Raj Enterprise': 'RE',
-    'Raj Vijtech': 'RV',
+    'Raj Vijtech Pvt Ltd': 'RV',
     'Raj Brookite': 'RB'
 }

@@ -3,6 +3,8 @@ import time
 start_time = time.time()
 import sys, os
 sys.path.append(os.path.join(sys.path[0], 'DashLayouts'))
+import flask
+import io
 from flask import Flask, render_template, flash, request, redirect, url_for, session, jsonify, make_response
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
@@ -39,7 +41,7 @@ import dash_html_components as html
 import dash_core_components as dcc
 
 
-app = Flask(__name__)
+app = Flask('app')
 
 # Flask-WTF requires an encryption key - the string can be anything
 app.config['SECRET_KEY'] = 'some?bamboozle#string-foobar'
@@ -477,16 +479,19 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 3: "+str(triggered_input))
         if triggered_input == 'add_another_offer' and offer_click:
-            prev_sr_no = connection.execute_query("select B.raj_group_office, count(*) as cnt  "
-                                                  "from "
-                                                  "(select enquiry_key "
-                                                  "from RajGroupFollowUpLog "
-                                                  "group by 1) as A "
-                                                  "left join "
-                                                  "RajGroupEnquiryList as B "
-                                                  "on A.enquiry_key=B.enquiry_key "
-                                                  "where raj_group_office='{}' "
-                                                  "group by 1;".format(str(raj_group_office))).iloc[0]['cnt']
+            try:
+                prev_sr_no = connection.execute_query("select B.raj_group_office, count(*) as cnt  "
+                                                      "from "
+                                                      "(select enquiry_key "
+                                                      "from RajGroupFollowUpLog "
+                                                      "group by 1) as A "
+                                                      "left join "
+                                                      "RajGroupEnquiryList as B "
+                                                      "on A.enquiry_key=B.enquiry_key "
+                                                      "where raj_group_office='{}' "
+                                                      "group by 1;".format(str(raj_group_office))).iloc[0]['cnt']
+            except IndexError:
+                prev_sr_no = 0
             rev_no = 1
             existing_offer_entries = []
             if row_id:
@@ -733,6 +738,36 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
             return None
         else:
             return None
+
+
+
+# @dash_app.callback(Output('my-link', 'href'),
+#                    [Input('download_file', 'submit_n_clicks'),],
+#                   )
+# def download_file(download_button):
+#     ctx = dash.callback_context
+#     ctx_msg = json.dumps({
+#         'states': ctx.states,
+#         'triggered': ctx.triggered,
+#         'inputs': ctx.inputs
+#     }, indent=2)
+#     if ctx.triggered:
+#         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
+#         print("Triggered Input 5: " + str(triggered_input))
+#         if triggered_input == 'download_file' and download_button:
+#             # value = connection.execute_query("select * from RajGroupEnquiryList;")
+#             # str_io = io.StringIO()
+#             # value.to_csv(str_io)
+#             #
+#             # mem = io.BytesIO()
+#             # mem.write(str_io.getvalue().encode('utf-8'))
+#             # mem.seek(0)
+#             # str_io.close()
+#             # return flask.send_file(mem,
+#             #                        mimetype='text/csv',
+#             #                        attachment_filename='downloadFile.csv',
+#             #                        as_attachment=True)
+#             return '/dash/urlToDownload'
 
 
 @dash_app3.callback([Output('tabs', 'value'),
@@ -1903,6 +1938,26 @@ def select_firm():
         elif form.firm.data == 'Raj Brookite':
             return redirect('/dash2')
     return render_template('select_firm.html', form=form)
+
+
+# @app.route('/dash/urlToDownload')
+# def download_csv():
+#     # value = flask.request.args.get('value')
+#     # create a dynamic csv or file here using `StringIO`
+#     # (instead of writing to the file system)
+#     value = connection.execute_query("select * from RajGroupEnquiryList;")
+#     str_io = io.StringIO()
+#     value.to_csv(str_io)
+#
+#     mem = io.BytesIO()
+#     mem.write(str_io.getvalue().encode('utf-8'))
+#     mem.seek(0)
+#     str_io.close()
+#     return flask.send_file(mem,
+#                            mimetype='text/csv',
+#                            attachment_filename='downloadFile.csv',
+#                            as_attachment=True)
+
 
 
 # @app.route('/order_entry', methods=['GET', 'POST'])
