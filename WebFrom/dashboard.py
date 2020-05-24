@@ -741,10 +741,10 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
 
 
 
-@dash_app.callback(Output('my-link', 'href'),
-                   [Input('download_file', 'submit_n_clicks'),],
+@dash_app.callback(Output('my_link', 'href'),
+                   [Input('file_options', 'value')],
                   )
-def download_file(download_button):
+def download_file(file_options):
     ctx = dash.callback_context
     ctx_msg = json.dumps({
         'states': ctx.states,
@@ -754,8 +754,10 @@ def download_file(download_button):
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 5: " + str(triggered_input))
-        if triggered_input == 'download_file' and download_button:
-            # value = connection.execute_query("select * from RajGroupEnquiryList;")
+        if triggered_input == 'file_options' and file_options:
+            # value = connection.execute_query(
+            #     "select enquiry_key, entry_date, project_description, scope_of_work, client_name, "
+            #     "client_location, lead_status, raj_group_office, follow_up_person, remarks from RajGroupEnquiryList;")
             # str_io = io.StringIO()
             # value.to_csv(str_io)
             #
@@ -763,11 +765,12 @@ def download_file(download_button):
             # mem.write(str_io.getvalue().encode('utf-8'))
             # mem.seek(0)
             # str_io.close()
-            # return flask.send_file(mem,
+            # x = flask.send_file(mem,
             #                        mimetype='text/csv',
             #                        attachment_filename='downloadFile.csv',
             #                        as_attachment=True)
-            return '/dash/urlToDownload'
+            return '/dash/urlToDownload/'
+        return None
 
 
 @dash_app3.callback([Output('tabs', 'value'),
@@ -1940,12 +1943,13 @@ def select_firm():
     return render_template('select_firm.html', form=form)
 
 
-@app.route('/dash/urlToDownload')
+@app.route('/dash/urlToDownload/')
 def download_csv():
     # value = flask.request.args.get('value')
     # create a dynamic csv or file here using `StringIO`
     # (instead of writing to the file system)
-    value = connection.execute_query("select * from RajGroupEnquiryList;")
+    value = connection.execute_query("select enquiry_key, entry_date, project_description, scope_of_work, client_name, "
+                                     "client_location, lead_status, raj_group_office, follow_up_person, remarks from RajGroupEnquiryList;")
     str_io = io.StringIO()
     value.to_csv(str_io)
 

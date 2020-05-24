@@ -473,17 +473,18 @@ def main_layout():
             dcc.Link('REFRESH', href='/dash/', refresh=True),
         ], className="one columns"),
         html.Div([
-            dcc.ConfirmDialogProvider(
-                children=html.Button(
-                    'Download File',
-                ),
-                id='download_file',
-                message='Are you sure you want to continue?'
-            )
-        ], className="one columns"),
+            dcc.Dropdown(
+                id='file_options',
+                options=[{'value': i, 'label': i} for i in ['Raj Group Enquiry List']],
+                placeholder='Select File to Download'
+            ),
+        ], className="two columns"),
         html.Div([
-            html.A('Download CSV', id='my-link'),
-        ], className="one columns"),
+            html.A('Download', id='my_link'),
+        ], className="two columns"),
+        # html.Div([
+        #     html.A('Download Dispatch Register', href='/dash/urlToDownload', id='my_link'),
+        # ], className="one columns"),
     ], className="row"),
     dcc.Tabs(id='tabs', value='tab-1', children=[
         dcc.Tab(id='tab1', value='tab-1', label='Raj Group Marketing Dashboard', children=[
