@@ -436,14 +436,14 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.SD" />
-      <item itemvalue="Python.actors" />
       <item itemvalue="Python.AWSMySQL" />
-      <item itemvalue="Python.dashboard" />
-      <item itemvalue="Python.trial" />
-      <item itemvalue="Python.Update_Orders" />
       <item itemvalue="Python.DownloadFile" />
+      <item itemvalue="Python.SD" />
+      <item itemvalue="Python.Update_Orders" />
+      <item itemvalue="Python.actors" />
+      <item itemvalue="Python.dashboard" />
       <item itemvalue="Python.dashboard_copy" />
+      <item itemvalue="Python.trial" />
     </list>
     <recent_temporary>
       <list>
