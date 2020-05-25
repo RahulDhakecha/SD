@@ -855,9 +855,8 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                        order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office, \
                        order_project_value, order_remarks, order_comp_location, True, rows
             if not order_key:
-                prev_order_key = connection.execute_query("select order_key from DNSyndicateOrdersNew order by order_date "
-                                                          "desc limit 1;").iloc[0]['order_key']
-                prev_order_key_no = prev_order_key.strip().split("-")[-1]
+                prev_order_key = connection.execute_query("select order_key from DNSyndicateOrdersNew;")['order_key']
+                prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
                 new_order_key_no = str(int(prev_order_key_no)+1).zfill(4)
                 order_key = "{}-{}-{}-ORD-{}-{}-{}".format(raj_group_office_code[order_raj_group_office],
                                                            str(order_client_name).strip().split(" ")[0],
@@ -1208,9 +1207,8 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                        order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office, \
                        order_project_value, order_remarks, order_comp_location, True, rows
             if not order_key:
-                prev_order_key = connection.execute_query("select order_key from RajElectricalsOrdersNew order by order_date "
-                                                          "desc limit 1;").iloc[0]['order_key']
-                prev_order_key_no = prev_order_key.strip().split("-")[-1]
+                prev_order_key = connection.execute_query("select order_key from RajElectricalsOrdersNew;")['order_key']
+                prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
                 new_order_key_no = str(int(prev_order_key_no)+1).zfill(4)
                 order_key = "{}-{}-{}-ORD-{}-{}-{}".format(raj_group_office_code[order_raj_group_office],
                                                            str(order_client_name).strip().split(" ")[0],
