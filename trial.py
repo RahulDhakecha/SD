@@ -21,3 +21,10 @@ tot = [int(s.strip().split("-")[-1]) for s in list(prev_order_key)]
 print(tot)
 print(max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)]))
 
+def add_hyperlink(comp_location, order_key):
+    return '=HYPERLINK("{}","{}")'.format(comp_location, order_key)
+
+value = connection.execute_query("select order_key, order_date, project_description, scope_of_work, client_name, "
+                                     "client_location, project_value, comp_location from RajElectricalsOrdersNew;")
+value['order_key'] = value.apply(lambda row: add_hyperlink(row['comp_location'], row['order_key']), axis=1)
+print(value['order_key'])

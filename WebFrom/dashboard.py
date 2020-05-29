@@ -42,6 +42,7 @@ import dash_core_components as dcc
 
 
 app = Flask('app')
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 10
 
 # Flask-WTF requires an encryption key - the string can be anything
 app.config['SECRET_KEY'] = 'some?bamboozle#string-foobar'
@@ -741,7 +742,7 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
 
 
 
-@dash_app.callback(Output('my_link', 'href'),
+@dash_app2.callback(Output('my_link', 'href'),
                    [Input('file_options', 'value')],
                   )
 def download_file(file_options):
@@ -1941,13 +1942,20 @@ def select_firm():
     return render_template('select_firm.html', form=form)
 
 
+def add_hyperlink(comp_location, order_key):
+    return '=HYPERLINK("{}","{}")'.format(comp_location, order_key)
+
+
 @app.route('/dash/urlToDownload/')
 def download_csv():
     # value = flask.request.args.get('value')
     # create a dynamic csv or file here using `StringIO`
     # (instead of writing to the file system)
-    value = connection.execute_query("select enquiry_key, entry_date, project_description, scope_of_work, client_name, "
-                                     "client_location, lead_status, raj_group_office, follow_up_person, remarks from RajGroupEnquiryList;")
+    # value = connection.execute_query("select enquiry_key, entry_date, project_description, scope_of_work, client_name, "
+    #                                  "client_location, lead_status, raj_group_office, follow_up_person, remarks from RajGroupEnquiryList;")
+    value = connection.execute_query("select order_key, order_date, project_description, scope_of_work, client_name, "
+                                     "client_location, project_value, comp_location from RajElectricalsOrdersNew;")
+    value['order_key'] = value.apply(lambda row: add_hyperlink(row['comp_location'], row['order_key']), axis=1)
     str_io = io.StringIO()
     value.to_csv(str_io)
 
@@ -1957,8 +1965,9 @@ def download_csv():
     str_io.close()
     return flask.send_file(mem,
                            mimetype='text/csv',
-                           attachment_filename='downloadFile.csv',
-                           as_attachment=True)
+                           attachment_filename='Raj_Electricals_Order_List.csv',
+                           as_attachment=True,
+                           cache_timeout=0)
 
 
 

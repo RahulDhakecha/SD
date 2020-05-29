@@ -472,16 +472,6 @@ def main_layout():
         html.Div([
             dcc.Link('REFRESH', href='/dash/', refresh=True),
         ], className="one columns"),
-        html.Div([
-            dcc.Dropdown(
-                id='file_options',
-                options=[{'value': i, 'label': i} for i in ['Raj Group Enquiry List']],
-                placeholder='Select File to Download'
-            ),
-        ], className="two columns"),
-        html.Div([
-            html.A('Download', id='my_link'),
-        ], className="two columns"),
         # html.Div([
         #     html.A('Download Dispatch Register', href='/dash/urlToDownload', id='my_link'),
         # ], className="one columns"),
@@ -845,6 +835,16 @@ def order_layout():
         html.Div([
             dcc.Link('REFRESH', href='/dash2/', refresh=True),
         ], className="one columns"),
+        html.Div([
+            dcc.Dropdown(
+                id='file_options',
+                options=[{'value': i, 'label': i} for i in ['Raj Group Enquiry List']],
+                placeholder='Select File to Download'
+            ),
+        ], className="two columns"),
+        html.Div([
+            html.A('Download', id='my_link'),
+        ], className="two columns"),
     ], className="row"),
     dcc.Tabs(id='tabs', value='tab-1', children=[
         dcc.Tab(id='tab1', value='tab-1', label='Work Order Dashboard', children=[
