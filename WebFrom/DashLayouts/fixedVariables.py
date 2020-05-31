@@ -24,7 +24,8 @@ follow_up_person = ['Rahul Dhakecha',
                     'Chirag Patel',
                     'Jitendra Kotnala',
                     'Ninad',
-                    'Samir']
+                    'Samir',
+                    'Jaimish Modi']
 
 fields_enquiry_list = "(enquiry_key, entry_date, project_description, scope_of_work, client_name, client_location, existing_client, " \
                       "contact_person_name, contact_person_mobile, contact_person_email, internal_lead, external_lead, " \
