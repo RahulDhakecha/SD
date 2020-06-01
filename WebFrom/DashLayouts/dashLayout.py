@@ -741,7 +741,7 @@ def main_layout():
                         placeholder='Tentative Project Value',
                         size=50
                     ),
-                    html.Header("Quotation Number"),
+                    # html.Header("Quotation Number"),
                     dcc.Input(
                         id='quotation_number',
                         type='text',

@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebFrom/Update_Orders.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/Update_Orders.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebFrom/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/dashboard.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trial.py" beforeDir="false" afterPath="$PROJECT_DIR$/trial.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,11 +13,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2584">
-              <caret line="2096" column="113" selection-start-line="2096" selection-start-column="113" selection-end-line="2096" selection-end-column="113" />
+            <state relative-caret-position="3682">
+              <caret line="2396" column="50" lean-forward="true" selection-start-line="2396" selection-start-column="50" selection-end-line="2396" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -29,7 +26,7 @@
         <entry file="file://$PROJECT_DIR$/WebFrom/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="429">
-              <caret line="36" column="14" lean-forward="true" selection-start-line="36" selection-start-column="14" selection-end-line="36" selection-end-column="14" />
+              <caret line="36" column="14" selection-start-line="36" selection-start-column="14" selection-end-line="36" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -43,11 +40,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="305">
-              <caret line="842" column="53" lean-forward="true" selection-start-line="842" selection-start-column="53" selection-end-line="842" selection-end-column="53" />
+            <state relative-caret-position="56">
+              <caret line="748" column="32" selection-start-line="748" selection-start-column="32" selection-end-line="748" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -56,7 +53,7 @@
         <entry file="file://$PROJECT_DIR$/WebFrom/Connections/AWSMySQL.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1035">
-              <caret line="69" column="19" lean-forward="true" selection-start-line="69" selection-start-column="19" selection-end-line="69" selection-end-column="19" />
+              <caret line="69" column="19" selection-start-line="69" selection-start-column="19" selection-end-line="69" selection-end-column="19" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -68,7 +65,7 @@
         <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="120">
-              <caret line="8" column="21" lean-forward="true" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="40" />
+              <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -124,8 +121,8 @@
         <option value="$PROJECT_DIR$/trial.py" />
         <option value="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" />
         <option value="$PROJECT_DIR$/WebFrom/Update_Orders.py" />
-        <option value="$PROJECT_DIR$/WebFrom/dashboard.py" />
         <option value="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" />
+        <option value="$PROJECT_DIR$/WebFrom/dashboard.py" />
       </list>
     </option>
   </component>
@@ -674,14 +671,14 @@
     <entry file="file://$PROJECT_DIR$/WebFrom/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="429">
-          <caret line="36" column="14" lean-forward="true" selection-start-line="36" selection-start-column="14" selection-end-line="36" selection-end-column="14" />
+          <caret line="36" column="14" selection-start-line="36" selection-start-column="14" selection-end-line="36" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/Connections/AWSMySQL.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1035">
-          <caret line="69" column="19" lean-forward="true" selection-start-line="69" selection-start-column="19" selection-end-line="69" selection-end-column="19" />
+          <caret line="69" column="19" selection-start-line="69" selection-start-column="19" selection-end-line="69" selection-end-column="19" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
@@ -722,21 +719,21 @@
     <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
-          <caret line="8" column="21" lean-forward="true" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2584">
-          <caret line="2096" column="113" selection-start-line="2096" selection-start-column="113" selection-end-line="2096" selection-end-column="113" />
+          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="40" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="842" column="53" lean-forward="true" selection-start-line="842" selection-start-column="53" selection-end-line="842" selection-end-column="53" />
+        <state relative-caret-position="56">
+          <caret line="748" column="32" selection-start-line="748" selection-start-column="32" selection-end-line="748" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3682">
+          <caret line="2396" column="50" lean-forward="true" selection-start-line="2396" selection-start-column="50" selection-end-line="2396" selection-end-column="50" />
         </state>
       </provider>
     </entry>

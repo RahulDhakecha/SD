@@ -2365,15 +2365,20 @@ def download_csv():
                                      "client_location, order_no, file_no, order_status, project_incharge, project_value,"
                                      " remarks, comp_location from RajElectricalsOrdersNew;")
     value['order_key'] = value.apply(lambda row: add_hyperlink(row['comp_location'], row['order_key']), axis=1)
-    str_io = io.StringIO()
-    value.to_csv(str_io)
-
-    mem = io.BytesIO()
-    mem.write(str_io.getvalue().encode('utf-8'))
-    mem.seek(0)
-    str_io.close()
-    return flask.send_file(mem,
-                           mimetype='excel',
+    # str_io = io.StringIO()
+    # value.to_csv(str_io)
+    # mem = io.BytesIO()
+    # mem.write(str_io.getvalue().encode('utf-8'))
+    # mem.seek(0)
+    # str_io.close()
+    strIO = io.BytesIO()
+    excel_writer = pd.ExcelWriter(strIO, engine='xlsxwriter')
+    value.to_excel(excel_writer, sheet_name='sheet1')
+    excel_writer.save()
+    excel_data = strIO.getvalue()
+    strIO.seek(0)
+    return flask.send_file(strIO,
+                           # mimetype='excel',
                            # mimetype='text/csv',
                            attachment_filename='Raj_Electricals_Order_List.xlsx',
                            as_attachment=True,
@@ -2385,15 +2390,23 @@ def download_rv_excel():
                                      "client_location, order_no, file_no, order_status, project_incharge, project_value,"
                                      " remarks, comp_location from RajVijtechOrdersNew;")
     value['order_key'] = value.apply(lambda row: add_hyperlink(row['comp_location'], row['order_key']), axis=1)
-    str_io = io.StringIO()
-    value.to_csv(str_io)
+    # str_io = io.StringIO()
+    # value.to_csv(str_io)
+    #
+    # mem = io.BytesIO()
+    # mem.write(str_io.getvalue().encode('utf-8'))
+    # mem.seek(0)
+    # str_io.close()
 
-    mem = io.BytesIO()
-    mem.write(str_io.getvalue().encode('utf-8'))
-    mem.seek(0)
-    str_io.close()
-    return flask.send_file(mem,
-                           mimetype='excel',
+    strIO = io.BytesIO()
+    excel_writer = pd.ExcelWriter(strIO, engine='xlsxwriter')
+    value.to_excel(excel_writer, sheet_name='sheet1')
+    excel_writer.save()
+    excel_data = strIO.getvalue()
+    strIO.seek(0)
+
+    return flask.send_file(strIO,
+                           # mimetype='excel',
                            # mimetype='text/csv',
                            attachment_filename='Raj_Vijtech_Order_List.xlsx',
                            as_attachment=True,
