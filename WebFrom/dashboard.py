@@ -377,7 +377,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
         elif triggered_input == 'graph_lead_stages' and hoverData_lead_status:
             status_var = hoverData_lead_status['points'][0]['x']
             upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
-                                                                           "lead_status='{}';".format(status_var)).to_dict('records')
+                                                                           "lead_status='{}' order by enquiry_key desc;".format(status_var)).to_dict('records')
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
                    upcoming_projects_data_modified
 
@@ -385,7 +385,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
             # connection = AWSMySQLConn()
             status_var = hoverData_service['points'][0]['label']
             upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
-                                                                           "scope_of_work='{}';".format(status_var)).to_dict('records')
+                                                                           "scope_of_work='{}' order by enquiry_key desc;".format(status_var)).to_dict('records')
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
                    upcoming_projects_data_modified
 
@@ -393,7 +393,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
             status_var = hoverData_followup['points'][0]['label']
             upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
                                                                            "lead_status='ENQUIRY' and "
-                                                                       "follow_up_person='{}';".format(status_var)).to_dict('records')
+                                                                       "follow_up_person='{}' order by enquiry_key desc;".format(status_var)).to_dict('records')
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
                    upcoming_projects_data_modified
 
@@ -401,7 +401,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
             status_var = hoverData_offers['points'][0]['label']
             upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
                                                                            "lead_status='OFFER' and "
-                                                                       "follow_up_person='{}';".format(status_var)).to_dict('records')
+                                                                       "follow_up_person='{}' order by enquiry_key desc;".format(status_var)).to_dict('records')
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
                    upcoming_projects_data_modified
 
@@ -524,9 +524,9 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
                         "order by time_stamp desc limit 1;".format(rows[row_id]['enquiry_key'])).iloc[0]['offer_key']
                     try:
                         new_dispatch_no = prev_dispatch_no.replace(prev_dispatch_no.strip().split("-")[-1],
-                                                                   "v{}".format(prev_rev_no + 1))
+                                                                   "rev{}".format(prev_rev_no + 1))
                     except:
-                        new_dispatch_no = str(prev_dispatch_no) + "-v{}".format(prev_rev_no + 1)
+                        new_dispatch_no = str(prev_dispatch_no) + "-rev{}".format(prev_rev_no + 1)
                     existing_offer_entries.append(new_offer_entry_layout("offer_timestamp_id_{}".format(index+1),
                                                                   '',
                                                                   "dispatch_id_{}".format(index+1),
@@ -541,10 +541,7 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
                                                                   ''
                                                                   ))
                 else:
-                    new_dispatch_no = "{}-{}-{}-QTN-{}-{}-{}-v{}".format(raj_group_office_code[raj_group_office],
-                                                                         client_name.strip().split(" ")[0],
-                                                                         client_location.strip().split(" ")[0],
-                                                                         sow_code[scope_of_work],
+                    new_dispatch_no = "{}-QTN-{}-{}-rev{}".format(raj_group_office_code[raj_group_office],
                                                                          str(dt.now().year),
                                                                          str(prev_sr_no + 1).zfill(4),
                                                                          rev_no)
@@ -555,13 +552,10 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
                                                                          "offer_remarks_id_0", '',
                                                                          "offer_submitted_to_id_0", ''))
             else:
-                new_dispatch_no = "{}-{}-{}-QTN-{}-{}-{}-v{}".format(raj_group_office_code[raj_group_office],
-                                                                    client_name.strip().split(" ")[0],
-                                                                    client_location.strip().split(" ")[0],
-                                                                    sow_code[scope_of_work],
-                                                                    str(dt.now().year),
-                                                                    str(prev_sr_no + 1).zfill(4),
-                                                                    rev_no)
+                new_dispatch_no = "{}-QTN-{}-{}-rev{}".format(raj_group_office_code[raj_group_office],
+                                                              str(dt.now().year),
+                                                              str(prev_sr_no + 1).zfill(4),
+                                                              rev_no)
                 existing_offer_entries.append(new_offer_entry_layout("offer_timestamp_id_0", '',
                                                                      "dispatch_id_0", new_dispatch_no,
                                                                      "offer_location_id_0", '',

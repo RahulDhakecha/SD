@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebFrom/Marketing Analytics/Newsletter_Analytics.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/Marketing Analytics/Newsletter_Analytics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebFrom/Update_Orders.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/Update_Orders.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebFrom/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/dashboard.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,11 +14,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3682">
-              <caret line="2396" column="50" lean-forward="true" selection-start-line="2396" selection-start-column="50" selection-end-line="2396" selection-end-column="50" />
+            <state relative-caret-position="-7489">
+              <caret line="402" column="83" selection-start-line="402" selection-start-column="83" selection-end-line="402" selection-end-column="83" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WebFrom/SolarAnalytics/TATA_Scrap.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="540">
+              <caret line="36" column="36" lean-forward="true" selection-start-line="36" selection-start-column="36" selection-end-line="36" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/WebFrom/Update_Orders.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="563" column="11" lean-forward="true" selection-start-line="563" selection-start-column="11" selection-end-line="563" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -43,29 +62,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="56">
-              <caret line="748" column="32" selection-start-line="748" selection-start-column="32" selection-end-line="748" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WebFrom/Connections/AWSMySQL.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1035">
-              <caret line="69" column="19" selection-start-line="69" selection-start-column="19" selection-end-line="69" selection-end-column="19" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="40" />
+            <state relative-caret-position="193">
+              <caret line="811" column="36" selection-start-line="811" selection-start-column="36" selection-end-line="811" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -107,7 +105,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/WebFrom/Marketing Analytics/Client_Analytics.py" />
         <option value="$PROJECT_DIR$/WebFrom/assets/styles.css" />
         <option value="$PROJECT_DIR$/WebFrom/PC_to_DB.py" />
         <option value="$PROJECT_DIR$/WebFrom/templates/home.html" />
@@ -120,13 +117,16 @@
         <option value="$PROJECT_DIR$/WebFrom/Connections/AWSMySQL.py" />
         <option value="$PROJECT_DIR$/trial.py" />
         <option value="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" />
-        <option value="$PROJECT_DIR$/WebFrom/Update_Orders.py" />
         <option value="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" />
+        <option value="$PROJECT_DIR$/WebFrom/Marketing Analytics/Newsletter_Analytics.py" />
+        <option value="$PROJECT_DIR$/WebFrom/Marketing Analytics/Client_Analytics.py" />
+        <option value="$PROJECT_DIR$/WebFrom/SolarAnalytics/TATA_Scrap.py" />
         <option value="$PROJECT_DIR$/WebFrom/dashboard.py" />
+        <option value="$PROJECT_DIR$/WebFrom/Update_Orders.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
+  <component name="ProjectFrameBounds" fullScreen="true">
     <option name="width" value="714" />
     <option name="height" value="900" />
   </component>
@@ -148,24 +148,6 @@
               <item name="SD" type="b2602c69:ProjectViewProjectNode" />
               <item name="SD" type="462c0819:PsiDirectoryNode" />
               <item name="WebFrom" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SD" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SD" type="462c0819:PsiDirectoryNode" />
-              <item name="WebFrom" type="462c0819:PsiDirectoryNode" />
-              <item name="Connections" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SD" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SD" type="462c0819:PsiDirectoryNode" />
-              <item name="WebFrom" type="462c0819:PsiDirectoryNode" />
-              <item name="DashLayouts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SD" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SD" type="462c0819:PsiDirectoryNode" />
-              <item name="WebFrom" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -230,7 +212,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.dashboard">
+  <component name="RunManager" selected="Python.Update_Orders">
     <configuration name="AWSMySQL" type="PythonConfigurationType" factoryName="Python">
       <module name="SD" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -257,19 +239,24 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="DownloadFile" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="Newsletter_Analytics" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="SD" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DB_HOST" value="rajgroup.cyjtpl2nvnjr.us-west-2.rds.amazonaws.com" />
+        <env name="DB_PORT" value="3306" />
+        <env name="DB_NAME" value="RajGroup" />
+        <env name="DB_USER" value="raj_2004" />
+        <env name="DB_PASSWORD" value="India123" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/WebFrom/Connections" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/WebFrom/Marketing Analytics" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/WebFrom/Connections/DownloadFile.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/WebFrom/Marketing Analytics/Newsletter_Analytics.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -296,6 +283,32 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TATA_Scrap" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SD" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DB_HOST" value="rajgroup.cyjtpl2nvnjr.us-west-2.rds.amazonaws.com" />
+        <env name="DB_PORT" value="3306" />
+        <env name="DB_NAME" value="RajGroup" />
+        <env name="DB_USER" value="raj_2004" />
+        <env name="DB_PASSWORD" value="India123" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/WebFrom/SolarAnalytics" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/WebFrom/SolarAnalytics/TATA_Scrap.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -382,32 +395,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="dashboard_copy" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="SD" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-        <env name="DB_HOST" value="rajgroup.cyjtpl2nvnjr.us-west-2.rds.amazonaws.com" />
-        <env name="DB_PORT" value="3306" />
-        <env name="DB_NAME" value="RajGroup" />
-        <env name="DB_USER" value="raj_2004" />
-        <env name="DB_PASSWORD" value="India123" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/WebFrom" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/WebFrom/dashboard_copy.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="trial" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="SD" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -441,16 +428,16 @@
       <item itemvalue="Python.dashboard" />
       <item itemvalue="Python.trial" />
       <item itemvalue="Python.Update_Orders" />
-      <item itemvalue="Python.DownloadFile" />
-      <item itemvalue="Python.dashboard_copy" />
+      <item itemvalue="Python.Newsletter_Analytics" />
+      <item itemvalue="Python.TATA_Scrap" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.dashboard" />
         <item itemvalue="Python.Update_Orders" />
+        <item itemvalue="Python.dashboard" />
+        <item itemvalue="Python.TATA_Scrap" />
+        <item itemvalue="Python.Newsletter_Analytics" />
         <item itemvalue="Python.trial" />
-        <item itemvalue="Python.dashboard_copy" />
-        <item itemvalue="Python.DownloadFile" />
       </list>
     </recent_temporary>
   </component>
@@ -477,7 +464,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="6" />
+    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
@@ -556,16 +543,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="28" column="63" selection-start-line="28" selection-start-column="63" selection-end-line="28" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/Marketing Analytics/Newsletter_Analytics.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="34" lean-forward="true" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -661,13 +638,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/Marketing Analytics/Client_Analytics.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="9" lean-forward="true" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="429">
@@ -675,27 +645,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/Connections/AWSMySQL.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1035">
-          <caret line="69" column="19" selection-start-line="69" selection-start-column="19" selection-end-line="69" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/trial.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="7" column="68" selection-start-line="7" selection-start-column="68" selection-end-line="7" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/Update_Orders.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="519" column="51" selection-start-line="519" selection-start-column="51" selection-end-line="519" selection-end-column="51" />
         </state>
       </provider>
     </entry>
@@ -716,6 +669,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/Marketing Analytics/Newsletter_Analytics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="38" column="124" selection-start-line="38" selection-start-column="124" selection-end-line="38" selection-end-column="124" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7489">
+          <caret line="402" column="83" selection-start-line="402" selection-start-column="83" selection-end-line="402" selection-end-column="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/Connections/AWSMySQL.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="367">
+          <caret line="40" column="29" selection-start-line="40" selection-start-column="29" selection-end-line="40" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -725,15 +702,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="56">
-          <caret line="748" column="32" selection-start-line="748" selection-start-column="32" selection-end-line="748" selection-end-column="32" />
+        <state relative-caret-position="193">
+          <caret line="811" column="36" selection-start-line="811" selection-start-column="36" selection-end-line="811" selection-end-column="36" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
+    <entry file="file://$PROJECT_DIR$/WebFrom/Marketing Analytics/Client_Analytics.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3682">
-          <caret line="2396" column="50" lean-forward="true" selection-start-line="2396" selection-start-column="50" selection-end-line="2396" selection-end-column="50" />
+        <state relative-caret-position="135">
+          <caret line="9" column="32" lean-forward="true" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/SolarAnalytics/TATA_Scrap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="36" column="36" lean-forward="true" selection-start-line="36" selection-start-column="36" selection-end-line="36" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/Update_Orders.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="563" column="11" lean-forward="true" selection-start-line="563" selection-start-column="11" selection-end-line="563" selection-end-column="11" />
         </state>
       </provider>
     </entry>
