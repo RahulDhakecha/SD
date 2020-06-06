@@ -560,11 +560,21 @@ fields_rv_orders =  "(enquiry_key, order_key, order_date, po_no, project_descrip
 
 ###################################  Update Prev Order Key to New Format##############################################################
 
-data = connection.execute_query("select order_key from RajElectricalsOrdersNew limit 10;")
-print(data)
-#
-# for i,j in zip(data.iterrows(), data_from_dashboard.iterrows()):
-#     order_key = "{}-ODR-{}-{}".format("RV", str(dt.now().year), str(j[0] + 1).zfill(4))
-#     link = r'{}'.format(i[1]['material']).replace('\\', '\\\\')
-#     connection.execute("update RajVijtechOrdersNew set comp_location='{}' where order_key='{}'".format(link, order_key))
+data = connection.execute_query("select order_key from RajElectricalsOrdersNew;")
+
+# print(data)
+errors = []
+for i, j in data.iterrows():
+    # if i < 433:
+    #     continue
+    # print(j['order_key'])
+    try:
+        old_order_key = j['order_key']
+        new_order_key = str(j['order_key']).split("-")[0] + "-ODR-" + str(j['order_key']).split("-")[-2] + "-" + \
+                        str(j['order_key']).split("-")[-1]
+        print(new_order_key)
+        connection.execute(
+            "update RajElectricalsOrdersNew set order_key='{}' where order_key='{}';".format(new_order_key, old_order_key))
+    except:
+        errors.append(old_order_key)
 #################################################################################################

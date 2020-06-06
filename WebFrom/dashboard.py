@@ -830,8 +830,8 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
         elif triggered_input == 'order_key_load_button' and order_key_load_button:
             prev_order_key = connection.execute_query("select order_key from RajElectricalsOrdersNew;")['order_key']
             prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
-            if prev_order_key_no <= 2000:
-                prev_order_key_no = 2000
+            # if prev_order_key_no <= 2000:
+            #     prev_order_key_no = 2000
             new_order_key_no = str(int(prev_order_key_no) + 1).zfill(4)
             # order_key = "{}-{}-{}-ORD-{}-{}-{}".format(raj_group_office_code[order_raj_group_office],
             #                                            str(order_client_name).strip().split(" ")[0],
@@ -859,8 +859,8 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
             if not order_order_no:
                 prev_order_key = connection.execute_query("select order_key from RajElectricalsOrdersNew;")['order_key']
                 prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
-                if prev_order_key_no <= 2000:
-                    prev_order_key_no = 2000
+                # if prev_order_key_no <= 2000:
+                #     prev_order_key_no = 2000
                 new_order_key_no = str(int(prev_order_key_no)+1).zfill(4)
                 # order_key = "{}-{}-{}-ORD-{}-{}-{}".format(raj_group_office_code[order_raj_group_office],
                 #                                            str(order_client_name).strip().split(" ")[0],
