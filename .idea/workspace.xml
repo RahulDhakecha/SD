@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4e04302a-6547-436a-8f27-261bc23d3900" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebFrom/SolarAnalytics/TATA_Scrap.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/SolarAnalytics/TATA_Scrap.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebFrom/Update_Orders.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/Update_Orders.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebFrom/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebFrom/dashboard.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,11 +15,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-721">
-              <caret line="910" column="16" selection-start-line="910" selection-start-column="12" selection-end-line="910" selection-end-column="16" />
+            <state relative-caret-position="-7958">
+              <caret line="1454" column="54" lean-forward="true" selection-start-line="1454" selection-start-column="54" selection-end-line="1454" selection-end-column="54" />
             </state>
           </provider>
         </entry>
@@ -26,8 +27,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/SolarAnalytics/TATA_Scrap.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
-              <caret line="16" column="21" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+            <state relative-caret-position="225">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
             </state>
           </provider>
         </entry>
@@ -53,8 +54,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
-              <caret line="811" column="36" selection-start-line="811" selection-start-column="36" selection-end-line="811" selection-end-column="36" />
+            <state relative-caret-position="257">
+              <caret line="812" column="27" lean-forward="true" selection-start-line="812" selection-start-column="27" selection-end-line="812" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -64,6 +65,15 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="105">
               <caret line="7" column="68" selection-start-line="7" selection-start-column="68" selection-end-line="7" selection-end-column="68" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="18" column="36" lean-forward="true" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -107,14 +117,14 @@
         <option value="$PROJECT_DIR$/WebFrom/dashboard_copy.py" />
         <option value="$PROJECT_DIR$/WebFrom/Connections/AWSMySQL.py" />
         <option value="$PROJECT_DIR$/trial.py" />
-        <option value="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" />
-        <option value="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" />
         <option value="$PROJECT_DIR$/WebFrom/Marketing Analytics/Newsletter_Analytics.py" />
         <option value="$PROJECT_DIR$/WebFrom/Marketing Analytics/Client_Analytics.py" />
         <option value="$PROJECT_DIR$/WebFrom/Update_Orders.py" />
-        <option value="$PROJECT_DIR$/WebFrom/SolarAnalytics/TATA_Scrap.py" />
         <option value="$PROJECT_DIR$/WebFrom/SolarAnalytics/Solar_Analytics.py" />
+        <option value="$PROJECT_DIR$/WebFrom/SolarAnalytics/TATA_Scrap.py" />
+        <option value="$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py" />
         <option value="$PROJECT_DIR$/WebFrom/dashboard.py" />
+        <option value="$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py" />
       </list>
     </option>
   </component>
@@ -140,6 +150,12 @@
               <item name="SD" type="b2602c69:ProjectViewProjectNode" />
               <item name="SD" type="462c0819:PsiDirectoryNode" />
               <item name="WebFrom" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SD" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SD" type="462c0819:PsiDirectoryNode" />
+              <item name="WebFrom" type="462c0819:PsiDirectoryNode" />
+              <item name="DashLayouts" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SD" type="b2602c69:ProjectViewProjectNode" />
@@ -463,6 +479,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24947146" />
@@ -669,20 +686,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="811" column="36" selection-start-line="811" selection-start-column="36" selection-end-line="811" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/Marketing Analytics/Client_Analytics.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -720,15 +723,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/SolarAnalytics/TATA_Scrap.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="16" column="21" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+        <state relative-caret-position="225">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/dashLayout.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="812" column="27" lean-forward="true" selection-start-line="812" selection-start-column="27" selection-end-line="812" selection-end-column="27" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WebFrom/dashboard.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-721">
-          <caret line="910" column="16" selection-start-line="910" selection-start-column="12" selection-end-line="910" selection-end-column="16" />
+        <state relative-caret-position="-7958">
+          <caret line="1454" column="54" lean-forward="true" selection-start-line="1454" selection-start-column="54" selection-end-line="1454" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebFrom/DashLayouts/fixedVariables.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="36" lean-forward="true" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
         </state>
       </provider>
     </entry>

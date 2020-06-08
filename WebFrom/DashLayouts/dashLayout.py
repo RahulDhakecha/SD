@@ -599,7 +599,7 @@ def main_layout():
                         size=50,
                         disabled=True
                     ),
-                    html.Header("Entry Date", className="required"),
+                    html.Header("Enquiry Date", className="required"),
                     dcc.DatePickerSingle(
                         id='entry_date',
                         placeholder='Select a Date',
@@ -809,7 +809,8 @@ def order_layout():
     # if company == "DN":
     data_orders = connection.execute_query(
         "select order_key, order_date, project_description, client_name,"
-        "client_location, project_value, scope_of_work, order_status, project_incharge from RajElectricalsOrdersNew order by order_date desc;")
+        "client_location, project_value, scope_of_work, order_status, project_incharge from RajElectricalsOrdersNew "
+        "order by 1 desc;")
     # elif company == "RJ":
     # data_orders = connection.execute_query(
     #     "select order_key, order_date, project_description, client_name,"
@@ -1105,7 +1106,7 @@ def rv_order_layout():
     # if company == "DN":
     data_orders = connection.execute_query(
         "select order_key, order_date, project_description, client_name,"
-        "client_location, project_value, scope_of_work, order_status, project_incharge from RajVijtechOrdersNew order by order_date desc;")
+        "client_location, project_value, scope_of_work, order_status, project_incharge from RajVijtechOrdersNew order by 1 desc;")
     # elif company == "RJ":
     # data_orders = connection.execute_query(
     #     "select order_key, order_date, project_description, client_name,"
@@ -1403,7 +1404,7 @@ def dn_order_layout():
 
     data_orders_dn = connection.execute_query(
         "select order_key, order_date, project_description, client_name,"
-        "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
+        "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by 1 desc;")
 
     data_upcoming_projects = connection.execute_query(
         "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"

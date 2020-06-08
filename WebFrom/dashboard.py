@@ -997,14 +997,14 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
         elif triggered_input == 'orders_scope_pie_chart' and clickData_scope:
             status_var = clickData_scope['points'][0]['label']
             orders_data_modified = connection.execute_query("select * from RajElectricalsOrdersNew where "
-                                                                       "scope_of_work='{}';".format(status_var)).to_dict('records')
+                                                                       "scope_of_work='{}' order by order_key desc;".format(status_var)).to_dict('records')
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
                    orders_data_modified
 
         elif triggered_input == 'orders_status_pie_chart' and clickData_status:
             status_var = clickData_status['points'][0]['label']
             orders_data_modified = connection.execute_query("select * from RajElectricalsOrdersNew where "
-                                                                       "order_status='{}';".format(status_var)).to_dict('records')
+                                                                       "order_status='{}' order by order_key desc;".format(status_var)).to_dict('records')
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
                    orders_data_modified
 
@@ -1189,7 +1189,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
     }, indent=2)
     temp_data = connection.execute_query(
         "select order_key, order_date, project_description, client_name,"
-        "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
+        "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_key desc;")
     rows = temp_data.to_dict('records')
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
@@ -1370,14 +1370,14 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
         elif triggered_input == 'orders_scope_pie_chart' and clickData_scope:
             status_var = clickData_scope['points'][0]['label']
             orders_data_modified = connection.execute_query("select * from DNSyndicateOrdersNew where "
-                                                                       "scope_of_work='{}';".format(status_var)).to_dict('records')
+                                                                       "scope_of_work='{}' order by order_key desc;".format(status_var)).to_dict('records')
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
                    orders_data_modified
 
         elif triggered_input == 'orders_status_pie_chart' and clickData_status:
             status_var = clickData_status['points'][0]['label']
             orders_data_modified = connection.execute_query("select * from DNSyndicateOrdersNew where "
-                                                                       "order_status='{}';".format(status_var)).to_dict('records')
+                                                                       "order_status='{}' order by order_key desc;".format(status_var)).to_dict('records')
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
                    orders_data_modified
 
@@ -1409,7 +1409,7 @@ def order_add_new_contact_entry(contact_click, row_id, submit_button, close_butt
     }, indent=2)
     temp_data = connection.execute_query(
         "select order_key, order_date, project_description, client_name,"
-        "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
+        "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_key desc;")
     rows = temp_data.to_dict('records')
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
