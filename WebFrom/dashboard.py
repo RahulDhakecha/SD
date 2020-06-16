@@ -852,6 +852,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
             # if any of the required field is None, return to the same page
             if order_date is None or order_date == '' or order_scope_of_work is None or order_scope_of_work == '' or order_client_name is None or order_client_name == '' or order_client_location is None or order_client_location == '' or order_status is None or order_status == '' or order_raj_group_office is None or order_raj_group_office == '' or order_project_incharge is None or order_project_incharge == '':
                 print("Return same page")
+                print(order_raj_group_office)
                 return 'tab-2', order_key, order_date, order_po_no, \
                        order_project_description, order_scope_of_work, order_client_name, order_client_location, order_existing_client, \
                        order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office, \
@@ -880,7 +881,10 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                   order_client_location, order_existing_client, order_order_no, order_file_no,
                                   str(order_status).replace("[", '').replace("]", '').replace("'", '') ,
                                   order_project_incharge, str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
-                                order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\')]
+                                order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"',''))]
+                # "{}".format(str(order_comp_location).replace('"',''))]
+                # r'{}'.format(order_comp_location).replace('\\', '\\\\')
+
                 order_values = [i if i else '' for i in order_values]
                 client_values = [order_client_name, order_client_location, order_key]
                 client_values = [i if i else '' for i in client_values]
@@ -937,7 +941,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                                                              "]", '').replace("'", ''),
                                   str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
 
-                                  order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\'), order_key))
+                                  order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"','')), order_key))
 
 
                 ## update RajGroupClientRepresentativeList
@@ -1253,7 +1257,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                   order_client_location, order_existing_client, order_order_no, order_file_no,
                                   str(order_status).replace("[", '').replace("]", '').replace("'", '') ,
                                   order_project_incharge, str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
-                                order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\')]
+                                order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"',''))]
                 order_values = [i if i else '' for i in order_values]
                 client_values = [order_client_name, order_client_location, order_key]
                 client_values = [i if i else '' for i in client_values]
@@ -1310,7 +1314,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                                                              "]", '').replace("'", ''),
                                   str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
 
-                                  order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\'), order_key))
+                                  order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"','')), order_key))
 
 
                 ## update RajGroupClientRepresentativeList
@@ -1964,7 +1968,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                   order_client_location, order_existing_client, order_order_no, order_file_no,
                                   str(order_status).replace("[", '').replace("]", '').replace("'", '') ,
                                   order_project_incharge, str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
-                                order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\')]
+                                order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"',''))]
                 order_values = [i if i else '' for i in order_values]
                 client_values = [order_client_name, order_client_location, order_key]
                 client_values = [i if i else '' for i in client_values]
@@ -2021,7 +2025,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                                                              "]", '').replace("'", ''),
                                   str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
 
-                                  order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\'), order_key))
+                                  order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"','')), order_key))
 
 
                 ## update RajGroupClientRepresentativeList

@@ -109,7 +109,8 @@ def lead_stages_bar_data(data):
                                                             as_index=False).count().rename(
         columns={'enquiry_key': 'cnt'})
     lead_stages_data = []
-    for i in lead_status:
+    display_lead_status = ['OPEN', 'CONTACTED', 'VISITED', 'ENQUIRY', 'OFFER', 'WON', 'CLOSE', 'HOLD', 'REGRET']
+    for i in display_lead_status:
         try:
             lead_stages_data.append(lead_status_data[lead_status_data['lead_status'] == i]['cnt'].iloc[0])
         except:
@@ -117,7 +118,7 @@ def lead_stages_bar_data(data):
 
     lead_stages_bar_data = [
             {
-                'x': lead_status,
+                'x': display_lead_status,
                 'y': lead_stages_data,
                 'type': 'bar',
             },
@@ -551,7 +552,11 @@ def main_layout():
             # Data Table - Upcoming Projects
             dash_table.DataTable(
                 id='upcoming_projects_table',
-                style_data={'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
+                style_data={
+                             'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
+                             # 'whiteSpace': 'normal',
+                             # 'height': 'auto',
+                            },
                 style_table={
                     'maxHeight': '30',
                     'overflowY': 'scroll'
@@ -1047,6 +1052,14 @@ def order_layout():
                         id='order_raj_group_office',
                         options=[{'value': i, 'label': i} for i in raj_group_office]
                     ),
+                    # dcc.Input(
+                    #     id='order_raj_group_office',
+                    #     type='text',
+                    #     placeholder='Raj Electricals',
+                    #     size=50,
+                    #     # disabled=True,
+                    #     value='Raj Electricals'
+                    # ),
                     html.Header("Project Value"),
                     dcc.Input(
                         id='order_project_value',
@@ -1954,6 +1967,8 @@ def dn_order_layout():
 # ], className="page")
 
 if __name__ == '__main__':
-    print(service_wise_pie_data())
+    connection = AWSMySQLConn()
+    data = connection.execute_query("select * from RajGroupEnquiryList;")
+    print(lead_stages_bar_data(data))
 
 
