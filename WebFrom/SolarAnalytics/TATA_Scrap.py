@@ -14,7 +14,7 @@ today = date.today()
 
 
 
-for i in range(-1300,-1400,-1):
+for i in range(-1900,-2000,-1):
     date = today - timedelta(days=-1*i)
     print(date)
     url = "https://monitor.tatapowersolar.com/sds/module/solarlogweb/Statistik.php?top=100&left=70&right=120&bottom=" \
