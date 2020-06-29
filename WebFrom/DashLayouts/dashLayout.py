@@ -811,10 +811,11 @@ def main_layout():
                         dcc.Input(
                             id='enquiry_key',
                             type='text',
+                            disabled='True',
                             className='input1'
                         ),
 
-                        html.P("Entry Date", className='date_1'),
+                        html.P("Enquiry Date", className='date_1'),
                         dcc.DatePickerSingle(
                             id='entry_date',
                             placeholder='Select a Date',
@@ -850,6 +851,13 @@ def main_layout():
                         placeholder="Select a Client",
                         style={'border': 'none', 'border-radius': '20px'}
 
+                    ),
+                    dcc.Loading(
+                        id="loading-1",
+                        type="dot",
+                        fullscreen='true',
+                        style={'background-color': 'rgba(67, 60, 233,0.3)'},
+                        children=html.Div(id="loading-output-1")
                     ),
                     html.P("Client Name"),
                     dcc.Input(
@@ -919,50 +927,26 @@ def main_layout():
                             type='text',
                             className='input1'
                         ),
-                        html.P("Quotation Number"),
-                        dcc.Input(
-                            id='quotation_number',
-                            type='text',
-                            className='input1'
-                        ),
+                        html.Div([
+                            html.P("Quotation Number"),
+                            dcc.Input(
+                                id='quotation_number',
+                                type='text',
+                                className='input1'
+                            ),
+                        ],style={'display':'none'}),
                         html.P("Remarks"),
                         dcc.Input(
                             id='remarks',
                             type='text',
                             className='input1'
                         ),
-                    ], className='squreborder'),
+                    ], className=''),
 
-                    html.Div([
 
-                        dcc.ConfirmDialogProvider(
-                            children=html.Button(
-                                'Submit',
-                                className='allbutton'
-                            ),
-                            id='submit_button',
-                            message='Are you sure you want to continue?'
-                        ),
+                ], className='followup squreborder'),
 
-                        dcc.ConfirmDialogProvider(
-                            children=html.Button(
-                                'Close',
-                                id='close_dash',
-                                className='allbutton'
-                            ),
-                            id='close_button',
-                            message='Are you sure you want to continue?'
-                        ),
-
-                        dcc.ConfirmDialog(
-                            id='modal_display',
-                            message='Please fill all required values marked in RED!!',
-                        ),
-
-                    ], className='squreborder btnn')
-                ], className='followup'),
-
-                html.Div([
+                html.Div([  
                     html.H5("Contact Details", className='modeltitle'),
                     html.Div([
                         html.Div(id="add_contact_div", className='add_dynamic_details',
@@ -997,6 +981,39 @@ def main_layout():
                     ], className='centerbtn'),
                 ], className='squreborder addoffer', style={'display': 'none'}),
 
+                html.Div([
+
+                    dcc.ConfirmDialogProvider(
+                        children=html.Button(
+                            'Submit',
+                            className='allbutton'
+                        ),
+                        id='submit_button',
+                        message='Are you sure you want to continue?'
+                    ),
+                    dcc.Loading(
+                        id="loading-2",
+                        type="circle",
+                        fullscreen='true',
+                        style={'background-color': 'rgba(67, 60, 233,0.3)'},
+                        children=html.Div(id="loading-output-2")
+                    ),
+                    dcc.ConfirmDialogProvider(
+                        children=html.Button(
+                            'Close',
+                            id='close_dash',
+                            className='allbutton'
+                        ),
+                        id='close_button',
+                        message='Are you sure you want to continue?'
+                    ),
+
+                    dcc.ConfirmDialog(
+                        id='modal_display',
+                        message='Please fill all required values marked in RED!!',
+                    ),
+
+                ], className='squreborder btnn btncls')
             ], className='form_container'),
         ], id='show_dashboard', className='body_data4'),
 

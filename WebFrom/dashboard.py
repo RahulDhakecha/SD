@@ -111,6 +111,23 @@ dash_app5.layout = rv_order_layout
 
 
 
+# >>>>>>>>>>>>>>>>>>
+
+
+@dash_app.callback(Output("loading-output-1", "children"), [Input("client_dropdown", "value")])
+def input_triggers_nested(value):
+    time.sleep(1)
+    return value
+
+
+@dash_app.callback(Output("loading-output-2", "children"), [Input("submit_button", "submit_n_clicks")])
+def input_triggers_nested(value):
+    time.sleep(1)
+    return none
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.>>
+
+
 @dash_app.callback([Output('tabs', 'value'),
                     Output('enquiry_key', 'value'),
                     Output('entry_date', 'date'),
