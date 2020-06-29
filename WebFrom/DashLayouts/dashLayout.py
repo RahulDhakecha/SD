@@ -25,13 +25,50 @@ def service_wise_pie_data(data):
                 'labels': services,
                 'values': service_wise_data,
                 'type': 'pie',
+                'textfont': {
+                    'family': 'Roboto Mono',
+                    'color': '#433ce9',
+                    'size': 15
+                },
+                'hoverlabel': {
+                    'bgcolor': '#433ce9',
+                    'bordercolor': '#433ce9',
+                    'font': {
+                        'family': 'Roboto Mono',
+                        'color': '#ddd29d',
+                        'size': 15
+                    }
+                },
+                'marker': {
+                    'colors': ['#e41c59', '#003f5c', '#58508d', 'cyan',
+                               '#bc5090',
+                               '#ff6361',
+                               '#ffa600',
+                               '#63b179',
+                               '#8fa351',
+                               '#b58f40',
+                               '#d2784e',
+                               '#dc6272',
+                               ],
+                    'line': {
+                        'color': '#ddd29d',
+                        'width': 3
+                    }
+                },
             },
         ]
     fig = {
         'data': service_wise_pie_data,
         'layout': {
             'title': 'Raj Group - Service Wise Enquiries',
-            'autosize': True
+            'autosize': True,
+            'font': {
+                'family': 'Roboto Mono',
+                'color': '#433ce9',
+                'size': 15,
+            },
+            'paper_bgcolor': '#ddd29d',
+            'plot_bgcolor': '#ddd29d',
         }
     }
     return fig
@@ -52,17 +89,54 @@ def pending_offers_pie_data(data):
         except:
             pending_offers_data.append(None)
     pending_offers_pie_data_var = [
-            {
-                'labels': follow_up_person,
-                'values': pending_offers_data,
-                'type': 'pie',
-                'hole': 0.5,
+        {
+            'labels': follow_up_person,
+            'values': pending_offers_data,
+            'type': 'pie',
+            'textfont': {
+                'family': 'Roboto Mono',
+                'color': '#433ce9',
+                'size': 15
             },
-        ]
+            'hoverlabel': {
+                'bgcolor': '#433ce9',
+                'bordercolor': '#433ce9',
+                'font': {
+                    'family': 'Roboto Mono',
+                    'color': '#ddd29d',
+                    'size': 15
+                }
+            },
+            'marker': {
+                'colors': ['#e41c59', '#003f5c', '#58508d', 'cyan',
+                           '#bc5090',
+                           '#ff6361',
+                           '#ffa600',
+                           '#ADD8E6',
+                           '#63b179',
+                           '#8fa351',
+                           '#b58f40',
+
+                           ],
+                'line': {
+                    'color': '#ddd29d',
+                    'width': 3
+                }
+            },
+        },
+    ]
     fig = {
         'data': pending_offers_pie_data_var,
         'layout': {
-            'title': 'Raj Group - Pending Offers'
+            'title': 'Raj Group - Pending Offers',
+            'autosize': True,
+            'font': {
+                'family': 'Roboto Mono',
+                'color': '#433ce9',
+                'size': 15,
+            },
+            'paper_bgcolor': '#ddd29d',
+            'plot_bgcolor': '#ddd29d',
         }
     }
     return fig
@@ -89,15 +163,53 @@ def submitted_offers_pie_data(data):
                 'labels': follow_up_person,
                 'values': submitted_offers_data,
                 'type': 'pie',
-                'hole': 0.5,
+                'textfont': {
+                    'family': 'Roboto Mono',
+                    'color': '#433ce9',
+                    'size': 15
+                },
+                'hoverlabel': {
+                    'bgcolor': '#433ce9',
+                    'bordercolor': '#433ce9',
+                    'font': {
+                        'family': 'Roboto Mono',
+                        'color': '#ddd29d',
+                        'size': 15
+                    }
+                },
+                'marker': {
+                    'colors': ['#e41c59', '#003f5c', '#58508d', 'cyan',
+                               '#bc5090',
+                               '#ADD8E6',
+                               '#ff6361',
+                               '#ffa600',
+                               '#63b179',
+                               '#8fa351',
+                               '#b58f40',
+                               '#d2784e',
+                               '#dc6272',
+
+                               ],
+                    'line': {
+                        'color': '#ddd29d',
+                        'width': 3
+                    }
+                },
             },
         ]
     fig = {
-            'data': submitted_offers_pie_data,
-            'layout': {
-                'title': 'Raj Group - Submitted Offers',
-                'autosize': True
-            }
+        'data': submitted_offers_pie_data,
+        'layout': {
+            'title': 'Raj Group - Submitted Offers',
+            'autosize': True,
+            'font': {
+                'family': 'Roboto Mono',
+                'color': '#433ce9',
+                'size': 15,
+            },
+            'paper_bgcolor': '#ddd29d',
+            'plot_bgcolor': '#ddd29d',
+        }
         }
     return fig
 
@@ -121,14 +233,25 @@ def lead_stages_bar_data(data):
                 'x': display_lead_status,
                 'y': lead_stages_data,
                 'type': 'bar',
+                'marker': {
+                    'color': ['white', '#58508d', '#003f5c', 'cyan', 'green', 'yellow', 'red', 'pink'],
+                },
             },
         ]
     fig = {
-            'data': lead_stages_bar_data,
-            'layout': {
-                'title': 'Raj Group - Lead Status'
-            }
+        'data': lead_stages_bar_data,
+        'layout': {
+            'title': 'Raj Group - Lead Status',
+
+            'font': {
+                'family': 'Roboto Mono',
+                'color': '#433ce9',
+                'size': 15,
+            },
+            'paper_bgcolor': '#ddd29d',
+            'plot_bgcolor': '#ddd29d',
         }
+    }
     return fig
 
 
@@ -168,6 +291,23 @@ def weekly_leads_line_data(data):
                 'x': weeks,
                 'y': weekly_leads_cnt_data,
                 'type': 'line',
+                'line': {
+                    'color': '#433ce9',
+                },
+                'textfont': {
+                    'family': 'Roboto Mono',
+                    'color': '#ddd29d',
+                    'size': 15
+                },
+                'hoverlabel': {
+                    'bgcolor': '#433ce9',
+                    'bordercolor': '#433ce9',
+                    'font': {
+                        'family': 'Roboto Mono',
+                        'color': '#ddd29d',
+                        'size': 15
+                    }
+                },
             },
         ]
 
@@ -190,7 +330,15 @@ def weekly_leads_line_data(data):
                     'title': 'Weeks',
                     'range': weeks,
                     'type': "category"
-                }
+                },
+                'font': {
+                    'family': 'Roboto Mono',
+                    'color': '#433ce9',
+                    'size': 15
+                },
+                'paper_bgcolor': '#ddd29d',
+                'plot_bgcolor': '#ddd29d',
+
             }
         }
 
@@ -309,72 +457,65 @@ def new_offer_entry_layout(offer_timestamp_id=None,
                            offer_submitted_to_id=None,
                            offer_submitted_to=None):
     return html.Div([
-                html.Div([
-                    html.Div([
-                        html.Header("Offer Date"),
-                        dcc.Input(
-                            id=offer_timestamp_id,
-                            type='text',
-                            placeholder='Offer Date is locked for User',
-                            size=50,
-                            disabled=True,
-                            value=offer_timestamp
-                        ),
-                    ], className="four columns"),
-                    html.Div([
-                        html.Header("Dispatch Number"),
-                        dcc.Input(
-                            id=dispatch_id,
-                            type='text',
-                            placeholder='Dispatch Number',
-                            size=50,
-                            value=dispatch_value
-                        ),
-                    ], className="four columns"),
-                    html.Div([
-                        html.Header("Offer Location on Local Computer"),
-                        dcc.Input(
-                            id=offer_location_id,
-                            type='text',
-                            placeholder='Offer Location',
-                            size=50,
-                            value=offer_location_value
-                        ),
-                    ], className="four columns"),
-                ], className="row"),
-                html.Div([
-                    html.Div([
-                        html.Header("Offer Submitted By"),
-                        dcc.Input(
-                            id=offer_submitted_id,
-                            type='text',
-                            placeholder='Offer Submitted By',
-                            size=50,
-                            value=offer_submitted_by
-                        ),
-                    ], className="four columns"),
-                    html.Div([
-                        html.Header("Offer Remarks"),
-                        dcc.Input(
-                            id=offer_remarks_id,
-                            type='text',
-                            placeholder='Offer Remakrs',
-                            size=50,
-                            value=offer_remarks
-                        ),
-                    ], className="four columns"),
-                    html.Div([
-                        html.Header("Submitted To"),
-                        dcc.Input(
-                            id=offer_submitted_to_id,
-                            type='text',
-                            placeholder='Offer Submitted To',
-                            size=50,
-                            value=offer_submitted_to
-                        ),
-                    ], className="four columns"),
-                ], className="row")
-            ])
+
+        html.Div([
+            html.Header("Date"),
+            dcc.Input(
+                id=offer_timestamp_id,
+                type='text',
+                style={'width': '100%'},
+                disabled=True,
+                value=offer_timestamp
+            ),
+        ], className="add_itm"),
+        html.Div([
+            html.Header("Dispatch Number"),
+            dcc.Input(
+                id=dispatch_id,
+                type='text',
+                style={'width': '100%'},
+                value=dispatch_value
+            ),
+        ], className="add_itm"),
+        html.Div([
+            html.Header("Location"),
+            dcc.Input(
+                id=offer_location_id,
+                type='text',
+                style={'width': '100%'},
+                value=offer_location_value
+            ),
+        ], className="add_itm"),
+
+        html.Div([
+            html.Header("Submitted By"),
+            dcc.Input(
+                id=offer_submitted_id,
+                type='text',
+                style={'width': '100%'},
+                value=offer_submitted_by
+            ),
+        ], className="add_itm"),
+        html.Div([
+            html.Header("Remarks"),
+            dcc.Input(
+                id=offer_remarks_id,
+                type='text',
+                style={'width': '100%'},
+                value=offer_remarks
+            ),
+        ], className="add_itm"),
+        html.Div([
+            html.Header("Submitted To"),
+            dcc.Input(
+                id=offer_submitted_to_id,
+                type='text',
+                style={'width': '100%'},
+                value=offer_submitted_to
+            ),
+        ], className="add_itm"),
+
+    ], style={'border-bottom': '1px solid darkgoldenrod', 'padding': '10px', 'display': 'grid', 'grid-column-gap':'1.7vw','grid-template-columns': '1fr 1fr 1fr 1fr 1fr 1fr'})
 
 
 def new_contact_entry_layout(contact_person_name_id=None,
@@ -386,47 +527,43 @@ def new_contact_entry_layout(contact_person_name_id=None,
                              contact_person_designation_id=None,
                              contact_person_designation=None):
     return html.Div([
-                html.Div([
-                    html.Header("Contact Person Name"),
-                    dcc.Input(
-                        id=contact_person_name_id,
-                        type='text',
-                        placeholder='Enter Contact Person Name',
-                        size=30,
-                        value=contact_person_name
-                    ),
-                ], className="three columns"),
-                html.Div([
-                    html.Header("Contact Person Mobile"),
-                    dcc.Input(
-                        id=contact_person_mobile_id,
-                        type='text',
-                        placeholder='Enter Contact Person Mobile',
-                        size=30,
-                        value=contact_person_mobile
-                    ),
-                ], className="three columns"),
-                html.Div([
-                    html.Header("Contact Person Email"),
-                    dcc.Input(
-                        id=contact_person_email_id,
-                        type='text',
-                        placeholder='Enter Contact Person Email',
-                        size=30,
-                        value=contact_person_email
-                    ),
-                ], className="three columns"),
-                html.Div([
-                    html.Header("Contact Person Designation"),
-                    dcc.Input(
-                        id=contact_person_designation_id,
-                        type='text',
-                        placeholder='Enter Contact Person Designation',
-                        size=30,
-                        value=contact_person_designation
-                    ),
-                ], className="three columns"),
-            ], className="row")
+        html.Div([
+            html.P("Person Name"),
+            dcc.Input(
+                id=contact_person_name_id,
+                type='text',
+                style={'width': '100%'},
+                value=contact_person_name
+            ),
+        ], className='add_itm'),
+        html.Div([
+            html.P("Person Mobile"),
+            dcc.Input(
+                id=contact_person_mobile_id,
+                type='text',
+                style={'width': '100%'},
+                value=contact_person_mobile
+            ),
+        ], className='add_itm'),
+        html.Div([
+            html.P("Person Email"),
+            dcc.Input(
+                id=contact_person_email_id,
+                type='text',
+                style={'width': '100%'},
+                value=contact_person_email
+            ),
+        ], className='add_itm'),
+        html.Div([
+            html.P("Designation"),
+            dcc.Input(
+                id=contact_person_designation_id,
+                type='text',
+                style={'width': '100%'},
+                value=contact_person_designation
+            ),
+        ], className='add_itm'),
+    ], style={'border-bottom': '1px solid darkgoldenrod', 'padding': '10px', 'display': 'grid', 'grid-column-gap':'1.7vw','grid-template-columns': '1fr 1fr 1fr 1fr'})
 
 
 def main_layout():
@@ -477,43 +614,61 @@ def main_layout():
         #     html.A('Download Dispatch Register', href='/dash/urlToDownload', id='my_link'),
         # ], className="one columns"),
     ], className="row"),
-    dcc.Tabs(id='tabs', value='tab-1', children=[
-        dcc.Tab(id='tab1', value='tab-1', label='Raj Group Marketing Dashboard', children=[
+
+        # Body1 start
+
+        html.Div([
+
             html.Div([
-                html.Div([
-                    # GRAPH - Lead Stages
-                    dcc.Graph(
-                        id='weekly_leads',
-                        figure=weekly_leads_line_data(data_upcoming_projects)
-                    ),
-                ]),
-            ], className="row"),
-            html.Div(
-                [
-                    html.Div(
-                        [html.H6(id="response_time_val", children=response_time_val), html.P("Response Time(in hours)")],
-                        id="response_time",
-                        className="mini_container three columns",
-                    ),
-                    html.Div(
-                        [html.H6(id="lead_to_enquiry_val", children=lead_to_enquiry_val), html.P("Leads to Enquiries")],
-                        id="lead_to_enquiry",
-                        className="mini_container three columns",
-                    ),
-                    html.Div(
-                        [html.H6(id="enquiry_to_offer_val", children=enquiry_to_offer_val), html.P("Enquiries to Offer")],
-                        id="enquiry_to_offer",
-                        className="mini_container three columns",
-                    ),
-                    html.Div(
-                        [html.H6(id="offer_to_won_val", children=offer_to_won_val), html.P("Offer to Won")],
-                        id="offer_to_won",
-                        className="mini_container three columns",
-                    ),
-                ],
+                html.H3('Welcome to Raj Group DashBoard', className='main_title')
+            ]),
+
+            html.Div([
+                # GRAPH - Lead Stages
+                dcc.Graph(
+                    id='weekly_leads',
+                    figure=weekly_leads_line_data(data_upcoming_projects),
+                ),
+            ], className='weeklead'),
+
+            html.Div([
+                html.Div(
+                    [html.P("Response Time(/hours)"),
+                     html.H4(id="response_time_val", children=response_time_val)],
+                    id="response_time",
+                    className="analysis_container",
+                ),
+                html.Div(
+                    [html.P("Leads to Enquiries"),
+                     html.H4(id="lead_to_enquiry_val", children=lead_to_enquiry_val)],
+                    id="lead_to_enquiry",
+                    className="analysis_container",
+                ),
+                html.Div(
+                    [html.P("Enquiries to Offer"),
+                     html.H4(id="enquiry_to_offer_val", children=enquiry_to_offer_val)],
+                    id="enquiry_to_offer",
+                    className="analysis_container",
+                ),
+                html.Div(
+                    [html.P("Offer to Won"), html.H4(id="offer_to_won_val", children=offer_to_won_val)],
+                    id="offer_to_won",
+                    className="analysis_container",
+                ),
+            ],
                 id="info-container",
-                className="row",
+                className="analysis",
             ),
+
+        ], className='body_data1'),
+
+        # Body1 End
+
+        # Body2 start
+        html.Div([
+            html.Div([
+                html.H1('Offer Details', className='main_title')
+            ]),
             html.Div([
                 html.Div([
                     # Pie-chart reflecting submitted offer
@@ -521,288 +676,344 @@ def main_layout():
                         id='submitted_offers_pie_chart',
                         figure=submitted_offers_pie_data(data_upcoming_projects)
                     ),
-                ], className="six columns"),
+                ], className="pie_charts_container"),
 
                 html.Div([
+
                     # Pie-chart reflecting pending offers
                     dcc.Graph(
                         id='pending_offers_pie_chart',
                         figure=pending_offers_pie_data(data_upcoming_projects)
                     ),
-                ], className="pretty_container six columns")
+                ], className="pie_charts_container"),
 
-            ], className="row"),
-            html.Div([
                 html.Div([
-                # GRAPH - Lead Stages
-                dcc.Graph(
-                    id='graph_lead_stages',
-                    figure=lead_stages_bar_data(data_upcoming_projects)
-                ),
-                ], className="six columns"),
-                html.Div([
+
                     # Pie-chart reflecting service wise enquiries
                     dcc.Graph(
                         id='service_wise_pie_chart',
                         figure=service_wise_pie_data(data_upcoming_projects)
                     ),
-                ], className="six columns"),
-            ], className="row"),
+                ], className="pie_charts_container"),
 
-            # Data Table - Upcoming Projects
-            dash_table.DataTable(
-                id='upcoming_projects_table',
-                style_data={
-                             'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
-                             # 'whiteSpace': 'normal',
-                             # 'height': 'auto',
-                            },
-                style_table={
-                    'maxHeight': '30',
-                    'overflowY': 'scroll'
-                },
-                style_header={
-                    'backgroundColor': 'rgb(230, 230, 230)',
-                    'fontWeight': 'bold'
-                },
-                style_cell={
-                    'textAlign': 'center',
-                    'whiteSpace': 'normal',
-                    'minHeight': '30px',
-                    # 'height': 'auto',
-                },
-                style_data_conditional=[
-                    {
-                        'if': {'row_index': 'odd'},
-                        'backgroundColor': 'rgb(248, 248, 248)'
-                    }
-                ],
-                fixed_rows={'headers': True, 'data': 0},
-                css=[{
-                    'selector': '.dash-cell div.dash-cell-value',
-                    'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;',
-                    'min-height': '30px',
-                }],
-                filter_action="native",
-                sort_action="native",
-                sort_mode="multi",
-                row_selectable="single",
-                editable=False,
-                columns=[{"name": i, "id": i} for i in data_upcoming_projects.columns],
-                data=data_upcoming_projects.to_dict('records')
-            ),
-        ]),
-        dcc.Tab(id='tab2', value='tab-2', label='Raj Group Marketing Form', children=[
+                html.Div([
+
+                    # GRAPH - Lead Stages
+                    dcc.Graph(
+                        id='graph_lead_stages',
+                        figure=lead_stages_bar_data(data_upcoming_projects)
+                    ),
+                ], className="pie_charts_container"),
+
+            ], className='pie_charts'),
+        ], className='body_data2'),
+        # Body2 End
+
+        # BOdy3 Start
+        html.Div([
+
+            html.Div([
+
+                # Data Table - Upcoming Projects
+                dash_table.DataTable(
+                    id='upcoming_projects_table',
+                    style_data={'minWidth': '180px', 'width': '180px', 'maxWidth': 'auto'},
+                    style_table={
+
+                        # 'border': '1px solid  #ddd29d',
+                        'overflowY': 'auto',
+                        'minHeight': '110vh', 'height': '110vh', 'maxHeight': '110vh',
+
+                    },
+
+                    style_header={
+                        'backgroundColor': '#433ce9',
+                        'fontWeight': '500',
+                        'color': '#ddd29d',
+                        'borderRadius': '10px',
+                        # 'border': '1px solid  #ddd29d',
+                        'font-family': 'Roboto Mono',
+                        'font-size': '1.3'
+
+                    },
+                    style_cell={
+                        'textAlign': 'center',
+                        'whiteSpace': 'normal',
+                        'minHeight': '30px',
+                        'font-size': 'smaller',
+                        'font-family': 'Roboto Mono',
+
+                        # 'height': 'auto',
+
+                    },
+                    style_data_conditional=[
+                        {'color': '#433ce9',
+                         'backgroundColor': '#ddd29d',
+                         'border': '1px solid  #433ce9',
+
+                         # 'if': {'row_index': 'odd'},
+                         # 'backgroundColor': 'rgb(248, 248, 248)'
+                         }
+                    ],
+                    fixed_rows={'headers': True, 'data': 0},
+                    css=[{
+                        'selector': '.dash-cell div.dash-cell-value',
+                        'rule': 'display: inline; font-family: Roboto Mono;white-space: inherit; overflow: inherit; text-overflow: inherit;',
+
+                    }],
+
+                    filter_action="native",
+                    style_filter_conditional=[{
+                        'backgroundColor': '#ddd29d',
+                        'color': '#433ce9',
+                        'padding': '10px',
+                        'height': '20px',
+                        'border': '2px solid #433cde9',
+                    }],
+                    style_as_list_view=True,
+                    sort_action="native",
+                    sort_mode="multi",
+                    row_selectable="single",
+                    editable=False,
+                    columns=[{"name": i, "id": i} for i in data_upcoming_projects.columns],
+                    data=data_upcoming_projects.to_dict('records')
+                ),
+                # html.Div([
+                #     dcc.Dropdown(
+                #         id='file_options',
+                #         options=[{'value': i, 'label': i} for i in ['Raj Group Enquiry List']],
+                #         placeholder='Select File to Download',
+                #         className='downloadfile',
+                #
+                #     ),
+                #
+                #     html.A(children=[
+                #         html.Img(src='assets/images/download.png', className="logoimg", alt='home'),
+                #
+                #     ], id='my_link'),
+                #
+                # ], style={'display': 'inline'}),
+            ], className='table_data')
+        ], className='body_data3'),
+        # BOdy3 end
+
+        # Body4 start
+
+        html.Div([
             html.Div([
                 html.Div([
-                    html.H3("Project Details"),
-                    html.Header("Enquiry Key"),
-                    dcc.Input(
-                        id='enquiry_key',
-                        type='text',
-                        placeholder='Enquiry Key is locked for User',
-                        size=50,
-                        disabled=True
-                    ),
-                    html.Header("Enquiry Date", className="required"),
-                    dcc.DatePickerSingle(
-                        id='entry_date',
-                        placeholder='Select a Date',
-                        with_portal=True,
-                        display_format="YYYY-MM-DD",
-                    ),
-                    html.Header("Project Description"),
-                    dcc.Input(
-                        id='project_description',
-                        type='text',
-                        placeholder='Enter Project Description',
-                        size=50
-                    ),
-                    html.Header("Scope of Work", className="required"),
-                    dcc.Dropdown(
-                        id='scope_of_work',
-                        options=[{'value': i, 'label': i} for i in sow],
-                    ),
-                ], className="four columns"),
+
+                    html.Div([
+
+                        html.H5("Project Details", className='modeltitle'),
+
+                        html.P("Enquiry Key"),
+                        dcc.Input(
+                            id='enquiry_key',
+                            type='text',
+                            className='input1'
+                        ),
+
+                        html.P("Entry Date", className='date_1'),
+                        dcc.DatePickerSingle(
+                            id='entry_date',
+                            placeholder='Select a Date',
+                            with_portal=True,
+                            display_format="YYYY-MM-DD",
+                            className='input1',
+
+                        ),
+                        html.P("Project Description"),
+                        dcc.Input(
+                            id='project_description',
+                            type='text',
+                            className='input1'
+                        ),
+                        html.P("Scope of Work"),
+                        dcc.Dropdown(
+                            id='scope_of_work',
+                            options=[{'value': i, 'label': i} for i in sow],
+                            className='dropdownc',
+                            placeholder="Select a Work",
+                            style={'border': 'none', 'border-radius': '20px'}
+                        ),
+                    ], className='')
+                ], className='squreborder'),
                 html.Div([
-                    html.H3("Client Details"),
-                    # html.Header("Client Name", className="required"),
-                    # dcc.Input(
-                    #     id='client_name',
-                    #     type='text',
-                    #     placeholder='Enter Client Name',
-                    #     size=50,
-                    # ),
-                    html.Header("Client Dropdown", className="required"),
+                    html.H5("Client Details", className='modeltitle'),
+
+                    html.P("Client Dropdown"),
                     dcc.Dropdown(
                         id='client_dropdown',
-                        options=[{'value': i, 'label': i} for i in client_data]
+                        options=[{'value': i, 'label': i} for i in client_data],
+                        className='dropdownc',
+                        placeholder="Select a Client",
+                        style={'border': 'none', 'border-radius': '20px'}
+
                     ),
-                    html.Header("Client Name", className="required"),
+                    html.P("Client Name"),
                     dcc.Input(
                         id='client_name',
                         type='text',
-                        placeholder='Enter Client Name',
-                        size=50,
+                        required='true',
+                        className='input1'
                     ),
-                    html.Header("Client Location", className="required"),
+                    html.P("Client Location"),
                     dcc.Input(
                         id='client_location',
                         type='text',
-                        placeholder='Enter Client Location',
-                        size=50
+                        required='true',
+                        className='input1'
                     ),
-                    html.Header("Existing Client"),
+                    html.P("Existing Client"),
                     dcc.RadioItems(
                         id='existing_client',
                         options=[{'value': 'YES', 'label': 'YES'},
                                  {'value': 'NO', 'label': 'NO'}]
                     ),
-                ], className="four columns"),
-            ], className="row"),
+                ], className='squreborder'),
 
-            html.H3("Contact Details"),
-            html.Div([
-                html.Div(id="add_contact_div"),
-                html.Header("Add Another Contact"),
-                dcc.ConfirmDialogProvider(
-                    children=html.Button(
-                        'Add Contact',
-                    ),
-                    id='add_another_contact',
-                    message='Are you sure you want to continue?'
-                ),
-            ], className="row"),
-
-            html.H3("Internal Follow Up"),
-
-            html.Div([
-                html.Div([
-                    html.Header("Internal Lead"),
-                    dcc.Input(
-                        id='internal_lead',
-                        type='text',
-                        placeholder='Internal Lead',
-                        size=50
-                    ),
-                    html.Header("External Lead"),
-                    dcc.Input(
-                        id='external_lead',
-                        type='text',
-                        placeholder='External Lead',
-                        size=50
-                    ),
-                    html.Header("Status", className="required"),
-                    dcc.Dropdown(
-                        id='lead_status',
-                        options=[{'value': i, 'label': i} for i in lead_status]
-                    ),
-                ], className="four columns"),
-                # html.Div([
-                #     html.Header("Contact Date"),
-                #     dcc.DatePickerSingle(
-                #         id='contact_date',
-                #         placeholder='Contact Date',
-                #         with_portal=True,
-                #         display_format="YYYY-MM-DD",
-                #     ),
-                #     html.Header("Visit Date"),
-                #     dcc.DatePickerSingle(
-                #         id='visit_date',
-                #         placeholder='Visit Date',
-                #         with_portal=True,
-                #         display_format="YYYY-MM-DD",
-                #     ),
-                #     html.Header("Enquiry Date"),
-                #     dcc.DatePickerSingle(
-                #         id='enquiry_date',
-                #         placeholder='Enquiry Date',
-                #         with_portal=True,
-                #         display_format="YYYY-MM-DD",
-                #     ),
-                #     html.Header("Offer Date"),
-                #     dcc.DatePickerSingle(
-                #         id='offer_date',
-                #         placeholder='Offer Date',
-                #         with_portal=True,
-                #         display_format="YYYY-MM-DD"
-                #     ),
-                # ], className="four columns"),
-                html.Div([
-                    html.Header("Raj Group Office", className="required"),
-                    dcc.Dropdown(
-                        id='raj_group_office',
-                        options=[{'value': i, 'label': i} for i in raj_group_office]
-                    ),
-                    html.Header("Follow Up Person", className="required"),
-                    dcc.Dropdown(
-                        id='follow_up_person',
-                        options=[{'value': i, 'label': i} for i in follow_up_person]
-                    ),
-                    html.Header("Tentative Project Value"),
-                    dcc.Input(
-                        id='tentative_project_value',
-                        type='text',
-                        placeholder='Tentative Project Value',
-                        size=50
-                    ),
-                    # html.Header("Quotation Number"),
-                    dcc.Input(
-                        id='quotation_number',
-                        type='text',
-                        placeholder='Quotation Number',
-                        size=50,
-                        style={'display': 'none'}
-                    ),
-                    html.Header("Remarks"),
-                    dcc.Input(
-                        id='remarks',
-                        type='text',
-                        placeholder='Remarks',
-                        size=50
-                    ),
-                ], className="four columns"),
-            ], className="row"),
-            html.Div(id="add_offer_hide", children=[
-                html.H3("Offer Details"),
                 html.Div([
                     html.Div([
-                        html.Header("Add Another Offer"),
+                        html.H5("Internal Follow Up", className='modeltitle'),
+                        html.P("Internal Lead"),
+                        dcc.Input(
+                            id='internal_lead',
+                            type='text',
+                            className='input1'
+                        ),
+                        html.P("External Lead"),
+                        dcc.Input(
+                            id='external_lead',
+                            type='text',
+                            className='input1'
+                        ),
+                        html.P("Status"),
+                        dcc.Dropdown(
+                            id='lead_status',
+                            options=[{'value': i, 'label': i} for i in lead_status],
+                            className='dropdownc',
+                            placeholder="Select a lead status",
+                            style={'border': 'none', 'border-radius': '20px'}
+                        ),
+
+                        html.P("Raj Group Office"),
+                        dcc.Dropdown(
+                            id='raj_group_office',
+                            options=[{'value': i, 'label': i} for i in raj_group_office],
+                            className='dropdownc',
+                            placeholder="Select an office",
+                            style={'border': 'none', 'border-radius': '20px'}
+                        ),
+                        html.P("Follow Up Person"),
+                        dcc.Dropdown(
+                            id='follow_up_person',
+                            options=[{'value': i, 'label': i} for i in follow_up_person],
+                            className='dropdownc',
+                            placeholder="Select a Work",
+                            style={'border': 'none', 'border-radius': '20px'}
+                        ),
+                        html.P("Tentative Project Value"),
+                        dcc.Input(
+                            id='tentative_project_value',
+                            type='text',
+                            className='input1'
+                        ),
+                        html.P("Quotation Number"),
+                        dcc.Input(
+                            id='quotation_number',
+                            type='text',
+                            className='input1'
+                        ),
+                        html.P("Remarks"),
+                        dcc.Input(
+                            id='remarks',
+                            type='text',
+                            className='input1'
+                        ),
+                    ], className='squreborder'),
+
+                    html.Div([
+
+                        dcc.ConfirmDialogProvider(
+                            children=html.Button(
+                                'Submit',
+                                className='allbutton'
+                            ),
+                            id='submit_button',
+                            message='Are you sure you want to continue?'
+                        ),
+
+                        dcc.ConfirmDialogProvider(
+                            children=html.Button(
+                                'Close',
+                                id='close_dash',
+                                className='allbutton'
+                            ),
+                            id='close_button',
+                            message='Are you sure you want to continue?'
+                        ),
+
+                        dcc.ConfirmDialog(
+                            id='modal_display',
+                            message='Please fill all required values marked in RED!!',
+                        ),
+
+                    ], className='squreborder btnn')
+                ], className='followup'),
+
+                html.Div([
+                    html.H5("Contact Details", className='modeltitle'),
+                    html.Div([
+                        html.Div(id="add_contact_div", className='add_dynamic_details',
+                                 style={'margin-bottom': '10px'}),
+                        html.Div([
+                            dcc.ConfirmDialogProvider(
+                                children=html.Button(
+                                    'Add Contact',
+                                    className='allbutton alignbtn'
+                                ),
+                                id='add_another_contact',
+                                message='Are you sure you want to continue?'
+                            ),
+                        ], className='centerbtn'),
+                    ]),
+
+                ], className='squreborder addcontect', style={'position': 'relative'}),
+
+                html.Div(id="add_offer_hide", children=[
+                    html.H5("Offer Details", className='modeltitle'),
+                    html.Div(id="add_offer_div", className='add_dynamic_details', style={'margin-bottom': '10px'}),
+                    # html.P("Add Another Offer"),
+                    html.Div([
                         dcc.ConfirmDialogProvider(
                             children=html.Button(
                                 'Add Offer',
+                                className='allbutton alignbtn'
                             ),
                             id='add_another_offer',
                             message='Are you sure you want to continue?'
                         ),
-                    ], className="four columns")
-                ], className="row"),
-            ], style={'display': 'none'}),
-            html.Div(id="add_offer_div"),
-            html.Div([
-                html.Div([
-                    dcc.ConfirmDialogProvider(
-                        children=html.Button(
-                        'Submit',
-                        ),
-                        id='submit_button',
-                        message='Are you sure you want to continue?'
-                    ),
-                ], className="six columns"),
-                html.Div([
-                    dcc.ConfirmDialogProvider(
-                        children=html.Button(
-                        'Close',
-                        ),
-                        id='close_button',
-                        message='Are you sure you want to continue?'
-                    )
-                ], className="six columns"),
-                dcc.ConfirmDialog(
-                    id='modal_display',
-                    message='Please fill all required values marked in RED!!',
-                ),
-            ], className="row"),
+                    ], className='centerbtn'),
+                ], className='squreborder addoffer', style={'display': 'none'}),
+
+            ], className='form_container'),
+        ], id='show_dashboard', className='body_data4'),
+
+        # Body4 End
+
+
+
+
+    dcc.Tabs(id='tabs', value='tab-1', children=[
+        dcc.Tab(id='tab1', value='tab-1', label='Raj Group Marketing Dashboard', children=[
+
+
+
+        ]),
+        dcc.Tab(id='tab2', value='tab-2', label='Raj Group Marketing Form', children=[
+
+
         ]),
     ]),
     html.Div(id='tabs-content')
