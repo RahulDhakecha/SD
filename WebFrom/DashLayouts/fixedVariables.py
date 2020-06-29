@@ -1,10 +1,10 @@
 sow = ['Turnkey', '66KV Switchyard', 'BBT', 'Solar', 'Civil/Telecom', 'Liaison', 'Testing', 'Maintenance/Servicing',
        'Retrofitting', 'SITC', 'Supply only', 'ITC only']
-lead_status = ['OPEN', 'CONTACTED', 'VISITED', 'ENQUIRY', 'OFFER', 'WON', 'CLOSE', 'HOLD', 'REGRET']
+lead_status = ['OPEN', 'CONTACTED', 'VISITED', 'ENQUIRY', 'OFFER', 'WON', 'CLOSE', 'HOLD', 'REGRET', 'LETTER']
 order_status = ['ON HAND', 'COMPLETE', 'CANCEL', 'REGRET']
 
 master_users = ['rahul.dhakecha@rajgrouponline.com', 'anil.kathiriya@rajgrouponline.com', 'kinjal.dhakecha@rajgrouponline.com',
-                'rajesh.kunjadiya@rajgrouponline.com']
+                'rajesh.kunjadiya@rajgrouponline.com', 'megha.gangani@rajgrouponline.com']
 
 raj_group_office = ['Raj Vijtech Pvt Ltd', 'Raj Electricals', 'D.N. Syndicate', 'Raj Enterprise', 'Raj Brookite']
 follow_up_person = ['Rahul Dhakecha',
@@ -24,7 +24,8 @@ follow_up_person = ['Rahul Dhakecha',
                     'Chirag Patel',
                     'Jitendra Kotnala',
                     'Ninad',
-                    'Samir']
+                    'Samir',
+                    'Jaimish Modi']
 
 fields_enquiry_list = "(enquiry_key, entry_date, project_description, scope_of_work, client_name, client_location, existing_client, " \
                       "contact_person_name, contact_person_mobile, contact_person_email, internal_lead, external_lead, " \
