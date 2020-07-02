@@ -123,7 +123,7 @@ def input_triggers_nested(value):
 @dash_app.callback(Output("loading-output-2", "children"), [Input("submit_button", "submit_n_clicks")])
 def input_triggers_nested(value):
     time.sleep(1)
-    return none
+    return None
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.>>
 
