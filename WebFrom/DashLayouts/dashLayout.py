@@ -515,7 +515,7 @@ def new_offer_entry_layout(offer_timestamp_id=None,
             ),
         ], className="add_itm"),
 
-    ], style={'border-bottom': '1px solid darkgoldenrod', 'padding': '10px', 'display': 'grid', 'grid-column-gap':'1.7vw','grid-template-columns': '1fr 1fr 1fr 1fr 1fr 1fr'})
+    ], style={'border-bottom': '1px solid darkgoldenrod', 'padding': '10px', 'display': 'grid', 'grid-column-gap':'1.7vw','grid-template-columns': '1fr 1fr 1fr','grid-template-rows':'1fr 1fr'})
 
 
 def new_contact_entry_layout(contact_person_name_id=None,
@@ -615,409 +615,6 @@ def main_layout():
         # ], className="one columns"),
     ], className="row"),
 
-        # Body1 start
-
-        html.Div([
-
-            html.Div([
-                html.H3('Welcome to Raj Group DashBoard', className='main_title')
-            ]),
-
-            html.Div([
-                # GRAPH - Lead Stages
-                dcc.Graph(
-                    id='weekly_leads',
-                    figure=weekly_leads_line_data(data_upcoming_projects),
-                ),
-            ], className='weeklead'),
-
-            html.Div([
-                html.Div(
-                    [html.P("Response Time(/hours)"),
-                     html.H4(id="response_time_val", children=response_time_val)],
-                    id="response_time",
-                    className="analysis_container",
-                ),
-                html.Div(
-                    [html.P("Leads to Enquiries"),
-                     html.H4(id="lead_to_enquiry_val", children=lead_to_enquiry_val)],
-                    id="lead_to_enquiry",
-                    className="analysis_container",
-                ),
-                html.Div(
-                    [html.P("Enquiries to Offer"),
-                     html.H4(id="enquiry_to_offer_val", children=enquiry_to_offer_val)],
-                    id="enquiry_to_offer",
-                    className="analysis_container",
-                ),
-                html.Div(
-                    [html.P("Offer to Won"), html.H4(id="offer_to_won_val", children=offer_to_won_val)],
-                    id="offer_to_won",
-                    className="analysis_container",
-                ),
-            ],
-                id="info-container",
-                className="analysis",
-            ),
-
-        ], className='body_data1'),
-
-        # Body1 End
-
-        # Body2 start
-        html.Div([
-            html.Div([
-                html.H1('Offer Details', className='main_title')
-            ]),
-            html.Div([
-                html.Div([
-                    # Pie-chart reflecting submitted offer
-                    dcc.Graph(
-                        id='submitted_offers_pie_chart',
-                        figure=submitted_offers_pie_data(data_upcoming_projects)
-                    ),
-                ], className="pie_charts_container"),
-
-                html.Div([
-
-                    # Pie-chart reflecting pending offers
-                    dcc.Graph(
-                        id='pending_offers_pie_chart',
-                        figure=pending_offers_pie_data(data_upcoming_projects)
-                    ),
-                ], className="pie_charts_container"),
-
-                html.Div([
-
-                    # Pie-chart reflecting service wise enquiries
-                    dcc.Graph(
-                        id='service_wise_pie_chart',
-                        figure=service_wise_pie_data(data_upcoming_projects)
-                    ),
-                ], className="pie_charts_container"),
-
-                html.Div([
-
-                    # GRAPH - Lead Stages
-                    dcc.Graph(
-                        id='graph_lead_stages',
-                        figure=lead_stages_bar_data(data_upcoming_projects)
-                    ),
-                ], className="pie_charts_container"),
-
-            ], className='pie_charts'),
-        ], className='body_data2'),
-        # Body2 End
-
-        # BOdy3 Start
-        html.Div([
-
-            html.Div([
-
-                # Data Table - Upcoming Projects
-                dash_table.DataTable(
-                    id='upcoming_projects_table',
-                    style_data={'minWidth': '180px', 'width': '180px', 'maxWidth': 'auto'},
-                    style_table={
-
-                        # 'border': '1px solid  #ddd29d',
-                        'overflowY': 'auto',
-                        'minHeight': '110vh', 'height': '110vh', 'maxHeight': '110vh',
-
-                    },
-
-                    style_header={
-                        'backgroundColor': '#433ce9',
-                        'fontWeight': '500',
-                        'color': '#ddd29d',
-                        'borderRadius': '10px',
-                        # 'border': '1px solid  #ddd29d',
-                        'font-family': 'Roboto Mono',
-                        'font-size': '1.3'
-
-                    },
-                    style_cell={
-                        'textAlign': 'center',
-                        'whiteSpace': 'normal',
-                        'minHeight': '30px',
-                        'font-size': 'smaller',
-                        'font-family': 'Roboto Mono',
-
-                        # 'height': 'auto',
-
-                    },
-                    style_data_conditional=[
-                        {'color': '#433ce9',
-                         'backgroundColor': '#ddd29d',
-                         'border': '1px solid  #433ce9',
-
-                         # 'if': {'row_index': 'odd'},
-                         # 'backgroundColor': 'rgb(248, 248, 248)'
-                         }
-                    ],
-                    fixed_rows={'headers': True, 'data': 0},
-                    css=[{
-                        'selector': '.dash-cell div.dash-cell-value',
-                        'rule': 'display: inline; font-family: Roboto Mono;white-space: inherit; overflow: inherit; text-overflow: inherit;',
-
-                    }],
-
-                    filter_action="native",
-                    style_filter_conditional=[{
-                        'backgroundColor': '#ddd29d',
-                        'color': '#433ce9',
-                        'padding': '10px',
-                        'height': '20px',
-                        'border': '2px solid #433cde9',
-                    }],
-                    style_as_list_view=True,
-                    sort_action="native",
-                    sort_mode="multi",
-                    row_selectable="single",
-                    editable=False,
-                    columns=[{"name": i, "id": i} for i in data_upcoming_projects.columns],
-                    data=data_upcoming_projects.to_dict('records')
-                ),
-                # html.Div([
-                #     dcc.Dropdown(
-                #         id='file_options',
-                #         options=[{'value': i, 'label': i} for i in ['Raj Group Enquiry List']],
-                #         placeholder='Select File to Download',
-                #         className='downloadfile',
-                #
-                #     ),
-                #
-                #     html.A(children=[
-                #         html.Img(src='assets/images/download.png', className="logoimg", alt='home'),
-                #
-                #     ], id='my_link'),
-                #
-                # ], style={'display': 'inline'}),
-            ], className='table_data')
-        ], className='body_data3'),
-        # BOdy3 end
-
-        # Body4 start
-
-        html.Div([
-            html.Div([
-                html.Div([
-
-                    html.Div([
-
-                        html.H5("Project Details", className='modeltitle'),
-
-                        html.P("Enquiry Key"),
-                        dcc.Input(
-                            id='enquiry_key',
-                            type='text',
-                            disabled='True',
-                            className='input1'
-                        ),
-
-                        html.P("Enquiry Date", className='date_1'),
-                        dcc.DatePickerSingle(
-                            id='entry_date',
-                            placeholder='Select a Date',
-                            with_portal=True,
-                            display_format="YYYY-MM-DD",
-                            className='input1',
-
-                        ),
-                        html.P("Project Description"),
-                        dcc.Input(
-                            id='project_description',
-                            type='text',
-                            className='input1'
-                        ),
-                        html.P("Scope of Work"),
-                        dcc.Dropdown(
-                            id='scope_of_work',
-                            options=[{'value': i, 'label': i} for i in sow],
-                            className='dropdownc',
-                            placeholder="Select a Work",
-                            style={'border': 'none', 'border-radius': '20px'}
-                        ),
-                    ], className='')
-                ], className='squreborder'),
-                html.Div([
-                    html.H5("Client Details", className='modeltitle'),
-
-                    html.P("Client Dropdown"),
-                    dcc.Dropdown(
-                        id='client_dropdown',
-                        options=[{'value': i, 'label': i} for i in client_data],
-                        className='dropdownc',
-                        placeholder="Select a Client",
-                        style={'border': 'none', 'border-radius': '20px'}
-
-                    ),
-                    dcc.Loading(
-                        id="loading-1",
-                        type="dot",
-                        fullscreen='true',
-                        style={'background-color': 'rgba(67, 60, 233,0.3)'},
-                        children=html.Div(id="loading-output-1")
-                    ),
-                    html.P("Client Name"),
-                    dcc.Input(
-                        id='client_name',
-                        type='text',
-                        required='true',
-                        className='input1'
-                    ),
-                    html.P("Client Location"),
-                    dcc.Input(
-                        id='client_location',
-                        type='text',
-                        required='true',
-                        className='input1'
-                    ),
-                    html.P("Existing Client"),
-                    dcc.RadioItems(
-                        id='existing_client',
-                        options=[{'value': 'YES', 'label': 'YES'},
-                                 {'value': 'NO', 'label': 'NO'}]
-                    ),
-                ], className='squreborder'),
-
-                html.Div([
-                    html.Div([
-                        html.H5("Internal Follow Up", className='modeltitle'),
-                        html.P("Internal Lead"),
-                        dcc.Input(
-                            id='internal_lead',
-                            type='text',
-                            className='input1'
-                        ),
-                        html.P("External Lead"),
-                        dcc.Input(
-                            id='external_lead',
-                            type='text',
-                            className='input1'
-                        ),
-                        html.P("Status"),
-                        dcc.Dropdown(
-                            id='lead_status',
-                            options=[{'value': i, 'label': i} for i in lead_status],
-                            className='dropdownc',
-                            placeholder="Select a lead status",
-                            style={'border': 'none', 'border-radius': '20px'}
-                        ),
-
-                        html.P("Raj Group Office"),
-                        dcc.Dropdown(
-                            id='raj_group_office',
-                            options=[{'value': i, 'label': i} for i in raj_group_office],
-                            className='dropdownc',
-                            placeholder="Select an office",
-                            style={'border': 'none', 'border-radius': '20px'}
-                        ),
-                        html.P("Follow Up Person"),
-                        dcc.Dropdown(
-                            id='follow_up_person',
-                            options=[{'value': i, 'label': i} for i in follow_up_person],
-                            className='dropdownc',
-                            placeholder="Select a Work",
-                            style={'border': 'none', 'border-radius': '20px'}
-                        ),
-                        html.P("Tentative Project Value"),
-                        dcc.Input(
-                            id='tentative_project_value',
-                            type='text',
-                            className='input1'
-                        ),
-                        html.Div([
-                            html.P("Quotation Number"),
-                            dcc.Input(
-                                id='quotation_number',
-                                type='text',
-                                className='input1'
-                            ),
-                        ],style={'display':'none'}),
-                        html.P("Remarks"),
-                        dcc.Input(
-                            id='remarks',
-                            type='text',
-                            className='input1'
-                        ),
-                    ], className=''),
-
-
-                ], className='followup squreborder'),
-
-                html.Div([  
-                    html.H5("Contact Details", className='modeltitle'),
-                    html.Div([
-                        html.Div(id="add_contact_div", className='add_dynamic_details',
-                                 style={'margin-bottom': '10px'}),
-                        html.Div([
-                            dcc.ConfirmDialogProvider(
-                                children=html.Button(
-                                    'Add Contact',
-                                    className='allbutton alignbtn'
-                                ),
-                                id='add_another_contact',
-                                message='Are you sure you want to continue?'
-                            ),
-                        ], className='centerbtn'),
-                    ]),
-
-                ], className='squreborder addcontect', style={'position': 'relative'}),
-
-                html.Div(id="add_offer_hide", children=[
-                    html.H5("Offer Details", className='modeltitle'),
-                    html.Div(id="add_offer_div", className='add_dynamic_details', style={'margin-bottom': '10px'}),
-                    # html.P("Add Another Offer"),
-                    html.Div([
-                        dcc.ConfirmDialogProvider(
-                            children=html.Button(
-                                'Add Offer',
-                                className='allbutton alignbtn'
-                            ),
-                            id='add_another_offer',
-                            message='Are you sure you want to continue?'
-                        ),
-                    ], className='centerbtn'),
-                ], className='squreborder addoffer', style={'display': 'none'}),
-
-                html.Div([
-
-                    dcc.ConfirmDialogProvider(
-                        children=html.Button(
-                            'Submit',
-                            className='allbutton'
-                        ),
-                        id='submit_button',
-                        message='Are you sure you want to continue?'
-                    ),
-                    dcc.Loading(
-                        id="loading-2",
-                        type="circle",
-                        fullscreen='true',
-                        style={'background-color': 'rgba(67, 60, 233,0.3)'},
-                        children=html.Div(id="loading-output-2")
-                    ),
-                    dcc.ConfirmDialogProvider(
-                        children=html.Button(
-                            'Close',
-                            id='close_dash',
-                            className='allbutton'
-                        ),
-                        id='close_button',
-                        message='Are you sure you want to continue?'
-                    ),
-
-                    dcc.ConfirmDialog(
-                        id='modal_display',
-                        message='Please fill all required values marked in RED!!',
-                    ),
-
-                ], className='squreborder btnn btncls')
-            ], className='form_container'),
-        ], id='show_dashboard', className='body_data4'),
-
-        # Body4 End
 
 
 
@@ -1025,11 +622,411 @@ def main_layout():
     dcc.Tabs(id='tabs', value='tab-1', children=[
         dcc.Tab(id='tab1', value='tab-1', label='Raj Group Marketing Dashboard', children=[
 
+            # Body1 start
 
+            html.Div([
+
+                html.Div([
+                    html.H3('Welcome to Raj Group DashBoard', className='main_title')
+                ]),
+
+                html.Div([
+                    # GRAPH - Lead Stages
+                    dcc.Graph(
+                        id='weekly_leads',
+                        figure=weekly_leads_line_data(data_upcoming_projects),
+                    ),
+                ], className='weeklead'),
+
+                html.Div([
+                    html.Div(
+                        [html.P("Response Time(/hours)"),
+                         html.H4(id="response_time_val", children=response_time_val)],
+                        id="response_time",
+                        className="analysis_container",
+                    ),
+                    html.Div(
+                        [html.P("Leads to Enquiries"),
+                         html.H4(id="lead_to_enquiry_val", children=lead_to_enquiry_val)],
+                        id="lead_to_enquiry",
+                        className="analysis_container",
+                    ),
+                    html.Div(
+                        [html.P("Enquiries to Offer"),
+                         html.H4(id="enquiry_to_offer_val", children=enquiry_to_offer_val)],
+                        id="enquiry_to_offer",
+                        className="analysis_container",
+                    ),
+                    html.Div(
+                        [html.P("Offer to Won"), html.H4(id="offer_to_won_val", children=offer_to_won_val)],
+                        id="offer_to_won",
+                        className="analysis_container",
+                    ),
+                ],
+                    id="info-container",
+                    className="analysis",
+                ),
+
+            ], className='body_data1'),
+
+            # Body1 End
+
+            # Body2 start
+            html.Div([
+                html.Div([
+                    html.H1('Offer Details', className='main_title')
+                ]),
+                html.Div([
+                    html.Div([
+                        # Pie-chart reflecting submitted offer
+                        dcc.Graph(
+                            id='submitted_offers_pie_chart',
+                            figure=submitted_offers_pie_data(data_upcoming_projects)
+                        ),
+                    ], className="pie_charts_container"),
+
+                    html.Div([
+
+                        # Pie-chart reflecting pending offers
+                        dcc.Graph(
+                            id='pending_offers_pie_chart',
+                            figure=pending_offers_pie_data(data_upcoming_projects)
+                        ),
+                    ], className="pie_charts_container"),
+
+                    html.Div([
+
+                        # Pie-chart reflecting service wise enquiries
+                        dcc.Graph(
+                            id='service_wise_pie_chart',
+                            figure=service_wise_pie_data(data_upcoming_projects)
+                        ),
+                    ], className="pie_charts_container"),
+
+                    html.Div([
+
+                        # GRAPH - Lead Stages
+                        dcc.Graph(
+                            id='graph_lead_stages',
+                            figure=lead_stages_bar_data(data_upcoming_projects)
+                        ),
+                    ], className="pie_charts_container"),
+
+                ], className='pie_charts'),
+            ], className='body_data2'),
+            # Body2 End
+
+            # BOdy3 Start
+            html.Div([
+
+                html.Div([
+
+                    # Data Table - Upcoming Projects
+                    dash_table.DataTable(
+                        id='upcoming_projects_table',
+                        style_data={'minWidth': '180px', 'width': '180px', 'maxWidth': 'auto'},
+                        style_table={
+
+                            # 'border': '1px solid  #ddd29d',
+                            'overflowY': 'auto',
+                            'minHeight': '110vh', 'height': '110vh', 'maxHeight': '110vh',
+
+                        },
+
+                        style_header={
+                            'backgroundColor': '#433ce9',
+                            'fontWeight': '500',
+                            'color': '#ddd29d',
+                            'borderRadius': '10px',
+                            # 'border': '1px solid  #ddd29d',
+                            'font-family': 'Roboto Mono',
+                            'font-size': '1.3'
+
+                        },
+                        style_cell={
+                            'textAlign': 'center',
+                            'whiteSpace': 'normal',
+                            'minHeight': '30px',
+                            'font-size': 'smaller',
+                            'font-family': 'Roboto Mono',
+
+                            # 'height': 'auto',
+
+                        },
+                        style_data_conditional=[
+                            {'color': '#433ce9',
+                             'backgroundColor': '#ddd29d',
+                             'border': '1px solid  #433ce9',
+
+                             # 'if': {'row_index': 'odd'},
+                             # 'backgroundColor': 'rgb(248, 248, 248)'
+                             }
+                        ],
+                        fixed_rows={'headers': True, 'data': 0},
+                        css=[{
+                            'selector': '.dash-cell div.dash-cell-value',
+                            'rule': 'display: inline; font-family: Roboto Mono;white-space: inherit; overflow: inherit; text-overflow: inherit;',
+
+                        }],
+
+                        filter_action="native",
+                        style_filter_conditional=[{
+                            'backgroundColor': '#ddd29d',
+                            'color': '#433ce9',
+                            'padding': '10px',
+                            'height': '20px',
+                            'border': '2px solid #433cde9',
+                        }],
+                        style_as_list_view=True,
+                        sort_action="native",
+                        sort_mode="multi",
+                        row_selectable="single",
+                        editable=False,
+                        columns=[{"name": i, "id": i} for i in data_upcoming_projects.columns],
+                        data=data_upcoming_projects.to_dict('records')
+                    ),
+                    # html.Div([
+                    #     dcc.Dropdown(
+                    #         id='file_options',
+                    #         options=[{'value': i, 'label': i} for i in ['Raj Group Enquiry List']],
+                    #         placeholder='Select File to Download',
+                    #         className='downloadfile',
+                    #
+                    #     ),
+                    #
+                    #     html.A(children=[
+                    #         html.Img(src='assets/images/download.png', className="logoimg", alt='home'),
+                    #
+                    #     ], id='my_link'),
+                    #
+                    # ], style={'display': 'inline'}),
+                ], className='table_data')
+            ], className='body_data3'),
+            # BOdy3 end
 
         ]),
         dcc.Tab(id='tab2', value='tab-2', label='Raj Group Marketing Form', children=[
 
+            # Body4 start
+
+            html.Div([
+                html.Div([
+                    html.Div([
+
+                        html.Div([
+
+                            html.H5("Project Details", className='modeltitle'),
+
+                            html.P("Enquiry Key"),
+                            dcc.Input(
+                                id='enquiry_key',
+                                type='text',
+                                disabled='True',
+                                className='input1'
+                            ),
+
+                            html.P("Enquiry Date", className='date_1'),
+                            dcc.DatePickerSingle(
+                                id='entry_date',
+                                placeholder='Select a Date',
+                                with_portal=True,
+                                display_format="YYYY-MM-DD",
+                                className='input1',
+
+                            ),
+                            html.P("Project Description"),
+                            dcc.Input(
+                                id='project_description',
+                                type='text',
+                                className='input1'
+                            ),
+                            html.P("Scope of Work"),
+                            dcc.Dropdown(
+                                id='scope_of_work',
+                                options=[{'value': i, 'label': i} for i in sow],
+                                className='dropdownc',
+                                placeholder="Select a Work",
+                                style={'border': 'none', 'border-radius': '20px'}
+                            ),
+                        ], className='')
+                    ], className='squreborder'),
+                    html.Div([
+                        html.H5("Client Details", className='modeltitle'),
+
+                        html.P("Client Dropdown"),
+                        dcc.Dropdown(
+                            id='client_dropdown',
+                            options=[{'value': i, 'label': i} for i in client_data],
+                            className='dropdownc',
+                            placeholder="Select a Client",
+                            style={'border': 'none', 'border-radius': '20px'}
+
+                        ),
+                        dcc.Loading(
+                            id="loading-1",
+                            type="dot",
+                            fullscreen='true',
+                            style={'background-color': 'rgba(67, 60, 233,0.3)'},
+                            children=html.Div(id="loading-output-1")
+                        ),
+                        html.P("Client Name"),
+                        dcc.Input(
+                            id='client_name',
+                            type='text',
+                            required='true',
+                            className='input1'
+                        ),
+                        html.P("Client Location"),
+                        dcc.Input(
+                            id='client_location',
+                            type='text',
+                            required='true',
+                            className='input1'
+                        ),
+                        html.P("Existing Client"),
+                        dcc.RadioItems(
+                            id='existing_client',
+                            options=[{'value': 'YES', 'label': 'YES'},
+                                     {'value': 'NO', 'label': 'NO'}]
+                        ),
+                    ], className='squreborder'),
+
+                    html.Div([
+                        html.Div([
+                            html.H5("Internal Follow Up", className='modeltitle'),
+                            html.P("Internal Lead"),
+                            dcc.Input(
+                                id='internal_lead',
+                                type='text',
+                                className='input1'
+                            ),
+                            html.P("External Lead"),
+                            dcc.Input(
+                                id='external_lead',
+                                type='text',
+                                className='input1'
+                            ),
+                            html.P("Status"),
+                            dcc.Dropdown(
+                                id='lead_status',
+                                options=[{'value': i, 'label': i} for i in lead_status],
+                                className='dropdownc',
+                                placeholder="Select a lead status",
+                                style={'border': 'none', 'border-radius': '20px'}
+                            ),
+
+                            html.P("Raj Group Office"),
+                            dcc.Dropdown(
+                                id='raj_group_office',
+                                options=[{'value': i, 'label': i} for i in raj_group_office],
+                                className='dropdownc',
+                                placeholder="Select an office",
+                                style={'border': 'none', 'border-radius': '20px'}
+                            ),
+                            html.P("Follow Up Person"),
+                            dcc.Dropdown(
+                                id='follow_up_person',
+                                options=[{'value': i, 'label': i} for i in follow_up_person],
+                                className='dropdownc',
+                                placeholder="Select a Work",
+                                style={'border': 'none', 'border-radius': '20px'}
+                            ),
+                            html.P("Tentative Project Value"),
+                            dcc.Input(
+                                id='tentative_project_value',
+                                type='text',
+                                className='input1'
+                            ),
+                            html.Div([
+                                html.P("Quotation Number"),
+                                dcc.Input(
+                                    id='quotation_number',
+                                    type='text',
+                                    className='input1'
+                                ),
+                            ], style={'display': 'none'}),
+                            html.P("Remarks"),
+                            dcc.Input(
+                                id='remarks',
+                                type='text',
+                                className='input1'
+                            ),
+                        ], className=''),
+
+                    ], className='followup squreborder'),
+
+                    html.Div([
+                        html.H5("Contact Details", className='modeltitle'),
+                        html.Div([
+                            html.Div(id="add_contact_div", className='add_dynamic_details',
+                                     style={'margin-bottom': '10px'}),
+                            html.Div([
+                                dcc.ConfirmDialogProvider(
+                                    children=html.Button(
+                                        'Add Contact',
+                                        className='allbutton alignbtn'
+                                    ),
+                                    id='add_another_contact',
+                                    message='Are you sure you want to continue?'
+                                ),
+                            ], className='centerbtn'),
+                        ]),
+
+                    ], className='squreborder addcontect', style={'position': 'relative'}),
+
+                    html.Div(id="add_offer_hide", children=[
+                        html.H5("Offer Details", className='modeltitle'),
+                        html.Div(id="add_offer_div", className='add_dynamic_details', style={'margin-bottom': '10px'}),
+                        # html.P("Add Another Offer"),
+                        html.Div([
+                            dcc.ConfirmDialogProvider(
+                                children=html.Button(
+                                    'Add Offer',
+                                    className='allbutton alignbtn'
+                                ),
+                                id='add_another_offer',
+                                message='Are you sure you want to continue?'
+                            ),
+                        ], className='centerbtn'),
+                    ], className='squreborder addoffer', style={'display': 'none'}),
+
+                    html.Div([
+
+                        dcc.ConfirmDialogProvider(
+                            children=html.Button(
+                                'Submit',
+                                className='allbutton'
+                            ),
+                            id='submit_button',
+                            message='Are you sure you want to continue?'
+                        ),
+                        dcc.Loading(
+                            id="loading-2",
+                            type="circle",
+                            fullscreen='true',
+                            style={'background-color': 'rgba(67, 60, 233,0.3)'},
+                            children=html.Div(id="loading-output-2")
+                        ),
+                        dcc.ConfirmDialogProvider(
+                            children=html.Button(
+                                'Close',
+                                id='close_dash',
+                                className='allbutton'
+                            ),
+                            id='close_button',
+                            message='Are you sure you want to continue?'
+                        ),
+
+                        dcc.ConfirmDialog(
+                            id='modal_display',
+                            message='Please fill all required values marked in RED!!',
+                        ),
+
+                    ], className='btnn btncls')
+                ], className='form_container'),
+            ], id='show_dashboard', className='body_data4'),
+
+            # Body4 End
 
         ]),
     ]),
