@@ -215,16 +215,21 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
                 ## update RajGroupFollowUpLog
                 if add_offer_div_value:
                     for i in add_offer_div_value:
-                        dispatch_no = i['props']['children'][0]['props']['children'][1]['props']['children'][1]['props'][
-                            'value']
-                        offer_location = i['props']['children'][0]['props']['children'][2]['props']['children'][1]['props'][
-                            'value']
-                        submitted_by = i['props']['children'][1]['props']['children'][0]['props']['children'][1]['props'][
-                            'value']
-                        remarks = i['props']['children'][1]['props']['children'][1]['props']['children'][1]['props'][
-                            'value']
-                        submitted_to = i['props']['children'][1]['props']['children'][2]['props']['children'][1]['props'][
-                            'value']
+                        # dispatch_no = i['props']['children'][0]['props']['children'][1]['props']['children'][1]['props'][
+                        #     'value']
+                        # offer_location = i['props']['children'][0]['props']['children'][2]['props']['children'][1]['props'][
+                        #     'value']
+                        # submitted_by = i['props']['children'][1]['props']['children'][0]['props']['children'][1]['props'][
+                        #     'value']
+                        # remarks = i['props']['children'][1]['props']['children'][1]['props']['children'][1]['props'][
+                        #     'value']
+                        # submitted_to = i['props']['children'][1]['props']['children'][2]['props']['children'][1]['props'][
+                        #     'value']
+                        dispatch_no = i['props']['children'][1]['props']['children'][1]['props']['value']
+                        offer_location = i['props']['children'][2]['props']['children'][1]['props']['value']
+                        submitted_by = i['props']['children'][3]['props']['children'][1]['props']['value']
+                        remarks = i['props']['children'][4]['props']['children'][1]['props']['value']
+                        submitted_to = i['props']['children'][5]['props']['children'][1]['props']['value']
                         followup_log_values = [enquiry_key, dispatch_no, offer_location, submitted_by, remarks, submitted_to]
                         followup_log_mod_values = ['' if i is None else i for i in followup_log_values]
                         connection.insert_query('RajGroupFollowUpLog', fields_followup_log, followup_log_mod_values)
@@ -284,15 +289,20 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
 
                 ## update RajGroupFollowUpLog
                 if add_offer_div_value:
-                    dispatch_no = add_offer_div_value[-1]['props']['children'][0]['props']['children'][1]['props']['children'][1]['props'][
-                        'value']
-                    offer_location = add_offer_div_value[-1]['props']['children'][0]['props']['children'][2]['props']['children'][1]['props'][
-                        'value']
-                    submitted_by = add_offer_div_value[-1]['props']['children'][1]['props']['children'][0]['props']['children'][1]['props'][
-                        'value']
-                    remarks = add_offer_div_value[-1]['props']['children'][1]['props']['children'][1]['props']['children'][1]['props']['value']
-                    submitted_to = add_offer_div_value[-1]['props']['children'][1]['props']['children'][2]['props']['children'][1]['props'][
-                        'value']
+                    # dispatch_no = add_offer_div_value[-1]['props']['children'][0]['props']['children'][1]['props']['children'][1]['props'][
+                    #     'value']
+                    # offer_location = add_offer_div_value[-1]['props']['children'][0]['props']['children'][2]['props']['children'][1]['props'][
+                    #     'value']
+                    # submitted_by = add_offer_div_value[-1]['props']['children'][1]['props']['children'][0]['props']['children'][1]['props'][
+                    #     'value']
+                    # remarks = add_offer_div_value[-1]['props']['children'][1]['props']['children'][1]['props']['children'][1]['props']['value']
+                    # submitted_to = add_offer_div_value[-1]['props']['children'][1]['props']['children'][2]['props']['children'][1]['props'][
+                    #     'value']
+                    dispatch_no = add_offer_div_value[-1]['props']['children'][1]['props']['children'][1]['props']['value']
+                    offer_location = add_offer_div_value[-1]['props']['children'][2]['props']['children'][1]['props']['value']
+                    submitted_by = add_offer_div_value[-1]['props']['children'][3]['props']['children'][1]['props']['value']
+                    remarks = add_offer_div_value[-1]['props']['children'][4]['props']['children'][1]['props']['value']
+                    submitted_to = add_offer_div_value[-1]['props']['children'][5]['props']['children'][1]['props']['value']
                     followup_log_values = [enquiry_key, dispatch_no, offer_location, submitted_by, remarks, submitted_to]
                     followup_log_mod_values = ['' if i is None else i for i in followup_log_values]
 
