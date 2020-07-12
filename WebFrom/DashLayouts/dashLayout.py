@@ -65,7 +65,6 @@ def service_wise_pie_data(data):
             'font': {
                 'family': 'Roboto Mono',
                 'color': '#433ce9',
-                'size': 15,
             },
             'paper_bgcolor': '#ddd29d',
             'plot_bgcolor': '#ddd29d',
@@ -133,7 +132,6 @@ def pending_offers_pie_data(data):
             'font': {
                 'family': 'Roboto Mono',
                 'color': '#433ce9',
-                'size': 15,
             },
             'paper_bgcolor': '#ddd29d',
             'plot_bgcolor': '#ddd29d',
@@ -205,7 +203,6 @@ def submitted_offers_pie_data(data):
             'font': {
                 'family': 'Roboto Mono',
                 'color': '#433ce9',
-                'size': 15,
             },
             'paper_bgcolor': '#ddd29d',
             'plot_bgcolor': '#ddd29d',

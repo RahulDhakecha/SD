@@ -2247,14 +2247,16 @@ def download_file(file_options):
 
 
 class LoginForm(FlaskForm):
-    username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
-    password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
+    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15,message="Username must be 4-15 char long")])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80,message="Password must be 8-80 char long")])
+    submit= SubmitField('Sign In')
 
 
 class RegisterForm(FlaskForm):
-    username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
-    email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
-    password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
+    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15,message="Username must be 4-15 char long")])
+    email = StringField('Email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80,message="Password must be 8-80 char long")])
+    submit= SubmitField('Sign Up')
 
 
 class SelectFirmForm(FlaskForm):
