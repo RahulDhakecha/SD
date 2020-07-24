@@ -522,7 +522,8 @@ def new_contact_entry_layout(contact_person_name_id=None,
                              contact_person_email_id=None,
                              contact_person_email=None,
                              contact_person_designation_id=None,
-                             contact_person_designation=None):
+                             contact_person_designation=None,
+                             contact_person_id=None):
     return html.Div([
         html.Div([
             html.P("Person Name"),
@@ -560,7 +561,7 @@ def new_contact_entry_layout(contact_person_name_id=None,
                 value=contact_person_designation
             ),
         ], className='add_itm'),
-    ], style={'border-bottom': '1px solid darkgoldenrod', 'padding': '10px', 'display': 'grid', 'grid-column-gap':'1.7vw','grid-template-columns': '1fr 1fr 1fr 1fr'})
+    ], id=contact_person_id, style={'border-bottom': '1px solid darkgoldenrod', 'padding': '10px', 'display': 'grid', 'grid-column-gap':'1.7vw','grid-template-columns': '1fr 1fr 1fr 1fr'})
 
 
 def main_layout():

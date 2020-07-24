@@ -668,7 +668,8 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
                                                                              contact_person_email,
                                                                              "contact_person_designation_id_{}".format(
                                                                                  index),
-                                                                             contact_person_designation
+                                                                             contact_person_designation,
+                                                                             "contact_person_id_{}".format(index)
                                                                              ))
             existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index+1),
                                                                   None,
@@ -677,7 +678,8 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
                                                                   "contact_person_email_id_{}".format(index+1),
                                                                   None,
                                                                   "contact_person_designation_id_{}".format(index+1),
-                                                                  None
+                                                                  None,
+                                                                  "contact_person_id_{}".format(index+1)
                                                                   ))
 
             return existing_contact_entries
@@ -696,7 +698,8 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
                                                               "contact_person_email_id_{}".format(index),
                                                               row['contact_person_email'],
                                                               "contact_person_designation_id_{}".format(index),
-                                                              row['contact_person_designation']
+                                                              row['contact_person_designation'],
+                                                              "contact_person_id_{}".format(index)
                                                               ))
             return existing_contact_entries
 
@@ -715,8 +718,10 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
                                                               "contact_person_email_id_{}".format(index),
                                                               row['contact_person_email'],
                                                               "contact_person_designation_id_{}".format(index),
-                                                              row['contact_person_designation']
+                                                              row['contact_person_designation'],
+                                                              "contact_person_id_{}".format(index)
                                                               ))
+            print("Contact Person ID"+str("contact_person_id_{}".format(index)))
             return existing_contact_entries
 
         # elif triggered_input == 'submit_button' and submit_button:
