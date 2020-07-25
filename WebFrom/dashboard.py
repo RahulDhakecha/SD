@@ -2427,6 +2427,10 @@ def download_rv_excel():
 
 
 
+@app.route('/feedback', methods=['GET', 'POST'])
+def feedback():
+    return render_template('feedback.html')
+
 # @app.route('/order_entry', methods=['GET', 'POST'])
 # @is_logged_in
 # def order_entry():

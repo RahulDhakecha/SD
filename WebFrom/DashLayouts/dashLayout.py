@@ -512,7 +512,7 @@ def new_offer_entry_layout(offer_timestamp_id=None,
             ),
         ], className="add_itm"),
 
-    ], style={'border-bottom': '1px solid darkgoldenrod', 'padding': '10px', 'display': 'grid', 'grid-column-gap':'1.7vw','grid-template-columns': '1fr 1fr 1fr','grid-template-rows':'1fr 1fr'})
+    ], className="new_offer")
 
 
 def new_contact_entry_layout(contact_person_name_id=None,
@@ -561,7 +561,8 @@ def new_contact_entry_layout(contact_person_name_id=None,
                 value=contact_person_designation
             ),
         ], className='add_itm'),
-    ], id=contact_person_id, style={'border-bottom': '1px solid darkgoldenrod', 'padding': '10px', 'display': 'grid', 'grid-column-gap':'1.7vw','grid-template-columns': '1fr 1fr 1fr 1fr'})
+        html.A("X", style={'text-decoration':'none','padding-top':'7vh','font-weight':'bold','color':'#433ce9'}, href="javascript:delete1(this.document)"),
+    ], id=contact_person_id, className="new_contect")
 
 
 def main_layout():
