@@ -1,19 +1,20 @@
 $(document).ready(function () {
 
     $(".zer").click(function () {
-        $(".zero").toggle(500);
+        $(".zero").show();
+        $(".extra").hide();
     });
 
     $(".first").click(function () {
 
-        $(".one").toggle(500);
+        $(".one").show();
 
         var elem = document.getElementById("myBar");
         var width = 0;
         var id = setInterval(frame, 10);
 
         function frame() {
-            if (width >= 17) {
+            if (width >= 15) {
                 clearInterval(id);
             } else {
                 width++;
@@ -24,13 +25,13 @@ $(document).ready(function () {
     });
 
     $(".second").click(function () {
-        $(".two").toggle(500);
+        $(".two").show();
         var elem = document.getElementById("myBar");
-        var width = 17;
+        var width = 15;
         var id = setInterval(frame, 10);
 
         function frame() {
-            if (width >= 34) {
+            if (width >= 30) {
                 clearInterval(id);
             } else {
                 width++;
@@ -39,13 +40,13 @@ $(document).ready(function () {
         }
     });
     $(".third").click(function () {
-        $(".three").toggle(500);
+        $(".three").show();
         var elem = document.getElementById("myBar");
-        var width = 34;
+        var width = 30;
         var id = setInterval(frame, 10);
 
         function frame() {
-            if (width >= 51) {
+            if (width >= 45) {
                 clearInterval(id);
             } else {
                 width++;
@@ -54,13 +55,13 @@ $(document).ready(function () {
         }
     });
     $(".fourth").click(function () {
-        $(".four").toggle(500);
+        $(".four").show();
         var elem = document.getElementById("myBar");
-        var width = 51;
+        var width = 45;
         var id = setInterval(frame, 10);
 
         function frame() {
-            if (width >= 68) {
+            if (width >= 60) {
                 clearInterval(id);
             } else {
                 width++;
@@ -69,13 +70,13 @@ $(document).ready(function () {
         }
     });
     $(".fifth").click(function () {
-        $(".five").toggle(500);
+        $(".five").show();
         var elem = document.getElementById("myBar");
-        var width = 68;
+        var width = 60;
         var id = setInterval(frame, 10);
 
         function frame() {
-            if (width >= 85) {
+            if (width >= 75) {
                 clearInterval(id);
             } else {
                 width++;
@@ -84,9 +85,27 @@ $(document).ready(function () {
         }
     });
     $(".sixth").click(function () {
-        $(".six").toggle(500);
+        $(".six").show();
         var elem = document.getElementById("myBar");
-        var width = 85;
+        var width = 75;
+        var id = setInterval(frame, 10);
+
+        function frame() {
+            if (width >= 90) {
+                clearInterval(id);
+            } else {
+                width++;
+                elem.style.width = width + '%';
+            }
+        }
+    });
+
+    $(".seventh").click(function () {
+        $(".seven").show();
+                $(".six").hide();
+
+        var elem = document.getElementById("myBar");
+        var width = 90;
         var id = setInterval(frame, 10);
 
         function frame() {
@@ -98,5 +117,4 @@ $(document).ready(function () {
             }
         }
     });
-
 });
