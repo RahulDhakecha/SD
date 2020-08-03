@@ -1,12 +1,52 @@
 $(document).ready(function () {
 
+    var data_list = []
+
     $(".zer").click(function () {
         $(".zero").show();
         $(".extra").hide();
     });
 
-    $(".first").click(function () {
+    var first_anchors = document.querySelectorAll('.first');
+    var second_anchors = document.querySelectorAll('.second');
+    var third_anchors = document.querySelectorAll('.third');
+    var fourth_anchors = document.querySelectorAll('.fourth');
+    var fifth_anchors = document.querySelectorAll('.container');
+    var sixth_anchors = document.querySelectorAll('.sixth');
+    var seventh_anchors = document.querySelectorAll('.textbox');
 
+    for (var i=0; i<first_anchors.length; i++) {
+        first_anchors[i].addEventListener('click', handler, false);
+    }
+    for (var i=0; i<second_anchors.length; i++) {
+        second_anchors[i].addEventListener('click', handler, false);
+    }
+    for (var i=0; i<third_anchors.length; i++) {
+        third_anchors[i].addEventListener('click', handler, false);
+    }
+    for (var i=0; i<fourth_anchors.length; i++) {
+        fourth_anchors[i].addEventListener('click', handler, false);
+    }
+//    for (var i=0; i<fifth_anchors.length; i++) {
+//        fifth_anchors[i].addEventListener('click', handler, false);
+//    }
+    for (var i=0; i<sixth_anchors.length; i++) {
+        sixth_anchors[i].addEventListener('click', handler, false);
+    }
+    for (var i=0; i<seventh_anchors.length; i++) {
+        seventh_anchors[i].addEventListener('click', handler, false);
+    }
+
+    function handler() {
+        data_list.push(this.text)
+    }
+
+    function checkBoxClickHandler() {
+        console.log("Coming Here")
+//        data_list.push(this.text)
+    }
+
+    $(".first").click(function () {
         $(".one").show();
 
         var elem = document.getElementById("myBar");
@@ -116,5 +156,14 @@ $(document).ready(function () {
                 elem.style.width = width + '%';
             }
         }
+        $.ajax({
+          type: "POST",
+          async: "true",
+          contentType: "application/json;charset=utf-8",
+          url: "/feedback/RJ-ODR-2020-2037",
+          traditional: "true",
+          data: JSON.stringify(data_list),
+          dataType: "json"
+          });
     });
 });

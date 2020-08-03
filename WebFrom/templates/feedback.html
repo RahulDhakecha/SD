@@ -16,6 +16,7 @@ Feedback
 
 {% block content %}
 
+
 <div>
     <div id="myBar" style="width:0%;background-color: #1034A6;height: 5px"></div>
 
@@ -25,7 +26,7 @@ Feedback
             <br>
             <label style="margin: 4vh 0">Your feedback will help us improvise our Customer Experience <br> and serve you better!!</label>
             <br>
-            <button class="subbtn zer">Start</button>
+            <button class="subbtn zer" type="submit" name="Start">Start</button>
 
         </div>
         <img class="smile" src="{{url_for('static', filename='smile.png')}}">
@@ -36,7 +37,6 @@ Feedback
             <label>1-> How likely is it that you would recommend our company to a friend <br> &nbsp;&nbsp;&nbsp;&nbsp;
                 or colleague ?</label>
             <div style="display: flex;flex-direction: row">
-                &nbsp;&nbsp;&nbsp;&nbsp;
                 <a class='box first'>1</a>
                 <a class='box first'>2</a>
                 <a class='box first'>3</a>
@@ -124,7 +124,7 @@ Feedback
                 <div>
                     <img class="fif" src="{{url_for('static', filename='Future_Service/BBT.jpeg')}}">
                     <label class="container">BBT
-                        <input type="checkbox">
+                        <input type="checkbox" onclick="checkBoxClickHandler()">
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -234,8 +234,9 @@ Feedback
                 <textarea class="textbox" placeholder="Type here"></textarea>
 
             </div>
-            &nbsp;&nbsp;&nbsp;
-            <button class="subbtn seventh">Submit</button>
+            <form action="" method="post">
+                <button class="subbtn seventh">Submit</button>
+            </form>
         </div>
         <img class="star" src="{{url_for('static', filename='star.png')}}">
 

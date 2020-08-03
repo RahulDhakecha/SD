@@ -561,8 +561,18 @@ def new_contact_entry_layout(contact_person_name_id=None,
                 value=contact_person_designation
             ),
         ], className='add_itm'),
-        html.A("X", style={'text-decoration':'none','padding-top':'7vh','font-weight':'bold','color':'#433ce9'}, href="javascript:delete1(this.document)"),
-    ], id=contact_person_id, className="new_contect")
+        html.Div([
+            dcc.RadioItems(
+                id='delete_contact',
+                options=[{'value': 'Delete', 'label': 'Delete'}],
+                value=""
+            ),
+        ], className='add_itm'),
+        # html.A(id="X", children=contact_person_id, style={'text-decoration':'none','padding-top':'7vh','font-weight':'bold','color':'#433ce9'}),
+        # html.A("X",
+        #        style={'text-decoration':'none','padding-top':'7vh','font-weight':'bold','color':'#433ce9'},
+        #        href="javascript:delete1(this.document)"),
+    ], className="new_contect")
 
 
 def main_layout():
@@ -969,6 +979,16 @@ def main_layout():
                                     message='Are you sure you want to continue?'
                                 ),
                             ], className='centerbtn'),
+                            html.Div([
+                                dcc.ConfirmDialogProvider(
+                                    children=html.Button(
+                                        'Delete Contact',
+                                        className='allbutton alignbtn'
+                                    ),
+                                    id='delete_contact_button',
+                                    message='Are you sure you want to continue?'
+                                ),
+                            ], className='centerbtn'),
                         ]),
 
                     ], className='squreborder addcontect', style={'position': 'relative'}),
@@ -1269,6 +1289,10 @@ def order_layout():
                         placeholder='Project Incharge',
                         size=50
                     ),
+                    html.Header("Feedback Link", className="required"),
+                    dcc.Link(id="feedback_link", children=[
+                        None
+                    ]),
                 ], className="four columns"),
                 html.Div([
                     html.Header("Raj Group Office", className="required"),

@@ -5,7 +5,7 @@ import sys, os
 sys.path.append(os.path.join(sys.path[0], 'DashLayouts'))
 import flask
 import io
-from flask import Flask, render_template, flash, request, redirect, url_for, session, jsonify, make_response
+from flask import Flask, render_template, flash, request, redirect, url_for, session, jsonify, make_response, url_for
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField, IntegerField, FileField, HiddenField
@@ -633,13 +633,14 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
                     Input('upcoming_projects_table', 'selected_rows'),
                     Input('submit_button', 'submit_n_clicks'),
                     Input('close_button', 'submit_n_clicks'),
-                    Input('client_dropdown', 'value')],
+                    Input('client_dropdown', 'value'),
+                    Input('delete_contact_button', 'submit_n_clicks')],
                    [State('enquiry_key', 'value'),
                     State('upcoming_projects_table', 'data'),
                     State('add_contact_div', 'children'),
                     State('client_name', 'value'),
                     State('client_location', 'value')])
-def add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, enquiry_key, rows, add_contact_div_value, client_name, client_location):
+def add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, delete_contact, enquiry_key, rows, add_contact_div_value, client_name, client_location):
     # connection = AWSMySQLConn()
     ctx = dash.callback_context
     ctx_msg = json.dumps({
@@ -681,7 +682,6 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
                                                                   None,
                                                                   "contact_person_id_{}".format(index+1)
                                                                   ))
-
             return existing_contact_entries
 
         elif triggered_input == 'upcoming_projects_table' and row_id:
@@ -721,9 +721,34 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
                                                               row['contact_person_designation'],
                                                               "contact_person_id_{}".format(index)
                                                               ))
-            print("Contact Person ID"+str("contact_person_id_{}".format(index)))
             return existing_contact_entries
-
+        elif triggered_input == 'delete_contact_button' and delete_contact:
+            print(add_contact_div_value)
+            existing_contact_entries = []
+            index = 0
+            if add_contact_div_value:
+                for index, i in enumerate(add_contact_div_value):
+                    contact_person_name = i['props']['children'][0]['props']['children'][1]['props']['value']
+                    contact_person_mobile = i['props']['children'][1]['props']['children'][1]['props']['value']
+                    contact_person_email = i['props']['children'][2]['props']['children'][1]['props']['value']
+                    contact_person_designation = i['props']['children'][3]['props']['children'][1]['props']['value']
+                    contact_person_delete_value = i['props']['children'][4]['props']['children'][0]['props']['value']
+                    print(contact_person_delete_value)
+                    if contact_person_delete_value != 'Delete':
+                        existing_contact_entries.append(
+                            new_contact_entry_layout("contact_person_name_id_{}".format(index),
+                                                     contact_person_name,
+                                                     "contact_person_mobile_id_{}".format(
+                                                         index),
+                                                     contact_person_mobile,
+                                                     "contact_person_email_id_{}".format(index),
+                                                     contact_person_email,
+                                                     "contact_person_designation_id_{}".format(
+                                                         index),
+                                                     contact_person_designation,
+                                                     "contact_person_id_{}".format(index)
+                                                     ))
+                return existing_contact_entries
         # elif triggered_input == 'submit_button' and submit_button:
         #     # pprint.pprint(add_contact_div_value, indent=8)
         #     try:
@@ -750,6 +775,25 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
             return None
 
 
+@dash_app2.callback(Output('feedback_link', 'children'),
+                    [Input('order_status', 'value')],
+                    [State('order_key', 'value')])
+def add_new_offer_entry(order_status, order_key):
+    # connection = AWSMySQLConn()
+    ctx = dash.callback_context
+    ctx_msg = json.dumps({
+        'states': ctx.states,
+        'triggered': ctx.triggered,
+        'inputs': ctx.inputs
+    }, indent=2)
+    if ctx.triggered:
+        triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
+        print("Triggered Input Feedback Link: "+str(triggered_input))
+        if triggered_input == 'order_status' and order_status == 'COMPLETE':
+            url = url_for("feedback", order_key=order_key)
+            return url
+        else:
+            return None
 
 @dash_app2.callback(Output('my_link', 'href'),
                    [Input('file_options', 'value')],
@@ -2427,8 +2471,13 @@ def download_rv_excel():
 
 
 
-@app.route('/feedback', methods=['GET', 'POST'])
-def feedback():
+@app.route('/feedback/<order_key>', methods=['GET', 'POST'])
+def feedback(order_key):
+    print(order_key)
+    print(request.method)
+    if request.method == 'POST':
+        print(request.get_json())
+    #     return render_template('feedback.html')
     return render_template('feedback.html')
 
 # @app.route('/order_entry', methods=['GET', 'POST'])
