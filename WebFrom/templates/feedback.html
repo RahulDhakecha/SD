@@ -22,7 +22,7 @@ Feedback
 
     <section class="extra">
         <div class="fixed extra1">
-            <label style="font-family: 'Comfortaa', cursive;font-size: 5.5vh;color: #1034A6">Thank You for choosing Raj Group</label>
+            <label class="weltex">Thank You for choosing Raj Group</label>
             <br>
             <label style="margin: 4vh 0">Your feedback will help us improvise our Customer Experience <br> and serve you better!!</label>
             <br>
@@ -118,99 +118,120 @@ Feedback
         <div class="fixed2">
             <label>5-> Which service of ours you may require in future ?</label>
 
+            <form id="formsimser" name="service" method="POST" action="">
+
             <div class="futser">
 
 
                 <div>
-                    <img class="fif" src="{{url_for('static', filename='Future_Service/BBT.jpeg')}}">
-                    <label class="container">BBT
-                        <input type="checkbox" onclick="checkBoxClickHandler()">
+                    <label class="container">
+                        <img class="fif" src="{{url_for('static', filename='Future_Service/BBT.jpeg')}}">
+                        BBT
+                        <input type="checkbox" name='futureser' value='BBT'  onclick="checkBoxClickHandler()">
                         <span class="checkmark"></span>
                     </label>
                 </div>
                 <div>
-                    <img class="fif" src="{{url_for('static', filename='Future_Service/Civil.jpeg')}}">
-                    <label class="container">Civil
-                        <input type="checkbox">
+                    <label class="container">
+                        <img class="fif" src="{{url_for('static', filename='Future_Service/Civil.jpeg')}}">
+                        Civil
+                        <input type="checkbox" name='futureser' value='Civil'>
                         <span class="checkmark"></span>
                     </label>
                 </div>
                 <div>
-                    <img class="fif" src="{{url_for('static', filename='Future_Service/ITC.jpeg')}}">
-                    <label class="container">ITC
-                        <input type="checkbox">
+                    <label class="container">
+                        <img class="fif" src="{{url_for('static', filename='Future_Service/ITC.jpeg')}}">
+                        ITC
+                        <input type="checkbox" name='futureser' value='ITC'>
                         <span class="checkmark"></span>
                     </label>
                 </div>
                 <div>
-                    <img class="fif" src="{{url_for('static', filename='Future_Service/Liaison.jpg')}}">
-                    <label class="container">Liaison
-                        <input type="checkbox">
+                    <label class="container">
+                        <img class="fif" src="{{url_for('static', filename='Future_Service/Liaison.jpg')}}">
+                        Liaison
+                        <input type="checkbox" name='futureser' value='Liaison'>
                         <span class="checkmark"></span>
                     </label>
                 </div>
                 <div>
-                    <img class="fif" src="{{url_for('static', filename='Future_Service/Maintenance.jpeg')}}">
-                    <label class="container">Maintenance
-                        <input type="checkbox">
+                    <label class="container">
+                        <img class="fif" src="{{url_for('static', filename='Future_Service/Maintenance.jpeg')}}">
+                        Maintenance
+                        <input type="checkbox" name='futureser' value='Maintenance'>
                         <span class="checkmark"></span>
                     </label>
                 </div>
                 <div>
-                    <img class="fif" src="{{url_for('static', filename='Future_Service/Retrofitting.JPG')}}">
-                    <label class="container">Retrofitting
-                        <input type="checkbox">
+                    <label class="container">
+                        <img class="fif" src="{{url_for('static', filename='Future_Service/Retrofitting.JPG')}}">
+                        Retrofitting
+                        <input type="checkbox" name='futureser' value='Retrofitting'>
                         <span class="checkmark"></span>
                     </label>
                 </div>
                 <div>
-                    <img class="fif" src="{{url_for('static', filename='Future_Service/SITC.jpeg')}}">
-                    <label class="container">SITC
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-                <div>
-                    <img class="fif" src="{{url_for('static', filename='Future_Service/Turnkey.jpg')}}">
-                    <label class="container">Turnkey
-                        <input type="checkbox">
+                    <label class="container">
+                        <img class="fif" src="{{url_for('static', filename='Future_Service/SITC.jpeg')}}">
+                        SITC
+                        <input type="checkbox" name='futureser' value='SITC'>
                         <span class="checkmark"></span>
                     </label>
                 </div>
                 <div>
 
-                    <img class="fif" src="{{url_for('static', filename='Future_Service/Solar.jpg')}}">
-                    <label class="container">Solar
-                        <input type="checkbox">
+                    <label class="container">
+                        <img class="fif" src="{{url_for('static', filename='Future_Service/Turnkey.jpg')}}">
+                        Turnkey
+                        <input type="checkbox" name='futureser' value='Turnkey'>
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+
+
+                    <label class="container">
+                        <img class="fif" src="{{url_for('static', filename='Future_Service/Solar.jpg')}}">
+                        Solar
+                        <input type="checkbox" name='futureser' value='Solar'>
                         <span class="checkmark"></span>
                     </label>
                 </div>
 
                 <div>
-                    <img class="fif" src="{{url_for('static', filename='Future_Service/Supply.jpeg')}}">
-                    <label class="container">Supply
-                        <input type="checkbox">
+
+                    <label class="container">
+                        <img class="fif" src="{{url_for('static', filename='Future_Service/Supply.jpeg')}}">
+                        Supply
+                        <input type="checkbox" name='futureser' value='Supply'>
                         <span class="checkmark"></span>
                     </label>
                 </div>
                 <div>
-                    <img class="fif" src="{{url_for('static', filename='Future_Service/Testing.jpeg')}}">
-                    <label class="container">Testing
-                        <input type="checkbox">
+
+                    <label class="container">
+                        <img class="fif" src="{{url_for('static', filename='Future_Service/Testing.jpeg')}}">
+                        Testing
+                        <input type="checkbox" name='futureser' value='Testing'>
                         <span class="checkmark"></span>
                     </label>
                 </div>
 
                 <div>
-                    <img class="fif" src="{{url_for('static', filename='Future_Service/66KV Switchyard.jpeg')}}">
-                    <label class="container">66KV Switchyard
-                        <input type="checkbox">
+                    <label class="container">
+                        <img class="fif" src="{{url_for('static', filename='Future_Service/66KV Switchyard.jpeg')}}">
+                        66KV Switchyard
+                        <input type="checkbox" name='futureser' value='66KV Switchyard'>
                         <span class="checkmark"></span>
                     </label>
                 </div>
+
             </div>
+                             <input type="button" class="fifth" value="Submit"/>
 
-            <button class="fifth">Submit</button>
+            </form>
+<!--            <button class="fifth">Submit</button>-->
         </div>
     </section>
     <section class="section five">
@@ -231,19 +252,19 @@ Feedback
             <label>7->Where can we improve our company or any other suggestion ?</label>
             <div style="display: flex;flex-direction: row">
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <textarea class="textbox" placeholder="Type here"></textarea>
+                <textarea id='suggestion'class="textbox" placeholder="Type here"></textarea>
 
             </div>
-            <form action="" method="post">
+
                 <button class="subbtn seventh">Submit</button>
-            </form>
+
         </div>
         <img class="star" src="{{url_for('static', filename='star.png')}}">
 
     </section>
     <section class="section extra2 seven">
         <div class="extra3">
-            <label style="font-family: 'Comfortaa', cursive;font-size: 5.5vh;color: #1034A6">Thank You for your kind
+            <label >Thank You for your kind
                 feedback</label>
 
 

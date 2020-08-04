@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     var data_list = []
-
+    var allVals = [];
     $(".zer").click(function () {
         $(".zero").show();
         $(".extra").hide();
@@ -11,9 +11,9 @@ $(document).ready(function () {
     var second_anchors = document.querySelectorAll('.second');
     var third_anchors = document.querySelectorAll('.third');
     var fourth_anchors = document.querySelectorAll('.fourth');
-    var fifth_anchors = document.querySelectorAll('.container');
+    // var fifth_anchors = document.querySelectorAll('.container');
     var sixth_anchors = document.querySelectorAll('.sixth');
-    var seventh_anchors = document.querySelectorAll('.textbox');
+    // var seventh_anchors = document.querySelectorAll('.textbox');
 
     for (var i=0; i<first_anchors.length; i++) {
         first_anchors[i].addEventListener('click', handler, false);
@@ -33,18 +33,18 @@ $(document).ready(function () {
     for (var i=0; i<sixth_anchors.length; i++) {
         sixth_anchors[i].addEventListener('click', handler, false);
     }
-    for (var i=0; i<seventh_anchors.length; i++) {
-        seventh_anchors[i].addEventListener('click', handler, false);
-    }
+    // for (var i=0; i<seventh_anchors.length; i++) {
+    //     seventh_anchors[i].addEventListener('click', handler, false);
+    // }
 
     function handler() {
         data_list.push(this.text)
     }
 
-    function checkBoxClickHandler() {
-        console.log("Coming Here")
-//        data_list.push(this.text)
-    }
+//     function checkBoxClickHandler() {
+//         console.log("Coming Here")
+// //        data_list.push(this.text)
+//     }
 
     $(".first").click(function () {
         $(".one").show();
@@ -110,6 +110,11 @@ $(document).ready(function () {
         }
     });
     $(".fifth").click(function () {
+          allVals = [];
+     $('#formsimser :checked').each(function() {
+       allVals.push($(this).val());
+     });
+     alert("Values " + allVals);
         $(".five").show();
         var elem = document.getElementById("myBar");
         var width = 60;
@@ -141,6 +146,8 @@ $(document).ready(function () {
     });
 
     $(".seventh").click(function () {
+        var sugg = document.getElementById("suggestion").value;
+        alert(sugg);
         $(".seven").show();
                 $(".six").hide();
 
