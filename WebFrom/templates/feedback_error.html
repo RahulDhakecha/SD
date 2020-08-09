@@ -1,0 +1,36 @@
+{% extends "bootstrap/base.html" %}
+
+
+{% block title %}
+Feedback
+{% endblock %}
+
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('static', filename='css/UIDesign_Feedback.css')}}">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="{{url_for('static', filename='feedback.js')}}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+
+<div>
+    <div id="myBar" style="width:0%;background-color: #1034A6;height: 5px"></div>
+
+    <section class="extra">
+        <div class="fixed extra1">
+            <label class="weltex">Thank You for choosing Raj Group</label>
+            <br>
+            <label style="margin: 4vh 0">You are unauthorized to provide Feedback for this Project!!</label>
+            <br>
+
+        </div>
+        <img class="smile" src="{{url_for('static', filename='smile.png')}}">
+    </section>
+
+</div>
+
+{% endblock %}

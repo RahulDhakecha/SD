@@ -1,7 +1,7 @@
 sow = ['Turnkey', '66KV Switchyard', 'BBT', 'Solar', 'Civil/Telecom', 'Liaison', 'Testing', 'Maintenance/Servicing',
        'Retrofitting', 'SITC', 'Supply only', 'ITC only']
 lead_status = ['OPEN', 'CONTACTED', 'VISITED', 'ENQUIRY', 'OFFER', 'WON', 'CLOSE', 'HOLD', 'REGRET', 'LETTER']
-order_status = ['ON HAND', 'COMPLETE', 'CANCEL', 'REGRET']
+order_status = ['ON HAND', 'FEEDBACK', 'COMPLETE', 'CANCEL', 'REGRET']
 
 master_users = ['rahul.dhakecha@rajgrouponline.com', 'anil.kathiriya@rajgrouponline.com', 'kinjal.dhakecha@rajgrouponline.com',
                 'rajesh.kunjadiya@rajgrouponline.com', 'megha.gangani@rajgrouponline.com']
@@ -42,6 +42,9 @@ fields_client_rep_list = "(contact_person_name, contact_person_mobile, contact_p
 fields_rj_orders_list = "(enquiry_key, order_key, order_date, po_no, project_description, scope_of_work, client_name, " \
                         "client_location, existing_client, order_no, file_no, order_status, project_incharge, " \
                         "raj_group_office, project_value, remarks, comp_location)"
+
+fields_feedback = "(order_key, recommend_score, satisfaction_score, technical_score, behavorial_score, future_services," \
+                  " lesser_time, suggestion)"
 
 sow_code = {
     'Turnkey': 'TRNK',

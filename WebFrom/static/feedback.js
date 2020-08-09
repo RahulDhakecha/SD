@@ -148,6 +148,7 @@ $(document).ready(function () {
     $(".seventh").click(function () {
         var sugg = document.getElementById("suggestion").value;
         alert(sugg);
+        data_list.push(sugg)
         $(".seven").show();
                 $(".six").hide();
 
@@ -167,9 +168,9 @@ $(document).ready(function () {
           type: "POST",
           async: "true",
           contentType: "application/json;charset=utf-8",
-          url: "/feedback/RJ-ODR-2020-2037",
+//          url: "/feedback/RJ-ODR-2020-2037",
           traditional: "true",
-          data: JSON.stringify(data_list),
+          data: JSON.stringify({data_list, allVals}),
           dataType: "json"
           });
     });

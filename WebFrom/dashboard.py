@@ -5,6 +5,7 @@ import sys, os
 sys.path.append(os.path.join(sys.path[0], 'DashLayouts'))
 import flask
 import io
+import socket
 from flask import Flask, render_template, flash, request, redirect, url_for, session, jsonify, make_response, url_for
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
@@ -17,7 +18,8 @@ from passlib.hash import sha256_crypt
 from werkzeug.utils import secure_filename
 from Connections.AWSMySQL import AWSMySQLConn
 from fixedVariables import sow, lead_status, raj_group_office, follow_up_person, fields_enquiry_list, fields_followup_log, \
-    fields_client_list, fields_client_rep_list, sow_code, raj_group_office_code, fields_rj_orders_list, master_users
+    fields_client_list, fields_client_rep_list, sow_code, raj_group_office_code, fields_rj_orders_list, master_users, \
+    fields_feedback
 from dashLayout import service_wise_pie_data, pending_offers_pie_data, submitted_offers_pie_data, lead_stages_bar_data, \
     weekly_leads_line_data, main_layout, new_offer_entry_layout, new_contact_entry_layout, order_layout, dn_order_layout, rv_order_layout
 
@@ -788,10 +790,12 @@ def add_new_offer_entry(order_status, order_key):
     }, indent=2)
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
-        print("Triggered Input Feedback Link: "+str(triggered_input))
-        if triggered_input == 'order_status' and order_status == 'COMPLETE':
+        hostname = socket.gethostname()
+        IPAddr = socket.gethostbyname(hostname)
+        print("Triggered Input Feedback Link: "+str(IPAddr))
+        if triggered_input == 'order_status' and order_status == 'FEEDBACK':
             url = url_for("feedback", order_key=order_key)
-            return url
+            return str(IPAddr)+url
         else:
             return None
 
@@ -1192,381 +1196,381 @@ def order_add_new_contact_entry(contact_click, row_id, submit_button, close_butt
             return None
 
 
-@dash_app3.callback([Output('tabs', 'value'),
-                     Output('order_key', 'value'),
-                     Output('order_date', 'date'),
-                     Output('order_po_no', 'value'),
-                     Output('order_project_description', 'value'),
-                     Output('order_scope_of_work', 'value'),
-                     Output('order_client_name', 'value'),
-                     Output('order_client_location', 'value'),
-                     Output('order_existing_client', 'value'),
-                     Output('order_order_no', 'value'),
-                     Output('order_file_no', 'value'),
-                     Output('order_status', 'value'),
-                     Output('order_project_incharge', 'value'),
-                     Output('order_raj_group_office', 'value'),
-                     Output('order_project_value', 'value'),
-                     Output('order_remarks', 'value'),
-                     Output('order_comp_location', 'value'),
-                     Output('order_modal_display', 'displayed'),
-                     Output('orders_table', 'data')],
-                  [Input('order_submit_button', 'submit_n_clicks'),
-                   Input('order_close_button', 'submit_n_clicks'),
-                   Input('order_enquiry_key', 'value'),
-                   Input('order_client_dropdown', 'value'),
-                   Input('orders_table', 'selected_rows'),
-                   Input('orders_scope_pie_chart', 'clickData'),
-                   Input('orders_status_pie_chart', 'clickData'),
-                   Input('order_key_load_button', 'submit_n_clicks')],
-                    [State('order_key', 'value'),
-                     State('order_date', 'date'),
-                     State('order_po_no', 'value'),
-                     State('order_project_description', 'value'),
-                     State('order_scope_of_work', 'value'),
-                     State('order_client_name', 'value'),
-                     State('order_client_location', 'value'),
-                     State('order_existing_client', 'value'),
-                     State('order_order_no', 'value'),
-                     State('order_file_no', 'value'),
-                     State('order_status', 'value'),
-                     State('order_project_incharge', 'value'),
-                     State('order_raj_group_office', 'value'),
-                     State('order_project_value', 'value'),
-                     State('order_remarks', 'value'),
-                     State('order_comp_location', 'value'),
-                     State('order_add_contact_div', 'children')]
-                  )
-def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_dropdown, row_id, clickData_scope, clickData_status,
-                        order_key_load_button, order_key, order_date, order_po_no,
-                        order_project_description, order_scope_of_work, order_client_name, order_client_location, order_existing_client,
-                        order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office,
-                        order_project_value, order_remarks, order_comp_location, add_contact_div_value):
-    ctx = dash.callback_context
-    ctx_msg = json.dumps({
-        'states': ctx.states,
-        'triggered': ctx.triggered,
-        'inputs': ctx.inputs
-    }, indent=2)
-    temp_data = connection.execute_query(
-        "select order_key, order_date, project_description, client_name,"
-        "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_key desc;")
-    rows = temp_data.to_dict('records')
-    if ctx.triggered:
-        triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
-        print("Triggered Input 1: "+str(triggered_input))
-        print("Enquiry Key: "+str(order_enquiry_key))
-        if triggered_input == 'order_enquiry_key' and order_enquiry_key:
-            # if any of the required field is None, return to the same page
-            existing_enquiry_data = connection.execute_query(
-                "select * from RajGroupEnquiryList where enquiry_key='{}';".format(order_enquiry_key))
-            return 'tab-2', '', None, '', \
-                   existing_enquiry_data.iloc[0]['project_description'], existing_enquiry_data.iloc[0]['scope_of_work'], \
-                   existing_enquiry_data.iloc[0]['client_name'], existing_enquiry_data.iloc[0]['client_location'], existing_enquiry_data.iloc[0][
-                       'existing_client'], '', '', '', '', \
-                   existing_enquiry_data.iloc[0]['raj_group_office'], existing_enquiry_data.iloc[0]['tentative_project_value'], \
-                   existing_enquiry_data.iloc[0]['remarks'], '', False, rows
-
-        elif triggered_input == 'order_key_load_button' and order_key_load_button:
-            prev_order_key = connection.execute_query("select order_key from DNSyndicateOrdersNew;")['order_key']
-            prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
-            # if prev_order_key_no <= 2000:
-            #     prev_order_key_no = 2000
-            new_order_key_no = str(int(prev_order_key_no) + 1).zfill(4)
-            # order_key = "{}-{}-{}-ORD-{}-{}-{}".format(raj_group_office_code[order_raj_group_office],
-            #                                            str(order_client_name).strip().split(" ")[0],
-            #                                            str(order_client_location).strip().split(" ")[0],
-            #                                            sow_code[order_scope_of_work],
-            #                                            str(dt.now().year),
-            #                                            new_order_key_no)
-            order_key = "{}-ODR-{}-{}".format('DN',
-                                              str(dt.now().year),
-                                              new_order_key_no)
-
-            return 'tab-2', order_key, None, None, \
-                   None, None, None, None, None, \
-                   None, None, None, None, None, \
-                   None, None, None, False, rows
-
-        elif triggered_input == 'order_submit_button' and submit_clicks:
-            # if any of the required field is None, return to the same page
-            if order_date is None or order_date == '' or order_scope_of_work is None or order_scope_of_work == '' or order_client_name is None or order_client_name == '' or order_client_location is None or order_client_location == '' or order_status is None or order_status == '' or order_raj_group_office is None or order_raj_group_office == '' or order_project_incharge is None or order_project_incharge == '':
-                print("Return same page")
-                return 'tab-2', order_key, order_date, order_po_no, \
-                       order_project_description, order_scope_of_work, order_client_name, order_client_location, order_existing_client, \
-                       order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office, \
-                       order_project_value, order_remarks, order_comp_location, True, rows
-            if not order_key:
-                prev_order_key = connection.execute_query("select order_key from DNSyndicateOrdersNew;")['order_key']
-                prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
-                new_order_key_no = str(int(prev_order_key_no)+1).zfill(4)
-                order_key = "{}-ODR-{}-{}".format(raj_group_office_code[order_raj_group_office],
-                                                  str(dt.now().year),
-                                                  new_order_key_no)
-
-                order_order_no = new_order_key_no
-
-                # order_key = 1
-                print("order_key:" + str(order_key))
-                order_values = [order_enquiry_key, order_key, order_date, order_po_no, order_project_description,
-                                str(order_scope_of_work).replace("[", '').replace("]", '').replace("'", ''),
-                                  order_client_name,
-                                  order_client_location, order_existing_client, order_order_no, order_file_no,
-                                  str(order_status).replace("[", '').replace("]", '').replace("'", '') ,
-                                  order_project_incharge, str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
-                                order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"',''))]
-                order_values = [i if i else '' for i in order_values]
-                client_values = [order_client_name, order_client_location, order_key]
-                client_values = [i if i else '' for i in client_values]
-                connection.insert_query('RajGroupClientList', "(client_name, client_location, po_key)", client_values)
-                connection.insert_query('DNSyndicateOrdersNew', fields_rj_orders_list, order_values)
-
-                ## update RajGroupClientRepresentativeList
-                try:
-                    connection.execute(
-                        "delete from RajGroupClientRepresentativeList where po_key='{}'".format(order_key))
-                except:
-                    pass
-                if add_contact_div_value:
-                    for i in add_contact_div_value:
-                        contact_person_name = i['props']['children'][0]['props']['children'][1]['props']['value']
-                        contact_person_mobile = i['props']['children'][1]['props']['children'][1]['props']['value']
-                        contact_person_email = i['props']['children'][2]['props']['children'][1]['props']['value']
-                        contact_person_designation = i['props']['children'][3]['props']['children'][1]['props']['value']
-                        client_rep_values = [contact_person_name, contact_person_mobile, contact_person_email,
-                                             contact_person_designation, order_client_name, order_client_location, order_key]
-                        client_rep_mod_values = ['' if i is None else i for i in client_rep_values]
-                        connection.insert_query('RajGroupClientRepresentativeList',
-                                                "(contact_person_name, contact_person_mobile, "
-                                                "contact_person_email, contact_person_designation, "
-                                                "client_name, client_location, po_key)",
-                                                client_rep_mod_values)
-
-            else:
-                connection.execute("UPDATE RajGroupClientList SET client_name='{}', client_location='{}' where "
-                                   "po_key='{}'".format(order_client_name, order_client_location, order_key))
-                connection.execute("UPDATE DNSyndicateOrdersNew "
-                                         "SET order_date='{}', "
-                                   "po_no='{}', "
-                                   "project_description='{}', "
-                                         "scope_of_work='{}', "
-                                         "client_name='{}', "
-                                         "client_location='{}', "
-                                         "existing_client='{}', "
-                                         "order_no='{}', "
-                                         "file_no ='{}', "
-                                         "order_status='{}', "
-                                         "project_incharge='{}', "
-                                         "raj_group_office='{}', "
-                                         "project_value='{}', "
-                                         "remarks='{}',"
-                                         "comp_location='{}' "
-                                         "where  order_key='{}';".format(order_date, order_po_no, order_project_description,
-                                  str(order_scope_of_work).replace("[", '').replace("]", '').replace("'", ''),
-                                  order_client_name,
-                                  order_client_location, order_existing_client, order_order_no,
-                                  order_file_no,
-                                  str(order_status).replace("[", '').replace("]", '').replace("'", ''),
-                                                                         str(order_project_incharge).replace("[", '').replace(
-                                                                             "]", '').replace("'", ''),
-                                  str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
-
-                                  order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"','')), order_key))
-
-
-                ## update RajGroupClientRepresentativeList
-                try:
-                    connection.execute(
-                        "delete from RajGroupClientRepresentativeList where po_key='{}'".format(order_key))
-                except:
-                    pass
-                if add_contact_div_value:
-                    for i in add_contact_div_value:
-                        contact_person_name = i['props']['children'][0]['props']['children'][1]['props']['value']
-                        contact_person_mobile = i['props']['children'][1]['props']['children'][1]['props']['value']
-                        contact_person_email = i['props']['children'][2]['props']['children'][1]['props']['value']
-                        contact_person_designation = i['props']['children'][3]['props']['children'][1]['props']['value']
-                        client_rep_values = [contact_person_name, contact_person_mobile, contact_person_email,
-                                             contact_person_designation, order_client_name, order_client_location, order_key]
-                        client_rep_mod_values = ['' if i is None else i for i in client_rep_values]
-                        connection.insert_query('RajGroupClientRepresentativeList',
-                                                "(contact_person_name, contact_person_mobile, "
-                                                "contact_person_email, contact_person_designation, "
-                                                "client_name, client_location, po_key)",
-                                                client_rep_mod_values)
-
-
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
-                   rows
-
-        elif triggered_input == 'orders_table' and row_id:
-            row_id = row_id[0]
-            row_data = connection.execute_query("select * from DNSyndicateOrdersNew where order_key='{}';".format(rows[row_id]['order_key']))
-            return 'tab-2', row_data.iloc[0]['order_key'], \
-                   row_data.iloc[0]['order_date'] if str(row_data.iloc[0]['order_date']) != '0000-00-00' else None, \
-                   row_data.iloc[0]['po_no'], \
-                   row_data.iloc[0]['project_description'], row_data.iloc[0]['scope_of_work'], \
-                   row_data.iloc[0]['client_name'], row_data.iloc[0]['client_location'], row_data.iloc[0]['existing_client'], \
-                   row_data.iloc[0]['order_no'], row_data.iloc[0]['file_no'], \
-                   row_data.iloc[0]['order_status'], \
-                   row_data.iloc[0]['project_incharge'], row_data.iloc[0]['raj_group_office'], row_data.iloc[0]['project_value'], \
-                   row_data.iloc[0]['remarks'], row_data.iloc[0]['comp_location'], False, rows
-
-        elif triggered_input == 'order_client_dropdown' and client_dropdown:
-            if client_dropdown != 'Other':
-                client_nm = str(client_dropdown).split(" -- ")[0]
-                client_loc = str(client_dropdown).split(" -- ")[1]
-                # client_loc = connection.execute_query("select * from RajGroupClientList where "
-                #                                                                "client_name='{}';".format(client_dropdown)).iloc[0]['client_location']
-                existing_client = "YES"
-            else:
-                client_nm = ''
-                client_loc = ''
-                existing_client = "NO"
-            return 'tab-2', order_key, order_date, order_po_no, \
-                   order_project_description, order_scope_of_work, client_nm, client_loc, existing_client, \
-                   order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office, \
-                   order_project_value, order_remarks, order_comp_location, False, rows
-
-        elif triggered_input == 'orders_scope_pie_chart' and clickData_scope:
-            status_var = clickData_scope['points'][0]['label']
-            orders_data_modified = connection.execute_query("select * from DNSyndicateOrdersNew where "
-                                                                       "scope_of_work='{}' order by order_key desc;".format(status_var)).to_dict('records')
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
-                   orders_data_modified
-
-        elif triggered_input == 'orders_status_pie_chart' and clickData_status:
-            status_var = clickData_status['points'][0]['label']
-            orders_data_modified = connection.execute_query("select * from DNSyndicateOrdersNew where "
-                                                                       "order_status='{}' order by order_key desc;".format(status_var)).to_dict('records')
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
-                   orders_data_modified
-
-        else:
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
-                   rows
-    return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
-               rows
-
-
-@dash_app3.callback(Output('order_add_contact_div', 'children'),
-                   [Input('order_add_another_contact', 'submit_n_clicks'),
-                    Input('orders_table', 'selected_rows'),
-                    Input('order_submit_button', 'submit_n_clicks'),
-                    Input('order_close_button', 'submit_n_clicks'),
-                    Input('order_client_dropdown', 'value'),
-                    Input('order_enquiry_key', 'value')],
-                   [State('order_key', 'value'),
-                    State('order_add_contact_div', 'children'),
-                    State('order_client_name', 'value'),
-                    State('order_client_location', 'value')])
-def order_add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, order_enquiry_key, enquiry_key, add_contact_div_value, client_name, client_location):
-    # connection = AWSMySQLConn()
-    ctx = dash.callback_context
-    ctx_msg = json.dumps({
-        'states': ctx.states,
-        'triggered': ctx.triggered,
-        'inputs': ctx.inputs
-    }, indent=2)
-    temp_data = connection.execute_query(
-        "select order_key, order_date, project_description, client_name,"
-        "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_key desc;")
-    rows = temp_data.to_dict('records')
-    if ctx.triggered:
-        triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
-        print("Triggered Input 4: " + str(triggered_input))
-        if triggered_input == 'order_add_another_contact' and contact_click:
-            existing_contact_entries = []
-            index = 0
-            if add_contact_div_value:
-                for index, i in enumerate(add_contact_div_value):
-                    contact_person_name = i['props']['children'][0]['props']['children'][1]['props']['value']
-                    contact_person_mobile = i['props']['children'][1]['props']['children'][1]['props']['value']
-                    contact_person_email = i['props']['children'][2]['props']['children'][1]['props']['value']
-                    contact_person_designation = i['props']['children'][3]['props']['children'][1]['props']['value']
-                    existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
-                                                                             contact_person_name,
-                                                                             "contact_person_mobile_id_{}".format(
-                                                                                 index),
-                                                                             contact_person_mobile,
-                                                                             "contact_person_email_id_{}".format(index),
-                                                                             contact_person_email,
-                                                                             "contact_person_designation_id_{}".format(
-                                                                                 index),
-                                                                             contact_person_designation
-                                                                             ))
-            existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index+1),
-                                                                  None,
-                                                                  "contact_person_mobile_id_{}".format(index+1),
-                                                                  None,
-                                                                  "contact_person_email_id_{}".format(index+1),
-                                                                  None,
-                                                                  "contact_person_designation_id_{}".format(index+1),
-                                                                  None
-                                                                  ))
-
-            return existing_contact_entries
-
-        elif triggered_input == 'orders_table' and row_id:
-            existing_contact_entries = []
-            row_id = row_id[0]
-            contact_data = connection.execute_query(
-                "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
-                " from RajGroupClientRepresentativeList where po_key='{}'".format(rows[row_id]['order_key']))
-            for index, row in contact_data.iterrows():
-                existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
-                                                              row['contact_person_name'],
-                                                              "contact_person_mobile_id_{}".format(index),
-                                                              row['contact_person_mobile'],
-                                                              "contact_person_email_id_{}".format(index),
-                                                              row['contact_person_email'],
-                                                              "contact_person_designation_id_{}".format(index),
-                                                              row['contact_person_designation']
-                                                              ))
-            return existing_contact_entries
-
-        elif triggered_input == 'order_enquiry_key' and order_enquiry_key:
-            existing_contact_entries = []
-            contact_data = connection.execute_query(
-                "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
-                " from RajGroupClientRepresentativeList where enquiry_key='{}';".format(order_enquiry_key))
-            for index, row in contact_data.iterrows():
-                existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
-                                                                         row['contact_person_name'],
-                                                                         "contact_person_mobile_id_{}".format(index),
-                                                                         row['contact_person_mobile'],
-                                                                         "contact_person_email_id_{}".format(index),
-                                                                         row['contact_person_email'],
-                                                                         "contact_person_designation_id_{}".format(
-                                                                             index),
-                                                                         row['contact_person_designation']
-                                                                         ))
-            return existing_contact_entries
-
-
-        elif triggered_input == 'order_client_dropdown' and client_dropdown and client_dropdown != 'Other':
-            cl_nm = str(client_dropdown).split(" -- ")[0]
-            cl_lc = str(client_dropdown).split(" -- ")[1]
-            existing_contact_entries = []
-            contact_data = connection.execute_query(
-                "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
-                " from RajGroupClientRepresentativeList where client_name='{}' and client_location='{}' group by 1,2,3,4;".format(cl_nm, cl_lc))
-            for index, row in contact_data.iterrows():
-                existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
-                                                              row['contact_person_name'],
-                                                              "contact_person_mobile_id_{}".format(index),
-                                                              row['contact_person_mobile'],
-                                                              "contact_person_email_id_{}".format(index),
-                                                              row['contact_person_email'],
-                                                              "contact_person_designation_id_{}".format(index),
-                                                              row['contact_person_designation']
-                                                              ))
-            return existing_contact_entries
-
-        elif triggered_input == 'order_close_button':
-            return None
-        else:
-            return None
+# @dash_app3.callback([Output('tabs', 'value'),
+#                      Output('order_key', 'value'),
+#                      Output('order_date', 'date'),
+#                      Output('order_po_no', 'value'),
+#                      Output('order_project_description', 'value'),
+#                      Output('order_scope_of_work', 'value'),
+#                      Output('order_client_name', 'value'),
+#                      Output('order_client_location', 'value'),
+#                      Output('order_existing_client', 'value'),
+#                      Output('order_order_no', 'value'),
+#                      Output('order_file_no', 'value'),
+#                      Output('order_status', 'value'),
+#                      Output('order_project_incharge', 'value'),
+#                      Output('order_raj_group_office', 'value'),
+#                      Output('order_project_value', 'value'),
+#                      Output('order_remarks', 'value'),
+#                      Output('order_comp_location', 'value'),
+#                      Output('order_modal_display', 'displayed'),
+#                      Output('orders_table', 'data')],
+#                   [Input('order_submit_button', 'submit_n_clicks'),
+#                    Input('order_close_button', 'submit_n_clicks'),
+#                    Input('order_enquiry_key', 'value'),
+#                    Input('order_client_dropdown', 'value'),
+#                    Input('orders_table', 'selected_rows'),
+#                    Input('orders_scope_pie_chart', 'clickData'),
+#                    Input('orders_status_pie_chart', 'clickData'),
+#                    Input('order_key_load_button', 'submit_n_clicks')],
+#                     [State('order_key', 'value'),
+#                      State('order_date', 'date'),
+#                      State('order_po_no', 'value'),
+#                      State('order_project_description', 'value'),
+#                      State('order_scope_of_work', 'value'),
+#                      State('order_client_name', 'value'),
+#                      State('order_client_location', 'value'),
+#                      State('order_existing_client', 'value'),
+#                      State('order_order_no', 'value'),
+#                      State('order_file_no', 'value'),
+#                      State('order_status', 'value'),
+#                      State('order_project_incharge', 'value'),
+#                      State('order_raj_group_office', 'value'),
+#                      State('order_project_value', 'value'),
+#                      State('order_remarks', 'value'),
+#                      State('order_comp_location', 'value'),
+#                      State('order_add_contact_div', 'children')]
+#                   )
+# def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_dropdown, row_id, clickData_scope, clickData_status,
+#                         order_key_load_button, order_key, order_date, order_po_no,
+#                         order_project_description, order_scope_of_work, order_client_name, order_client_location, order_existing_client,
+#                         order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office,
+#                         order_project_value, order_remarks, order_comp_location, add_contact_div_value):
+#     ctx = dash.callback_context
+#     ctx_msg = json.dumps({
+#         'states': ctx.states,
+#         'triggered': ctx.triggered,
+#         'inputs': ctx.inputs
+#     }, indent=2)
+#     temp_data = connection.execute_query(
+#         "select order_key, order_date, project_description, client_name,"
+#         "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_key desc;")
+#     rows = temp_data.to_dict('records')
+#     if ctx.triggered:
+#         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
+#         print("Triggered Input 1: "+str(triggered_input))
+#         print("Enquiry Key: "+str(order_enquiry_key))
+#         if triggered_input == 'order_enquiry_key' and order_enquiry_key:
+#             # if any of the required field is None, return to the same page
+#             existing_enquiry_data = connection.execute_query(
+#                 "select * from RajGroupEnquiryList where enquiry_key='{}';".format(order_enquiry_key))
+#             return 'tab-2', '', None, '', \
+#                    existing_enquiry_data.iloc[0]['project_description'], existing_enquiry_data.iloc[0]['scope_of_work'], \
+#                    existing_enquiry_data.iloc[0]['client_name'], existing_enquiry_data.iloc[0]['client_location'], existing_enquiry_data.iloc[0][
+#                        'existing_client'], '', '', '', '', \
+#                    existing_enquiry_data.iloc[0]['raj_group_office'], existing_enquiry_data.iloc[0]['tentative_project_value'], \
+#                    existing_enquiry_data.iloc[0]['remarks'], '', False, rows
+#
+#         elif triggered_input == 'order_key_load_button' and order_key_load_button:
+#             prev_order_key = connection.execute_query("select order_key from DNSyndicateOrdersNew;")['order_key']
+#             prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
+#             # if prev_order_key_no <= 2000:
+#             #     prev_order_key_no = 2000
+#             new_order_key_no = str(int(prev_order_key_no) + 1).zfill(4)
+#             # order_key = "{}-{}-{}-ORD-{}-{}-{}".format(raj_group_office_code[order_raj_group_office],
+#             #                                            str(order_client_name).strip().split(" ")[0],
+#             #                                            str(order_client_location).strip().split(" ")[0],
+#             #                                            sow_code[order_scope_of_work],
+#             #                                            str(dt.now().year),
+#             #                                            new_order_key_no)
+#             order_key = "{}-ODR-{}-{}".format('DN',
+#                                               str(dt.now().year),
+#                                               new_order_key_no)
+#
+#             return 'tab-2', order_key, None, None, \
+#                    None, None, None, None, None, \
+#                    None, None, None, None, None, \
+#                    None, None, None, False, rows
+#
+#         elif triggered_input == 'order_submit_button' and submit_clicks:
+#             # if any of the required field is None, return to the same page
+#             if order_date is None or order_date == '' or order_scope_of_work is None or order_scope_of_work == '' or order_client_name is None or order_client_name == '' or order_client_location is None or order_client_location == '' or order_status is None or order_status == '' or order_raj_group_office is None or order_raj_group_office == '' or order_project_incharge is None or order_project_incharge == '':
+#                 print("Return same page")
+#                 return 'tab-2', order_key, order_date, order_po_no, \
+#                        order_project_description, order_scope_of_work, order_client_name, order_client_location, order_existing_client, \
+#                        order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office, \
+#                        order_project_value, order_remarks, order_comp_location, True, rows
+#             if not order_key:
+#                 prev_order_key = connection.execute_query("select order_key from DNSyndicateOrdersNew;")['order_key']
+#                 prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
+#                 new_order_key_no = str(int(prev_order_key_no)+1).zfill(4)
+#                 order_key = "{}-ODR-{}-{}".format(raj_group_office_code[order_raj_group_office],
+#                                                   str(dt.now().year),
+#                                                   new_order_key_no)
+#
+#                 order_order_no = new_order_key_no
+#
+#                 # order_key = 1
+#                 print("order_key:" + str(order_key))
+#                 order_values = [order_enquiry_key, order_key, order_date, order_po_no, order_project_description,
+#                                 str(order_scope_of_work).replace("[", '').replace("]", '').replace("'", ''),
+#                                   order_client_name,
+#                                   order_client_location, order_existing_client, order_order_no, order_file_no,
+#                                   str(order_status).replace("[", '').replace("]", '').replace("'", '') ,
+#                                   order_project_incharge, str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
+#                                 order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"',''))]
+#                 order_values = [i if i else '' for i in order_values]
+#                 client_values = [order_client_name, order_client_location, order_key]
+#                 client_values = [i if i else '' for i in client_values]
+#                 connection.insert_query('RajGroupClientList', "(client_name, client_location, po_key)", client_values)
+#                 connection.insert_query('DNSyndicateOrdersNew', fields_rj_orders_list, order_values)
+#
+#                 ## update RajGroupClientRepresentativeList
+#                 try:
+#                     connection.execute(
+#                         "delete from RajGroupClientRepresentativeList where po_key='{}'".format(order_key))
+#                 except:
+#                     pass
+#                 if add_contact_div_value:
+#                     for i in add_contact_div_value:
+#                         contact_person_name = i['props']['children'][0]['props']['children'][1]['props']['value']
+#                         contact_person_mobile = i['props']['children'][1]['props']['children'][1]['props']['value']
+#                         contact_person_email = i['props']['children'][2]['props']['children'][1]['props']['value']
+#                         contact_person_designation = i['props']['children'][3]['props']['children'][1]['props']['value']
+#                         client_rep_values = [contact_person_name, contact_person_mobile, contact_person_email,
+#                                              contact_person_designation, order_client_name, order_client_location, order_key]
+#                         client_rep_mod_values = ['' if i is None else i for i in client_rep_values]
+#                         connection.insert_query('RajGroupClientRepresentativeList',
+#                                                 "(contact_person_name, contact_person_mobile, "
+#                                                 "contact_person_email, contact_person_designation, "
+#                                                 "client_name, client_location, po_key)",
+#                                                 client_rep_mod_values)
+#
+#             else:
+#                 connection.execute("UPDATE RajGroupClientList SET client_name='{}', client_location='{}' where "
+#                                    "po_key='{}'".format(order_client_name, order_client_location, order_key))
+#                 connection.execute("UPDATE DNSyndicateOrdersNew "
+#                                          "SET order_date='{}', "
+#                                    "po_no='{}', "
+#                                    "project_description='{}', "
+#                                          "scope_of_work='{}', "
+#                                          "client_name='{}', "
+#                                          "client_location='{}', "
+#                                          "existing_client='{}', "
+#                                          "order_no='{}', "
+#                                          "file_no ='{}', "
+#                                          "order_status='{}', "
+#                                          "project_incharge='{}', "
+#                                          "raj_group_office='{}', "
+#                                          "project_value='{}', "
+#                                          "remarks='{}',"
+#                                          "comp_location='{}' "
+#                                          "where  order_key='{}';".format(order_date, order_po_no, order_project_description,
+#                                   str(order_scope_of_work).replace("[", '').replace("]", '').replace("'", ''),
+#                                   order_client_name,
+#                                   order_client_location, order_existing_client, order_order_no,
+#                                   order_file_no,
+#                                   str(order_status).replace("[", '').replace("]", '').replace("'", ''),
+#                                                                          str(order_project_incharge).replace("[", '').replace(
+#                                                                              "]", '').replace("'", ''),
+#                                   str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
+#
+#                                   order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"','')), order_key))
+#
+#
+#                 ## update RajGroupClientRepresentativeList
+#                 try:
+#                     connection.execute(
+#                         "delete from RajGroupClientRepresentativeList where po_key='{}'".format(order_key))
+#                 except:
+#                     pass
+#                 if add_contact_div_value:
+#                     for i in add_contact_div_value:
+#                         contact_person_name = i['props']['children'][0]['props']['children'][1]['props']['value']
+#                         contact_person_mobile = i['props']['children'][1]['props']['children'][1]['props']['value']
+#                         contact_person_email = i['props']['children'][2]['props']['children'][1]['props']['value']
+#                         contact_person_designation = i['props']['children'][3]['props']['children'][1]['props']['value']
+#                         client_rep_values = [contact_person_name, contact_person_mobile, contact_person_email,
+#                                              contact_person_designation, order_client_name, order_client_location, order_key]
+#                         client_rep_mod_values = ['' if i is None else i for i in client_rep_values]
+#                         connection.insert_query('RajGroupClientRepresentativeList',
+#                                                 "(contact_person_name, contact_person_mobile, "
+#                                                 "contact_person_email, contact_person_designation, "
+#                                                 "client_name, client_location, po_key)",
+#                                                 client_rep_mod_values)
+#
+#
+#             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
+#                    rows
+#
+#         elif triggered_input == 'orders_table' and row_id:
+#             row_id = row_id[0]
+#             row_data = connection.execute_query("select * from DNSyndicateOrdersNew where order_key='{}';".format(rows[row_id]['order_key']))
+#             return 'tab-2', row_data.iloc[0]['order_key'], \
+#                    row_data.iloc[0]['order_date'] if str(row_data.iloc[0]['order_date']) != '0000-00-00' else None, \
+#                    row_data.iloc[0]['po_no'], \
+#                    row_data.iloc[0]['project_description'], row_data.iloc[0]['scope_of_work'], \
+#                    row_data.iloc[0]['client_name'], row_data.iloc[0]['client_location'], row_data.iloc[0]['existing_client'], \
+#                    row_data.iloc[0]['order_no'], row_data.iloc[0]['file_no'], \
+#                    row_data.iloc[0]['order_status'], \
+#                    row_data.iloc[0]['project_incharge'], row_data.iloc[0]['raj_group_office'], row_data.iloc[0]['project_value'], \
+#                    row_data.iloc[0]['remarks'], row_data.iloc[0]['comp_location'], False, rows
+#
+#         elif triggered_input == 'order_client_dropdown' and client_dropdown:
+#             if client_dropdown != 'Other':
+#                 client_nm = str(client_dropdown).split(" -- ")[0]
+#                 client_loc = str(client_dropdown).split(" -- ")[1]
+#                 # client_loc = connection.execute_query("select * from RajGroupClientList where "
+#                 #                                                                "client_name='{}';".format(client_dropdown)).iloc[0]['client_location']
+#                 existing_client = "YES"
+#             else:
+#                 client_nm = ''
+#                 client_loc = ''
+#                 existing_client = "NO"
+#             return 'tab-2', order_key, order_date, order_po_no, \
+#                    order_project_description, order_scope_of_work, client_nm, client_loc, existing_client, \
+#                    order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office, \
+#                    order_project_value, order_remarks, order_comp_location, False, rows
+#
+#         elif triggered_input == 'orders_scope_pie_chart' and clickData_scope:
+#             status_var = clickData_scope['points'][0]['label']
+#             orders_data_modified = connection.execute_query("select * from DNSyndicateOrdersNew where "
+#                                                                        "scope_of_work='{}' order by order_key desc;".format(status_var)).to_dict('records')
+#             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
+#                    orders_data_modified
+#
+#         elif triggered_input == 'orders_status_pie_chart' and clickData_status:
+#             status_var = clickData_status['points'][0]['label']
+#             orders_data_modified = connection.execute_query("select * from DNSyndicateOrdersNew where "
+#                                                                        "order_status='{}' order by order_key desc;".format(status_var)).to_dict('records')
+#             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
+#                    orders_data_modified
+#
+#         else:
+#             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
+#                    rows
+#     return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
+#                rows
+#
+#
+# @dash_app3.callback(Output('order_add_contact_div', 'children'),
+#                    [Input('order_add_another_contact', 'submit_n_clicks'),
+#                     Input('orders_table', 'selected_rows'),
+#                     Input('order_submit_button', 'submit_n_clicks'),
+#                     Input('order_close_button', 'submit_n_clicks'),
+#                     Input('order_client_dropdown', 'value'),
+#                     Input('order_enquiry_key', 'value')],
+#                    [State('order_key', 'value'),
+#                     State('order_add_contact_div', 'children'),
+#                     State('order_client_name', 'value'),
+#                     State('order_client_location', 'value')])
+# def order_add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, order_enquiry_key, enquiry_key, add_contact_div_value, client_name, client_location):
+#     # connection = AWSMySQLConn()
+#     ctx = dash.callback_context
+#     ctx_msg = json.dumps({
+#         'states': ctx.states,
+#         'triggered': ctx.triggered,
+#         'inputs': ctx.inputs
+#     }, indent=2)
+#     temp_data = connection.execute_query(
+#         "select order_key, order_date, project_description, client_name,"
+#         "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_key desc;")
+#     rows = temp_data.to_dict('records')
+#     if ctx.triggered:
+#         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
+#         print("Triggered Input 4: " + str(triggered_input))
+#         if triggered_input == 'order_add_another_contact' and contact_click:
+#             existing_contact_entries = []
+#             index = 0
+#             if add_contact_div_value:
+#                 for index, i in enumerate(add_contact_div_value):
+#                     contact_person_name = i['props']['children'][0]['props']['children'][1]['props']['value']
+#                     contact_person_mobile = i['props']['children'][1]['props']['children'][1]['props']['value']
+#                     contact_person_email = i['props']['children'][2]['props']['children'][1]['props']['value']
+#                     contact_person_designation = i['props']['children'][3]['props']['children'][1]['props']['value']
+#                     existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
+#                                                                              contact_person_name,
+#                                                                              "contact_person_mobile_id_{}".format(
+#                                                                                  index),
+#                                                                              contact_person_mobile,
+#                                                                              "contact_person_email_id_{}".format(index),
+#                                                                              contact_person_email,
+#                                                                              "contact_person_designation_id_{}".format(
+#                                                                                  index),
+#                                                                              contact_person_designation
+#                                                                              ))
+#             existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index+1),
+#                                                                   None,
+#                                                                   "contact_person_mobile_id_{}".format(index+1),
+#                                                                   None,
+#                                                                   "contact_person_email_id_{}".format(index+1),
+#                                                                   None,
+#                                                                   "contact_person_designation_id_{}".format(index+1),
+#                                                                   None
+#                                                                   ))
+#
+#             return existing_contact_entries
+#
+#         elif triggered_input == 'orders_table' and row_id:
+#             existing_contact_entries = []
+#             row_id = row_id[0]
+#             contact_data = connection.execute_query(
+#                 "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
+#                 " from RajGroupClientRepresentativeList where po_key='{}'".format(rows[row_id]['order_key']))
+#             for index, row in contact_data.iterrows():
+#                 existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
+#                                                               row['contact_person_name'],
+#                                                               "contact_person_mobile_id_{}".format(index),
+#                                                               row['contact_person_mobile'],
+#                                                               "contact_person_email_id_{}".format(index),
+#                                                               row['contact_person_email'],
+#                                                               "contact_person_designation_id_{}".format(index),
+#                                                               row['contact_person_designation']
+#                                                               ))
+#             return existing_contact_entries
+#
+#         elif triggered_input == 'order_enquiry_key' and order_enquiry_key:
+#             existing_contact_entries = []
+#             contact_data = connection.execute_query(
+#                 "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
+#                 " from RajGroupClientRepresentativeList where enquiry_key='{}';".format(order_enquiry_key))
+#             for index, row in contact_data.iterrows():
+#                 existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
+#                                                                          row['contact_person_name'],
+#                                                                          "contact_person_mobile_id_{}".format(index),
+#                                                                          row['contact_person_mobile'],
+#                                                                          "contact_person_email_id_{}".format(index),
+#                                                                          row['contact_person_email'],
+#                                                                          "contact_person_designation_id_{}".format(
+#                                                                              index),
+#                                                                          row['contact_person_designation']
+#                                                                          ))
+#             return existing_contact_entries
+#
+#
+#         elif triggered_input == 'order_client_dropdown' and client_dropdown and client_dropdown != 'Other':
+#             cl_nm = str(client_dropdown).split(" -- ")[0]
+#             cl_lc = str(client_dropdown).split(" -- ")[1]
+#             existing_contact_entries = []
+#             contact_data = connection.execute_query(
+#                 "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
+#                 " from RajGroupClientRepresentativeList where client_name='{}' and client_location='{}' group by 1,2,3,4;".format(cl_nm, cl_lc))
+#             for index, row in contact_data.iterrows():
+#                 existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
+#                                                               row['contact_person_name'],
+#                                                               "contact_person_mobile_id_{}".format(index),
+#                                                               row['contact_person_mobile'],
+#                                                               "contact_person_email_id_{}".format(index),
+#                                                               row['contact_person_email'],
+#                                                               "contact_person_designation_id_{}".format(index),
+#                                                               row['contact_person_designation']
+#                                                               ))
+#             return existing_contact_entries
+#
+#         elif triggered_input == 'order_close_button':
+#             return None
+#         else:
+#             return None
 
 
 # @dash_app4.callback([Output('tabs', 'value'),
@@ -2473,12 +2477,29 @@ def download_rv_excel():
 
 @app.route('/feedback/<order_key>', methods=['GET', 'POST'])
 def feedback(order_key):
-    print(order_key)
-    print(request.method)
-    if request.method == 'POST':
-        print(request.get_json())
-    #     return render_template('feedback.html')
-    return render_template('feedback.html')
+    try:
+        order_status = connection.execute_query("select order_status from RajElectricalsOrdersNew where order_key='{}';"
+                                            .format(order_key))['order_status'][0]
+    except:
+        order_status = ''
+    if order_status == 'FEEDBACK':
+        if request.method == 'POST':
+            feedback_data = request.get_json()
+            recommend_score = feedback_data['data_list'][0]
+            satisfaction_score = feedback_data['data_list'][1]
+            technical_score = feedback_data['data_list'][2]
+            behavorial_score = feedback_data['data_list'][3]
+            future_services = ', '.join(feedback_data['allVals'])
+            lesser_time = feedback_data['data_list'][4]
+            suggestion = feedback_data['data_list'][5]
+            feedback_table_values = [order_key, recommend_score, satisfaction_score, technical_score, behavorial_score, future_services,
+                                     lesser_time, suggestion]
+            connection.insert_query('RajGroupFeedback', fields_feedback, feedback_table_values)
+            connection.execute("UPDATE RajElectricalsOrdersNew SET order_status='COMPLETE' where "
+                               "order_key='{}'".format(order_key))
+        return render_template('feedback.html')
+    else:
+        return render_template('feedback_error.html')
 
 # @app.route('/order_entry', methods=['GET', 'POST'])
 # @is_logged_in
