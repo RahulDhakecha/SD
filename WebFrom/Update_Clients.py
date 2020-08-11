@@ -1,7 +1,7 @@
 from Connections.AWSMySQL import AWSMySQLConn
 import pandas as pd
 import re
-pd.set_option("display.max_columns", None, "display.max_rows", None)
+# pd.set_option("display.max_columns", None, "display.max_rows", None)
 
 # RajElectricalsClients is updated
 # Using RajElectricalsClients, update RajGroupClientList and RajGroupClientRepresentativeList
@@ -16,11 +16,13 @@ fields_client_rep_list = "(contact_person_name, contact_person_mobile, contact_p
 
 
 # data = pd.read_excel("/Users/rahuldhakecha/RajGroup/ClientList/RajElectricalsClients.xlsx")
-data = pd.read_csv("/Users/rahuldhakecha/RajGroup/ClientList/RajElectricalsClientRepresentativeList.csv")
-data = data.fillna(0)
-data.drop_duplicates(inplace=True)
-print(data)
-print(data.shape)
+# data = pd.read_csv("/Users/rahuldhakecha/RajGroup/ClientList/RajElectricalsClientRepresentativeList.csv")
+# print(data_clients)
+# print(data_sectors)
+# data = data.fillna(0)
+# data.drop_duplicates(inplace=True)
+# print(data)
+# print(data.shape)
 # print(data.head())
 # client_rep_data = data[['company',
 #                     'location',
@@ -89,3 +91,18 @@ def push_client_info_to_db():
                                              "Purchase", str(row['company']), str(row['location'])), axis = 1)
 
 
+def mapSector():
+    data_clients = connection.execute_query("select * from RajGroupClientList;")
+    data_sectors = pd.read_excel("/Users/rahuldhakecha/RajGroup/ClientList/Sector/New_Sector_Labels.xlsx")
+    for index, row in data_sectors.iterrows():
+        if index<531:
+            continue
+        print(index)
+        # print(row['sector'], row['client_name'])
+        connection.execute("UPDATE RajGroupClientList SET sector='{}' WHERE client_name='{}';".format(row['sector'],
+                                                                                                      row[
+                                                                                                          'client_name']))
+
+
+if __name__ == '__main__':
+    mapSector()
