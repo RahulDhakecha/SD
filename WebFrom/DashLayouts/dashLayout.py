@@ -712,8 +712,6 @@ def main_layout():
         html.A('Logout',href="/logout",className='nav_item last'),
     ],className='nav_bar'),
 
-
-    html.H3('.'),
     dcc.Tabs(id='tabs', value='tab-1', children=[
         dcc.Tab(id='tab1', value='tab-1', label='Raj Group Marketing Dashboard', children=[
 
@@ -1193,7 +1191,6 @@ def order_layout():
             html.A('Logout', href="/logout", className='nav_item last'),
         ], className='nav_bar'),
 
-    html.H3('.'),
         dcc.Tabs(id='tabs', value='tab-1', children=[
             dcc.Tab(id='tab1', value='tab-1', label='Work Order Dashboard', children=[
                 # Body1 start
