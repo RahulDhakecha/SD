@@ -484,7 +484,6 @@ def orders_status_pie_data(data):
                 'marker': {
                     'colors': ['#e41c59', '#003f5c', '#58508d', 'cyan',
                                '#bc5090',
-                               '#ADD8E6',
                                '#ff6361',
                                '#ffa600',
                                '#63b179',
@@ -492,7 +491,6 @@ def orders_status_pie_data(data):
                                '#b58f40',
                                '#d2784e',
                                '#dc6272',
-
                                ],
                     'line': {
                         'color': '#F5F5F5',
@@ -691,26 +689,43 @@ def main_layout():
 
 
     return html.Div([
-    # html.Div([
-    #     html.Div([
-    #         dcc.Link('HOME', href='/', refresh=True),
-    #     ], className="one columns"),
-    #     html.Div([
-    #         dcc.Link('REFRESH', href='/dash/', refresh=True),
-    #     ], className="one columns"),
-    #     # html.Div([
-    #     #     html.A('Download Dispatch Register', href='/dash/urlToDownload', id='my_link'),
-    #     # ], className="one columns"),
-    # ], className="row"),
+        html.Meta(name="viewport", content="width=device-width, initial-scale=1.0"),
+        # html.Div([
+        #     html.Div([
+        #         dcc.Link('HOME', href='/', refresh=True),
+        #     ], className="one columns"),
+        #     html.Div([
+        #         dcc.Link('REFRESH', href='/dash/', refresh=True),
+        #     ], className="one columns"),
+        #     # html.Div([
+        #     #     html.A('Download Dispatch Register', href='/dash/urlToDownload', id='my_link'),
+        #     # ], className="one columns"),
+        # ], className="row"),
 
-    html.Div([
         html.Div([
-            html.A('Home', href="/", className='nav_item now',style={'border-left':'none'}),
-            html.A('REFRESH', href="/dash/", className='nav_item'),
+            html.Div([
+                html.A('Home', href="/", className='nav_item now', style={'border-left': 'none'}),
+                html.A('REFRESH', href="/dash/", className='nav_item'),
 
-        ],className='nav_bar_content'),
-        html.A('Logout',href="/logout",className='nav_item last'),
-    ],className='nav_bar'),
+            ], className='nav_bar_content'),
+            html.A('Logout', href="/logout", className='nav_item last'),
+        ], className='nav_bar'),
+        html.Div([
+            html.Div([
+                html.A([
+                    html.Img(src="assets/close.png", style={'width': '30px', 'height': '30px', 'padding': '5px'})
+                ], href="javascript:closeNav()", className='closebtn'),
+                html.A('HOME', href="/", className='menulink'),
+                html.A('REFRESH', href="/dash/", className='menulink'),
+                html.A('LOGOUT', href="/logout", className='menulink'),
+
+            ], id='mySidenav', className='sidenav'),
+
+            html.A([
+                html.Img(src="assets/menu.png", style={'width': '30px', 'height': '30px', 'padding': '5px'})
+            ], href='javascript:openNav()'),
+
+        ], className='nav_bar2'),
 
     dcc.Tabs(id='tabs', value='tab-1', children=[
         dcc.Tab(id='tab1', value='tab-1', label='Raj Group Marketing Dashboard', children=[
@@ -812,17 +827,18 @@ def main_layout():
             # BOdy3 Start
             html.Div([
 
+
                 html.Div([
 
                     # Data Table - Upcoming Projects
                     dash_table.DataTable(
                         id='upcoming_projects_table',
-                        style_data={'minWidth': '180px', 'width': '180px', 'maxWidth': 'auto'},
+                        style_data={'minWidth': 'auto', 'width': 'auto', 'maxWidth': '8vw'},
                         style_table={
 
                             # 'border': '1px solid  #F5F5F5',
                             'overflowY': 'auto',
-                            'minHeight': '110vh', 'height': '110vh', 'maxHeight': '110vh',
+                            'minHeight': '90vh', 'height': '90vh', 'maxHeight': '90vh',
 
                         },
 
@@ -833,14 +849,14 @@ def main_layout():
                             'borderRadius': '10px',
                             # 'border': '1px solid  #F5F5F5',
                             'font-family': 'Comfortaa',
-                            'font-size': '1.3',
+                            'font-size': '2',
 
                         },
                         style_cell={
                             'textAlign': 'center',
                             'whiteSpace': 'normal',
                             'minHeight': '30px',
-                            'font-size': 'smaller',
+                            'font-size': 'xx-small',
                             'font-family': 'Comfortaa',
 
                             # 'height': 'auto',
@@ -1162,34 +1178,43 @@ def order_layout():
 
 
     return html.Div([
+        html.Meta(name="viewport", content="width=device-width, initial-scale=1.0"),
         # html.Div([
         #     html.Div([
         #         dcc.Link('HOME', href='/', refresh=True),
         #     ], className="one columns"),
         #     html.Div([
-        #         dcc.Link('REFRESH', href='/dash2/', refresh=True),
+        #         dcc.Link('REFRESH', href='/dash/', refresh=True),
         #     ], className="one columns"),
-        #     html.Div([
-        #         dcc.Dropdown(
-        #             id='file_options',
-        #             options=[{'value': i, 'label': i} for i in ['Raj Electricals Orders']],
-        #             placeholder='Select File to Download'
-        #         ),
-        #     ], className="two columns"),
-        #     html.Div([
-        #         html.A('Download', id='my_link'),
-        #     ], className="two columns"),
+        #     # html.Div([
+        #     #     html.A('Download Dispatch Register', href='/dash/urlToDownload', id='my_link'),
+        #     # ], className="one columns"),
         # ], className="row"),
+
         html.Div([
             html.Div([
                 html.A('Home', href="/", className='nav_item now', style={'border-left': 'none'}),
                 html.A('REFRESH', href="/dash/", className='nav_item'),
 
             ], className='nav_bar_content'),
-
-
             html.A('Logout', href="/logout", className='nav_item last'),
         ], className='nav_bar'),
+        html.Div([
+            html.Div([
+                html.A([
+                    html.Img(src="assets/close.png", style={'width': '30px', 'height': '30px', 'padding': '5px'})
+                ], href="javascript:closeNav()", className='closebtn'),
+                html.A('HOME', href="/", className='menulink'),
+                html.A('REFRESH', href="/dash/", className='menulink'),
+                html.A('LOGOUT', href="/logout", className='menulink'),
+
+            ], id='mySidenav', className='sidenav'),
+
+            html.A([
+                html.Img(src="assets/menu.png", style={'width': '30px', 'height': '30px', 'padding': '5px'})
+            ], href='javascript:openNav()'),
+
+        ], className='nav_bar2'),
 
         dcc.Tabs(id='tabs', value='tab-1', children=[
             dcc.Tab(id='tab1', value='tab-1', label='Work Order Dashboard', children=[
@@ -1227,10 +1252,10 @@ def order_layout():
                         # Data Table - Work Orders
                         dash_table.DataTable(
                             id='orders_table',
-                            style_data={'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
+                            style_data={'minWidth': 'auto', 'width': 'auto', 'maxWidth': '8vw'},
                             style_table={
                                 'overflowY': 'auto',
-                                'minHeight': '110vh', 'height': '110vh', 'maxHeight': '110vh',
+                                'minHeight': '90vh', 'height': '90vh', 'maxHeight': '90vh',
 
                             },
                             style_header={
@@ -1240,7 +1265,7 @@ def order_layout():
                                 'borderRadius': '10px',
                                 # 'border': '1px solid  #F5F5F5',
                                 'font-family': 'Comfortaa',
-                                'font-size': '1.3',
+                                'font-size': '2',
                                 'height': '7vh'
 
                             },
@@ -1248,7 +1273,7 @@ def order_layout():
                                 'textAlign': 'center',
                                 'whiteSpace': 'normal',
                                 'minHeight': '30px',
-                                'font-size': 'smaller',
+                                'font-size': 'xx-small',
                                 'font-family': 'Comfortaa',
 
                             },

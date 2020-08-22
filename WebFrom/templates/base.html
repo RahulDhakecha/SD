@@ -7,16 +7,18 @@ Raj Group
 {% block styles %}
 {{super()}}
 <link rel="stylesheet" href="{{url_for('static', filename='css/UIDesign_Flask.css')}}">
+<script src="{{url_for('static', filename='main.js')}}"></script>
+
 {% endblock %}
 
 
 {% block content %}
-   <div class="home_page">
+<div class="home_page">
     <div class="nav_bar">
         <div class="nav_bar_content">
             <a href="{{ url_for('base') }}" class="nav_item now" style="border-left:none ">Home</a>
             <a href="{{ url_for('dashboard') }}" class="nav_item">Dashboard</a>
-            <a href="{{ url_for('select_firm') }}" class="nav_item"  >order entry</a>
+            <a href="{{ url_for('select_firm') }}" class="nav_item">order entry</a>
 
 
         </div>
@@ -24,8 +26,18 @@ Raj Group
 
     </div>
 
+    <div class="nav_bar2">
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="{{ url_for('base') }}">HOME</a>
+            <a href="{{ url_for('dashboard') }}">DASHBOARD</a>
+            <a href="{{ url_for('select_firm') }}">ORDER ENTRY</a>
+        </div>
+        <span style="font-size:30px;cursor:pointer;padding: 5px" onclick="openNav()">&#9776;</span>
 
+    </div>
 </div>
 
 {% endblock %}
+
 
