@@ -1194,7 +1194,7 @@ def order_layout():
         html.Div([
             html.Div([
                 html.A('Home', href="/", className='nav_item now', style={'border-left': 'none'}),
-                html.A('REFRESH', href="/dash/", className='nav_item'),
+                html.A('REFRESH', href="/dash2/", className='nav_item'),
 
             ], className='nav_bar_content'),
             html.A('Logout', href="/logout", className='nav_item last'),
