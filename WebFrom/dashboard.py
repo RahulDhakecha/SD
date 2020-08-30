@@ -807,7 +807,7 @@ def add_feedback_entry(order_status, order_key):
         print("Triggered Input Feedback Link: "+str(IPAddr))
         if triggered_input == 'order_status' and order_status == 'FEEDBACK':
             url = url_for("feedback", order_key=order_key)
-            return str(IPAddr)+url
+            return "http://18.237.178.54"+url
         else:
             return None
 
