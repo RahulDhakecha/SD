@@ -25,7 +25,10 @@ follow_up_person = ['Rahul Dhakecha',
                     'Jitendra Kotnala',
                     'Ninad',
                     'Samir',
-                    'Jaimish Modi']
+                    'Jaimish Modi',
+                    'Milan Kheni',
+                    'Akash Barvaliya',
+                    'Ankit Ribadiya']
 
 fields_enquiry_list = "(enquiry_key, entry_date, project_description, scope_of_work, client_name, client_location, existing_client, " \
                       "contact_person_name, contact_person_mobile, contact_person_email, internal_lead, external_lead, " \
@@ -67,4 +70,21 @@ raj_group_office_code = {
     'Raj Enterprise': 'RE',
     'Raj Vijtech Pvt Ltd': 'RV',
     'Raj Brookite': 'RB'
+}
+
+data_access_rights = {
+    '%': '%',
+    'rahul.dhakecha': '%',
+    'Rajesh ': '%',
+    'purvik.mistry': 'Dhiren Sankaliya',
+    'anil kathiriya': 'Anil Kathiriya',
+    'kinjal2812': '%',
+    'Hirenpaghdal': 'Hiren Paghdal',
+    'Praful Patel': 'Praful Shyani',
+    'feni.faldu': 'Ashish Dhakecha',
+    'milan.kheni1432': 'Milan Kheni',
+    'Akash Barvaliya': 'Akash Barvaliya',
+    'Hiren-D': '%',
+    'Parimal Panchal': 'Dhiren Sankaliya',
+    'Haresh Ghelani': 'Samir'
 }

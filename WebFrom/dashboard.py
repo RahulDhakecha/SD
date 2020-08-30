@@ -19,7 +19,7 @@ from werkzeug.utils import secure_filename
 from Connections.AWSMySQL import AWSMySQLConn
 from fixedVariables import sow, lead_status, raj_group_office, follow_up_person, fields_enquiry_list, fields_followup_log, \
     fields_client_list, fields_client_rep_list, sow_code, raj_group_office_code, fields_rj_orders_list, master_users, \
-    fields_feedback
+    fields_feedback, data_access_rights
 from dashLayout import service_wise_pie_data, pending_offers_pie_data, submitted_offers_pie_data, lead_stages_bar_data, \
     weekly_leads_line_data, main_layout, new_offer_entry_layout, new_contact_entry_layout, order_layout, dn_order_layout, rv_order_layout
 
@@ -92,7 +92,8 @@ def call_dash_app(href):
     d_app = dash.Dash(__name__,
                          server=app,
                          routes_pathname_prefix=href,
-                         external_stylesheets=external_stylesheets
+                         external_stylesheets=external_stylesheets,
+                         suppress_callback_exceptions = True
                          )
     return d_app
 
@@ -104,7 +105,13 @@ dash_app3 = call_dash_app('/dash3/')
 dash_app5 = call_dash_app('/dash5/')
 
 
-dash_app.layout = main_layout
+@app.route('/d')
+def select_layout(username):
+    return main_layout(data_access_rights[username])
+
+
+# dash_app.layout = main_layout(data_access_rights['rahul.dhakecha'])
+dash_app.layout = select_layout("%")
 dash_app2.layout = order_layout
 dash_app3.layout = dn_order_layout
 # dash_app4.layout = re_order_layout
@@ -182,6 +189,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
         'triggered': ctx.triggered,
         'inputs': ctx.inputs
     }, indent=2)
+    username = session['username']
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 1: "+str(triggered_input))
@@ -387,7 +395,9 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
         elif triggered_input == 'graph_lead_stages' and hoverData_lead_status:
             status_var = hoverData_lead_status['points'][0]['x']
             upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
-                                                                           "lead_status='{}' order by enquiry_key desc;".format(status_var)).to_dict('records')
+                                                                           "lead_status='{}' and follow_up_person="
+                                                                       "'{}'order by enquiry_key desc;".format(status_var,
+                                                                                                               data_access_rights[username])).to_dict('records')
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
                    upcoming_projects_data_modified
 
@@ -395,7 +405,9 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
             # connection = AWSMySQLConn()
             status_var = hoverData_service['points'][0]['label']
             upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
-                                                                           "scope_of_work='{}' order by enquiry_key desc;".format(status_var)).to_dict('records')
+                                                                           "scope_of_work='{}' and follow_up_person="
+                                                                       "'{}' order by enquiry_key desc;".format(status_var,
+                                                                                                                data_access_rights[username])).to_dict('records')
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
                    upcoming_projects_data_modified
 
@@ -780,7 +792,7 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
 @dash_app2.callback(Output('feedback_link', 'children'),
                     [Input('order_status', 'value')],
                     [State('order_key', 'value')])
-def add_new_offer_entry(order_status, order_key):
+def add_feedback_entry(order_status, order_key):
     # connection = AWSMySQLConn()
     ctx = dash.callback_context
     ctx_msg = json.dumps({
@@ -798,6 +810,7 @@ def add_new_offer_entry(order_status, order_key):
             return str(IPAddr)+url
         else:
             return None
+
 
 @dash_app2.callback(Output('my_link', 'href'),
                    [Input('file_options', 'value')],
@@ -2393,6 +2406,7 @@ def base():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @is_logged_in
 def dashboard():
+    dash_app.layout = select_layout(str(session['username']))
     return redirect('/dash')
     # return redirect(url_for('base'))
 
