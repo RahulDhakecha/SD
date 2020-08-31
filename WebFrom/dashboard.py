@@ -189,7 +189,10 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
         'triggered': ctx.triggered,
         'inputs': ctx.inputs
     }, indent=2)
-    username = session['username']
+    try:
+        username = session['username']
+    except:
+        username = '%'
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 1: "+str(triggered_input))
@@ -395,8 +398,8 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
         elif triggered_input == 'graph_lead_stages' and hoverData_lead_status:
             status_var = hoverData_lead_status['points'][0]['x']
             upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
-                                                                           "lead_status='{}' and follow_up_person="
-                                                                       "'{}'order by enquiry_key desc;".format(status_var,
+                                                                           "lead_status='{}' and follow_up_person like "
+                                                                       "'{}' order by enquiry_key desc;".format(status_var,
                                                                                                                data_access_rights[username])).to_dict('records')
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
                    upcoming_projects_data_modified
@@ -405,7 +408,7 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
             # connection = AWSMySQLConn()
             status_var = hoverData_service['points'][0]['label']
             upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
-                                                                           "scope_of_work='{}' and follow_up_person="
+                                                                           "scope_of_work='{}' and follow_up_person like "
                                                                        "'{}' order by enquiry_key desc;".format(status_var,
                                                                                                                 data_access_rights[username])).to_dict('records')
             return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
