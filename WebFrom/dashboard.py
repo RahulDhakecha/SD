@@ -189,10 +189,10 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
         'triggered': ctx.triggered,
         'inputs': ctx.inputs
     }, indent=2)
-    try:
-        username = session['username']
-    except:
-        username = '%'
+    # try:
+    #     username = session['username']
+    # except:
+    username = '%'
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 1: "+str(triggered_input))
@@ -2409,7 +2409,7 @@ def base():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @is_logged_in
 def dashboard():
-    dash_app.layout = select_layout(str(session['username']))
+    # dash_app.layout = select_layout(str(session['username']))
     return redirect('/dash')
     # return redirect(url_for('base'))
 
