@@ -106,12 +106,15 @@ dash_app5 = call_dash_app('/dash5/')
 
 
 @app.route('/d')
-def select_layout(username):
-    return main_layout(data_access_rights[username])
+def select_layout():
+    username = "%"
+    return main_layout
+    # return main_layout(data_access_rights[username])
 
 
 # dash_app.layout = main_layout(data_access_rights['rahul.dhakecha'])
-dash_app.layout = select_layout("%")
+# dash_app.layout = select_layout("%")
+dash_app.layout = main_layout
 dash_app2.layout = order_layout
 dash_app3.layout = dn_order_layout
 # dash_app4.layout = re_order_layout
@@ -2409,7 +2412,9 @@ def base():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @is_logged_in
 def dashboard():
+    # print(str(session['username']))
     # dash_app.layout = select_layout(str(session['username']))
+    # dash_app.layout = select_layout
     return redirect('/dash')
     # return redirect(url_for('base'))
 

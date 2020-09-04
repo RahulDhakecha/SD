@@ -13,3 +13,11 @@ connection = AWSMySQLConn()
 lead_status = ['OPEN', 'CONTACTED', 'VISITED', 'ENQUIRY', 'OFFER', 'WON', 'CLOSE', 'HOLD', 'REGRET', 'LETTER']
 lead_status.remove('LETTER')
 print(lead_status)
+
+def add():
+    print("Hello")
+    return 9
+
+
+if __name__ == '__main__':
+    print(add)

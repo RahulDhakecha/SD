@@ -652,8 +652,9 @@ def new_contact_entry_layout(contact_person_name_id=None,
     ], className="new_contect")
 
 
-def main_layout(username):
+def main_layout():
     connection = AWSMySQLConn()
+    username = "%"
     data_upcoming_projects = connection.execute_query(
         "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
         "client_location, lead_status, follow_up_person, tentative_project_value  from RajGroupEnquiryList where"
