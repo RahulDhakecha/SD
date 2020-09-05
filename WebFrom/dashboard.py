@@ -961,7 +961,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                   order_client_location, order_existing_client, order_order_no, order_file_no,
                                   str(order_status).replace("[", '').replace("]", '').replace("'", '') ,
                                   order_project_incharge, str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
-                                order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"',''))]
+                                order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\')]
                 # "{}".format(str(order_comp_location).replace('"',''))]
                 # r'{}'.format(order_comp_location).replace('\\', '\\\\')
 
@@ -1021,7 +1021,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                                                              "]", '').replace("'", ''),
                                   str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
 
-                                  order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"','')), order_key))
+                                  order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\'), order_key))
 
 
                 ## update RajGroupClientRepresentativeList
@@ -2048,7 +2048,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                   order_client_location, order_existing_client, order_order_no, order_file_no,
                                   str(order_status).replace("[", '').replace("]", '').replace("'", '') ,
                                   order_project_incharge, str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
-                                order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"',''))]
+                                order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\')]
                 order_values = [i if i else '' for i in order_values]
                 client_values = [order_client_name, order_client_location, order_key]
                 client_values = [i if i else '' for i in client_values]
@@ -2105,7 +2105,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                                                              "]", '').replace("'", ''),
                                   str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
 
-                                  order_project_value, order_remarks, "{}".format(str(order_comp_location).replace('"','')), order_key))
+                                  order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\'), order_key))
 
 
                 ## update RajGroupClientRepresentativeList
