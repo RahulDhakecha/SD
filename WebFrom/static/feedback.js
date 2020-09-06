@@ -114,7 +114,7 @@ $(document).ready(function () {
      $('#formsimser :checked').each(function() {
        allVals.push($(this).val());
      });
-     alert("Values " + allVals);
+     // alert("Values " + allVals);
         $(".five").show();
         var elem = document.getElementById("myBar");
         var width = 60;
@@ -147,7 +147,7 @@ $(document).ready(function () {
 
     $(".seventh").click(function () {
         var sugg = document.getElementById("suggestion").value;
-        alert(sugg);
+        // alert(sugg);
         data_list.push(sugg)
         $(".seven").show();
                 $(".six").hide();
