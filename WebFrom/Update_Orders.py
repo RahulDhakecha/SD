@@ -29,6 +29,17 @@ fields_rv_orders =  "(enquiry_key, order_key, order_date, po_no, project_descrip
                           "client_location, existing_client, order_no, file_no, order_status, project_incharge, " \
                           "raj_group_office,  project_value, remarks, comp_location)"
 
+
+def rectify_commp_location(comp_location, order_key):
+    count = comp_location.count('\\')
+    if count == 1:
+        new_loc = comp_location[:0] + '\\' + comp_location[0:7] + '\\' + comp_location[7:13] + '\\' + comp_location[13:36] + '\\' + comp_location[36:45] + '\\' + comp_location[45:59] + '\\' + comp_location[59:]
+        connection.execute("UPDATE RajElectricalsOrdersNew SET comp_location='{}' where "
+                           "order_key='{}'".format(new_loc, order_key))
+    else:
+        new_loc = comp_location
+    print(new_loc)
+
 # #######################   D.N. Syndicate    ################################################
 # # data = pd.read_excel("/Users/rahuldhakecha/RajGroup/ClientList/RajElectricalsClients.xlsx")
 # data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/DNSyndicateOrders/DN-ORDER LIST_12.05.20_wo_pw.xlsx")

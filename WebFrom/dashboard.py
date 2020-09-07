@@ -961,7 +961,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                   order_client_location, order_existing_client, order_order_no, order_file_no,
                                   str(order_status).replace("[", '').replace("]", '').replace("'", '') ,
                                   order_project_incharge, str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
-                                order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\')]
+                                order_project_value, order_remarks, "{}".format(order_comp_location).replace('\\', '\\\\')]
                 # "{}".format(str(order_comp_location).replace('"',''))]
                 # r'{}'.format(order_comp_location).replace('\\', '\\\\')
 
@@ -2439,6 +2439,7 @@ def select_firm():
 
 
 def add_hyperlink(comp_location, order_key):
+    comp_location = comp_location.replace('"','')
     return '=HYPERLINK("{}","{}")'.format(comp_location, order_key)
 
 
