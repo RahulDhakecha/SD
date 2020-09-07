@@ -858,7 +858,7 @@ def main_layout():
                             'textAlign': 'center',
                             'whiteSpace': 'normal',
                             'minHeight': '30px',
-                            'font-size': 'xx-small',
+                            'font-size': 'larger',
                             'font-family': 'Comfortaa',
 
                             # 'height': 'auto',
@@ -1267,7 +1267,7 @@ def order_layout():
                                 'borderRadius': '10px',
                                 # 'border': '1px solid  #F5F5F5',
                                 'font-family': 'Comfortaa',
-                                'font-size': '2',
+                                'font-size': '3',
                                 'height': '7vh'
 
                             },
@@ -1275,7 +1275,7 @@ def order_layout():
                                 'textAlign': 'center',
                                 'whiteSpace': 'normal',
                                 'minHeight': '30px',
-                                'font-size': 'xx-small',
+                                'font-size': 'larger',
                                 'font-family': 'Comfortaa',
 
                             },

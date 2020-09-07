@@ -1731,23 +1731,11 @@ Login
 
     <div class="right-container_1">
         <div class="svgback">
-            <svg width="auto" height="auto" viewBox="0 0 476 473" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M475.287 35.2012C475.287 15.8712 459.617 0.201172 440.287 0.201172H35.4222C16.0923 0.201172 0.422241 15.8712 0.422241 35.2012V437.127C0.422241 456.457 16.0923 472.127 35.4222 472.127H440.287C459.617 472.127 475.287 456.457 475.287 437.127V35.2012Z"
-                  fill="url(#form)"/>
-            <defs>
-                <linearGradient id="form" x1="475.865" y1="-0.373826" x2="4.03867" y2="500.499"
-                                gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#433CE9"/>
-                    <stop offset="0.0001" stop-color="#433CE9"/>
-                    <stop offset="1" stop-color="#3CE9CA"/>
-                </linearGradient>
-            </defs>
-        </svg>
+                <img class="formback" src="{{url_for('static', filename='formback.png')}}">
         </div>
 
 
         <div class="form_container_i">
-
             <form class="form_inner_container_i" method="POST" action="/login">
                 <h3 class="form_label">Sign in to Raj Group</h3>
                 {{ form.hidden_tag() }}
