@@ -16,50 +16,80 @@ from datetime import date, timedelta
 
 today = date.today()
 
-date_list = []
-inv1 = []
-inv2 = []
-inv3 = []
-inv4 = []
-inv5 = []
-inv6 = []
-time_value = '09:00'
-for i in range(-170,-1996,-1):
-    date = today - timedelta(days=-1 * i)
-    date_list.append(date)
-    print(date)
-    data = pd.read_excel("/Users/rahuldhakecha/RajGroup/Solar Anaytics/Venus Data/export_list_{}.xlsx".format(date))
-    try:
-        inv1.append(data[data['Time_Stamp']==time_value]['INV 1 (RPI M20A)'].iloc[0])
-    except IndexError:
-        inv1.append('0')
-    try:
-        inv2.append(data[data['Time_Stamp']==time_value]['INV 2 (RPI M50A)'].iloc[0])
-    except IndexError:
-        inv2.append('0')
-    try:
-        inv3.append(data[data['Time_Stamp']==time_value]['INV 3 (RPI M50A)'].iloc[0])
-    except IndexError:
-        inv3.append('0')
-    try:
-        inv4.append(data[data['Time_Stamp']==time_value]['INV 4 (RPI M50A)'].iloc[0])
-    except IndexError:
-        inv4.append('0')
-    try:
-        inv5.append(data[data['Time_Stamp']==time_value]['INV 5 (RPI M50A)'].iloc[0])
-    except IndexError:
-        inv5.append('0')
-    try:
-        inv6.append(data[data['Time_Stamp']==time_value]['INV 6 (RPI M50A)'].iloc[0])
-    except IndexError:
-        inv6.append('0')
+# date_list = []
+# inv1 = []
+# inv2 = []
+# inv3 = []
+# inv4 = []
+# inv5 = []
+# inv6 = []
+# time_value = '09:00'
+# for i in range(-170,-1996,-1):
+#     date = today - timedelta(days=-1 * i)
+#     date_list.append(date)
+#     print(date)
+#     data = pd.read_excel("/Users/rahuldhakecha/RajGroup/Solar Anaytics/Venus Data/export_list_{}.xlsx".format(date))
+#     try:
+#         inv1.append(data[data['Time_Stamp']==time_value]['INV 1 (RPI M20A)'].iloc[0])
+#     except IndexError:
+#         inv1.append('0')
+#     try:
+#         inv2.append(data[data['Time_Stamp']==time_value]['INV 2 (RPI M50A)'].iloc[0])
+#     except IndexError:
+#         inv2.append('0')
+#     try:
+#         inv3.append(data[data['Time_Stamp']==time_value]['INV 3 (RPI M50A)'].iloc[0])
+#     except IndexError:
+#         inv3.append('0')
+#     try:
+#         inv4.append(data[data['Time_Stamp']==time_value]['INV 4 (RPI M50A)'].iloc[0])
+#     except IndexError:
+#         inv4.append('0')
+#     try:
+#         inv5.append(data[data['Time_Stamp']==time_value]['INV 5 (RPI M50A)'].iloc[0])
+#     except IndexError:
+#         inv5.append('0')
+#     try:
+#         inv6.append(data[data['Time_Stamp']==time_value]['INV 6 (RPI M50A)'].iloc[0])
+#     except IndexError:
+#         inv6.append('0')
+#
+# data_dict = {'Date':date_list,
+#                  'INV 1 (RPI M20A)':inv1,
+#                  'INV 2 (RPI M50A)':inv2,
+#                  'INV 3 (RPI M50A)':inv3,
+#                  'INV 4 (RPI M50A)':inv4,
+#                  'INV 5 (RPI M50A)':inv5,
+#                  'INV 6 (RPI M50A)':inv6}
+# data_df = pd.DataFrame(data_dict)
+# data_df.to_excel("/Users/rahuldhakecha/RajGroup/Solar Anaytics/Venus Time Wise Data/daily_{}_data.xlsx".format('09_00'))
 
-data_dict = {'Date':date_list,
-                 'INV 1 (RPI M20A)':inv1,
-                 'INV 2 (RPI M50A)':inv2,
-                 'INV 3 (RPI M50A)':inv3,
-                 'INV 4 (RPI M50A)':inv4,
-                 'INV 5 (RPI M50A)':inv5,
-                 'INV 6 (RPI M50A)':inv6}
-data_df = pd.DataFrame(data_dict)
-data_df.to_excel("/Users/rahuldhakecha/RajGroup/Solar Anaytics/Venus Time Wise Data/daily_{}_data.xlsx".format('09_00'))
+
+year_2015 = 0
+year_2016 = 0
+year_2017 = 0
+year_2018 = 0
+year_2019 = 0
+
+data = pd.read_excel("/Users/rahuldhakecha/RajGroup/Solar Anaytics/Venus Time Wise Data/daily_12_00_data.xlsx")
+data['year'] = pd.DatetimeIndex(data['Date']).year
+for i, row in data.iterrows():
+    print(str(row['year']))
+    if int(row['INV 1 (RPI M20A)']) == 0 and int(row['INV 1 (RPI M20A)']) == 0 and int(row['INV 1 (RPI M20A)']) == 0 and int(row['INV 1 (RPI M20A)']) == 0 and int(row['INV 1 (RPI M20A)']) == 0 and int(row['INV 1 (RPI M20A)']) == 0:
+        if str(row['year']) == '2015':
+            year_2015 += 1
+        if str(row['year']) == '2016':
+            year_2016 += 1
+        if str(row['year']) == '2017':
+            year_2017 += 1
+        if str(row['year']) == '2018':
+            year_2018 += 1
+        if str(row['year']) == '2019':
+            year_2019 += 1
+
+
+print(year_2015)
+print(year_2016)
+print(year_2017)
+print(year_2018)
+print(year_2019)
