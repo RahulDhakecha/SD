@@ -44,7 +44,7 @@ fields_client_rep_list = "(contact_person_name, contact_person_mobile, contact_p
 
 fields_rj_orders_list = "(enquiry_key, order_key, order_date, po_no, project_description, scope_of_work, client_name, " \
                         "client_location, existing_client, order_no, file_no, order_status, project_incharge, " \
-                        "raj_group_office, project_value, remarks, comp_location)"
+                        "raj_group_office, project_value, remarks, comp_location, project_technical, project_management, project_supervisor)"
 
 fields_feedback = "(order_key, recommend_score, satisfaction_score, technical_score, behavorial_score, future_services," \
                   " lesser_time, suggestion)"

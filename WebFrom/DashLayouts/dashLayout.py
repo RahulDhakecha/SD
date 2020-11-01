@@ -1502,6 +1502,27 @@ def order_layout():
                                     className='input1'
                                 ),
 
+                                html.P("Project Technical"),
+                                dcc.Input(
+                                    id='order_project_technical',
+                                    type='text',
+                                    className='input1'
+                                ),
+
+                                html.P("Project Management"),
+                                dcc.Input(
+                                    id='order_project_management',
+                                    type='text',
+                                    className='input1'
+                                ),
+
+                                html.P("Project Supervisor"),
+                                dcc.Input(
+                                    id='order_project_supervisor',
+                                    type='text',
+                                    className='input1'
+                                ),
+
                                 html.Header("Feedback Link"),
                                 dcc.Link(id="feedback_link", children=[
                                     None

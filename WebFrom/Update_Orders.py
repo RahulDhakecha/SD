@@ -30,24 +30,24 @@ fields_rv_orders =  "(enquiry_key, order_key, order_date, po_no, project_descrip
                           "raj_group_office,  project_value, remarks, comp_location)"
 
 
-def rectify_commp_location(comp_location, order_key):
-    count = comp_location.count('\\')
-    if count == 1:
-        new_loc = comp_location[:0] + '\\' + comp_location[0:7] + '\\' + comp_location[7:13] + '\\' + comp_location[13:36] + '\\' + comp_location[36:45] + '\\' + comp_location[45:59] + '\\' + comp_location[59:]
-        connection.execute("UPDATE RajElectricalsOrdersNew SET comp_location='{}' where "
-                           "order_key='{}'".format(new_loc, order_key))
-    else:
-        new_loc = comp_location
-    print(new_loc)
+# def rectify_commp_location(comp_location, order_key):
+#     count = comp_location.count('\\')
+#     if count == 1:
+#         new_loc = comp_location[:0] + '\\' + comp_location[0:7] + '\\' + comp_location[7:13] + '\\' + comp_location[13:36] + '\\' + comp_location[36:45] + '\\' + comp_location[45:59] + '\\' + comp_location[59:]
+#         connection.execute("UPDATE RajElectricalsOrdersNew SET comp_location='{}' where "
+#                            "order_key='{}'".format(new_loc, order_key))
+#     else:
+#         new_loc = comp_location
+#     print(new_loc)
 
-# #######################   D.N. Syndicate    ################################################
-# # data = pd.read_excel("/Users/rahuldhakecha/RajGroup/ClientList/RajElectricalsClients.xlsx")
-# data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/DNSyndicateOrders/DN-ORDER LIST_12.05.20_wo_pw.xlsx")
-# data = data.fillna(0)
-# # data.drop_duplicates(inplace=True)
-# # print(data)
-# print(data.shape)
-# # print(data.head())
+#######################   D.N. Syndicate    ################################################
+# data = pd.read_excel("/Users/rahuldhakecha/RajGroup/ClientList/RajElectricalsClients.xlsx")
+data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/DNSyndicateOrders/DN_Order_list_30.09.20_wo_pw.xlsx")
+data = data.fillna(0)
+# data.drop_duplicates(inplace=True)
+# print(data)
+print(data.shape)
+# print(data.head())
 # # client_rep_data = data[['company',
 # #                     'location',
 # #                     'raj_group_office',
@@ -109,105 +109,105 @@ def rectify_commp_location(comp_location, order_key):
 #                                     fields=fields_client_rep_list, values=values)
 #
 #
-# for index, row in data.iterrows():
-#     if index < 1460:
-#         continue
-#     # if index > 1470:
-#     #     break
-#     try:
-#
-#         ## update RajElectricalsOrdersNew
-#         if int(row['YY'])==4:
-#             yr = 2004
-#         elif int(row['YY'])==5:
-#             yr = 2005
-#         elif int(row['YY'])==6:
-#             yr = 2006
-#         elif int(row['YY'])==7:
-#             yr = 2007
-#         elif int(row['YY'])==8:
-#             yr = 2008
-#         elif int(row['YY'])==9:
-#             yr = 2009
-#         elif int(row['YY'])==10:
-#             yr = 2010
-#         elif int(row['YY'])==11:
-#             yr = 2011
-#         elif int(row['YY'])==12:
-#             yr = 2012
-#         elif int(row['YY'])==13:
-#             yr = 2013
-#         elif int(row['YY'])==14:
-#             yr = 2014
-#         elif int(row['YY'])==15:
-#             yr = 2015
-#         elif int(row['YY'])==16:
-#             yr = 2016
-#         elif int(row['YY'])==17:
-#             yr = 2017
-#         elif int(row['YY'])==18:
-#             yr = 2018
-#         elif int(row['YY'])==19:
-#             yr = 2019
-#         elif int(row['YY'])==20:
-#             yr = 2020
-#         else:
-#             yr = 0
-#         order_date = str(yr) + "-" + str(int(row['MM'])).zfill(2) + "-" + str(int(row['DD'])).zfill(2)
-#
-#         # Scope fo Work
-#         if str(row['M/S'])=='M':
-#             scope_of_work = "Supply only"
-#         elif str(row['M/S'])=='M/S':
-#             scope_of_work = "SITC"
-#         elif str(row['M/S'])=='S':
-#             scope_of_work = "ITC only"
-#         else:
-#             scope_of_work = ''
-#
-#         ## generate order key
-#         order_key = "{}-{}-{}-ORD-{}-{}-{}".format("DN",
-#                                                    str(row['Compny Name']).strip().split(" ")[0],
-#                                                    str(row.iloc[9]).strip().split(" ")[0],
-#                                                    sow_code[scope_of_work] if scope_of_work != '' else '',
-#                                                    str(dt.now().year),
-#                                                    str(index + 1).zfill(4))
-#
-#
-#         if str(row['OK/NOT']).lower().strip() == 'ok':
-#             status = "COMPLETE"
-#         elif str(row['OK/NOT']).lower().strip() == 'not':
-#             status = "ON HAND"
-#         else:
-#             status = ""
-#
-#         values_dn_syn_orders = ['',
-#                                   order_key,
-#                                   order_date,
-#                                   row['Work Order No.'],
-#                                   row['Subject'],
-#                                   scope_of_work,
-#                                   row['Compny Name'],
-#                                   row.iloc[9],
-#                                   '',
-#                                   row['No. Given'],
-#                                   '',
-#                                   status,
-#                                   '',
-#                                   "D.N. Syndicate",
-#                                   row['Total Cost'],
-#                                   '',
-#                                   ''
-#                                   ]
-#         print(values_dn_syn_orders)
-#         connection.insert_query(table_name="DNSyndicateOrdersNew", fields=fields_dn_syn_orders, values=values_dn_syn_orders)
-#
-#         ## update RajGroupClientList
-#         connection.insert_query(table_name="RajGroupClientList", fields=fields_client_list,
-#                                 values=[row['Compny Name'],
-#                                         row.iloc[9],
-#                                         order_key])
-#
+ctr = 4056
+for index, row in data.iterrows():
+    if index <= 4068:
+        continue
+    # if index > 4069:
+    #     break
+    try:
+
+        ## update RajElectricalsOrdersNew
+        if int(row['YY'])==4:
+            yr = 2004
+        elif int(row['YY'])==5:
+            yr = 2005
+        elif int(row['YY'])==6:
+            yr = 2006
+        elif int(row['YY'])==7:
+            yr = 2007
+        elif int(row['YY'])==8:
+            yr = 2008
+        elif int(row['YY'])==9:
+            yr = 2009
+        elif int(row['YY'])==10:
+            yr = 2010
+        elif int(row['YY'])==11:
+            yr = 2011
+        elif int(row['YY'])==12:
+            yr = 2012
+        elif int(row['YY'])==13:
+            yr = 2013
+        elif int(row['YY'])==14:
+            yr = 2014
+        elif int(row['YY'])==15:
+            yr = 2015
+        elif int(row['YY'])==16:
+            yr = 2016
+        elif int(row['YY'])==17:
+            yr = 2017
+        elif int(row['YY'])==18:
+            yr = 2018
+        elif int(row['YY'])==19:
+            yr = 2019
+        elif int(row['YY'])==20:
+            yr = 2020
+        else:
+            yr = 0
+        order_date = str(yr) + "-" + str(int(row['MM'])).zfill(2) + "-" + str(int(row['DD'])).zfill(2)
+
+        # Scope fo Work
+        if str(row['M/S'])=='M':
+            scope_of_work = "Supply only"
+        elif str(row['M/S'])=='M/S':
+            scope_of_work = "SITC"
+        elif str(row['M/S'])=='S':
+            scope_of_work = "ITC only"
+        else:
+            scope_of_work = ''
+
+
+        ## generate order key
+        order_key = "{}-ODR-{}-{}".format("DN",
+                                                   str(dt.now().year),
+                                                   str(ctr + 1).zfill(4))
+        ctr += 1
+
+
+        if str(row['OK/NOT']).lower().strip() == 'ok':
+            status = "COMPLETE"
+        elif str(row['OK/NOT']).lower().strip() == 'not':
+            status = "ON HAND"
+        else:
+            status = ""
+
+        values_dn_syn_orders = ['',
+                                  order_key,
+                                  order_date,
+                                  row['Work Order No.'],
+                                  row['Subject'],
+                                  scope_of_work,
+                                  row['Ansa Decoglass Pvt Ltd'],
+                                  row.iloc[9],
+                                  '',
+                                  row['No. Given'],
+                                  '',
+                                  status,
+                                  '',
+                                  "D.N. Syndicate",
+                                  row['Total Cost'],
+                                  '',
+                                  ''
+                                  ]
+        print(values_dn_syn_orders)
+        connection.insert_query(table_name="DNSyndicateOrdersNew", fields=fields_dn_syn_orders, values=values_dn_syn_orders)
+
+        ## update RajGroupClientList
+        connection.insert_query(table_name="RajGroupClientList", fields=fields_client_list,
+                                values=[row['Ansa Decoglass Pvt Ltd'],
+                                        row.iloc[9],
+                                        order_key])
+
 #         ## update RajGroupClientRepresentativeList
 #         # data_client_reps = connection.execute_query("select contact_person_name, contact_person_mobile, contact_person_email, "
 #         #                                             "contact_person_designation, client_name, client_location "
@@ -226,18 +226,18 @@ def rectify_commp_location(comp_location, order_key):
 #         #                                             r['client_name'],
 #         #                                             r['client_location'],
 #         #                                             order_key])
-#     except:
-#         print("Error for following row:"+str(row))
+    except:
+        print("Error for following row:"+str(row))
 #################################################################################################
 
 
 
 
 # #######################   Raj Enterprise    ################################################
-# # data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/RajEnterpriseOrders/Bill Records - v2/RajEntr/bill 2015-16.xlsx", sheet_name=0)
-# data = connection.execute_query("select * from RajEnterpriseOrders;")
+# data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/RajEnterpriseOrders/list of order format_30.09.20.xlsx", sheet_name=0)
+# # data = connection.execute_query("select * from RajEnterpriseOrders;")
 # data = data.fillna(0)
-# print(data.shape)
+# # print(data.shape)
 # # print(data.head())
 #
 # #lambda function which can be applied to all rows for pushing contact info into RajGroupClientRepresentativeList
@@ -261,9 +261,9 @@ def rectify_commp_location(comp_location, order_key):
 #             connection.insert_query(table_name="RajGroupClientRepresentativeList",
 #                                     fields=fields_client_rep_list, values=values)
 #
-# ctr = 1419
+# ctr = 1724
 # for index, row in data.iterrows():
-#     if index <= 100:
+#     if index <= 622:
 #         continue
 #     # if index > 200:
 #     #     break
@@ -366,18 +366,158 @@ def rectify_commp_location(comp_location, order_key):
 #                           ''
 #                           ]
 #         print(values_re_orders)
-#         connection.insert_query(table_name="RajEnterpriseOrdersNew", fields=fields_re_orders, values=values_re_orders)
-#
-#         ## update RajGroupClientList
-#         connection.insert_query(table_name="RajGroupClientList", fields=fields_client_list,
-#                                 values=[row['company'],
-#                                         row['location'],
-#                                         order_key])
-#
+# #         connection.insert_query(table_name="RajEnterpriseOrdersNew", fields=fields_re_orders, values=values_re_orders)
+# #
+# #         ## update RajGroupClientList
+# #         connection.insert_query(table_name="RajGroupClientList", fields=fields_client_list,
+# #                                 values=[row['company'],
+# #                                         row['location'],
+# #                                         order_key])
+# #
 #     except:
 #         print("Error for following row:"+str(row))
 # #################################################################################################
 
+
+
+# #######################   Raj Enterprise(type 2)    ################################################
+# data = pd.read_excel("/Users/rahuldhakecha/RajGroup/OrderList/RajEnterpriseOrders/list of order format_30.09.20.xlsx", sheet_name=0)
+# data = data.fillna(0)
+# # data.drop_duplicates(inplace=True)
+# # print(data)
+# print(data.shape)
+#
+# # client_data = data[['company',
+# #                     'location',
+# #                     'raj_group_office']].groupby(['company',
+# #                     'location'], as_index=False).count()[['company', 'location']]
+#
+#
+# #lambda function which can be applied to all rows for pushing contact info into RajGroupClientRepresentativeList
+# def split_row(v1, v2, v3, v4, v5, v6):
+#     if v1 != 0 or v2 != 0 or v3 != 0:
+#         print(v1, v2, v3)
+#         str1 = re.split(r'[,/]', str(v1))
+#         str2 = re.split(r'[,/]', str(v2))
+#         str3 = re.split(r'[,/]', str(v3))
+#         l1 = len(str1)
+#         l2 = len(str2)
+#         l3 = len(str3)
+#         if l1>1 or l2>1 or l3>1:
+#             N = max(l1,l2,l3)
+#             str1 += [''] * (N - l1)
+#             str2 += [''] * (N - l2)
+#             str3 += [''] * (N - l3)
+#         for i, j, k in zip(str1, str2, str3):
+#             values = [i.strip(), j.strip(), k.strip(), v4, v5, v6]
+#             # print(values)
+#             connection.insert_query(table_name="RajGroupClientRepresentativeList",
+#                                     fields=fields_client_rep_list, values=values)
+#
+#
+# ctr = 1724
+# for index, row in data.iterrows():
+#     if index <= 622:
+#         continue
+#     # if index > 623:
+#     #     break
+#     try:
+#
+#         ## update RajElectricalsOrdersNew
+#         if int(row['YY'])==4:
+#             yr = 2004
+#         elif int(row['YY'])==5:
+#             yr = 2005
+#         elif int(row['YY'])==6:
+#             yr = 2006
+#         elif int(row['YY'])==7:
+#             yr = 2007
+#         elif int(row['YY'])==8:
+#             yr = 2008
+#         elif int(row['YY'])==9:
+#             yr = 2009
+#         elif int(row['YY'])==10:
+#             yr = 2010
+#         elif int(row['YY'])==11:
+#             yr = 2011
+#         elif int(row['YY'])==12:
+#             yr = 2012
+#         elif int(row['YY'])==13:
+#             yr = 2013
+#         elif int(row['YY'])==14:
+#             yr = 2014
+#         elif int(row['YY'])==15:
+#             yr = 2015
+#         elif int(row['YY'])==16:
+#             yr = 2016
+#         elif int(row['YY'])==17:
+#             yr = 2017
+#         elif int(row['YY'])==18:
+#             yr = 2018
+#         elif int(row['YY'])==19:
+#             yr = 2019
+#         elif int(row['YY'])==20:
+#             yr = 2020
+#         else:
+#             yr = 0
+#         order_date = str(yr) + "-" + str(int(row['MM'])).zfill(2) + "-" + str(int(row['DD'])).zfill(2)
+#
+#
+#         ## generate order key
+#         order_key = "{}-ODR-{}-{}".format("RE",
+#                                                    str(dt.now().year),
+#                                                    str(ctr + 1).zfill(4))
+#
+#         ctr += 1
+#
+#         values_re_orders = ['',
+#                                   order_key,
+#                                   order_date,
+#                                   row['PO No.'],
+#                                   row['Subject'],
+#                                   '',
+#                                   row['Cus. Name'],
+#                                   row['Location'],
+#                                   '',
+#                                   row['NO Given'],
+#                                   row['File no.'],
+#                                   row['Status'],
+#                                   row['Supervisor'],
+#                                   "Raj Enterprise",
+#                                   row['Total Cost'],
+#                                   '',
+#                                   ''
+#                                   ]
+#         print(values_re_orders)
+#         connection.insert_query(table_name="RajEnterpriseOrdersNew", fields=fields_re_orders, values=values_re_orders)
+#
+#         ## update RajGroupClientList
+#         connection.insert_query(table_name="RajGroupClientList", fields=fields_client_list,
+#                                 values=[row['Cus. Name'],
+#                                         row['Location'],
+#                                         order_key])
+#
+# #         ## update RajGroupClientRepresentativeList
+# #         # data_client_reps = connection.execute_query("select contact_person_name, contact_person_mobile, contact_person_email, "
+# #         #                                             "contact_person_designation, client_name, client_location "
+# #         #                                             "from RajGroupClientRepresentativeList where client_name='{}' and "
+# #         #                                             "client_location='{}' group by 1,2,3,4,5,6;".
+# #         #                          format(row['Cus. Name'], row['Location']))
+# #         # if not data_client_reps.empty:
+# #         #     if str(row['Cus. Name']).strip() not in ['L&T', 'Cairn Energy', 'Reliance Ind. Ltd.', 'RIL corporate IT LTD', 'ESSAR']:
+# #         #         for i, r in data_client_reps.iterrows():
+# #         #             print("Coming here")
+# #         #             connection.insert_query(table_name="RajGroupClientRepresentativeList", fields=fields_client_rep_list,
+# #         #                                     values=[r['contact_person_name'],
+# #         #                                             r['contact_person_mobile'],
+# #         #                                             r['contact_person_email'],
+# #         #                                             r['contact_person_designation'],
+# #         #                                             r['client_name'],
+# #         #                                             r['client_location'],
+# #         #                                             order_key])
+#     except:
+#         print("Error for following row:"+str(row))
+# # #################################################################################################
 
 
 # #######################   Raj Vijtech    ################################################
@@ -569,23 +709,23 @@ def rectify_commp_location(comp_location, order_key):
 
 
 
-###################################  Update Prev Order Key to New Format##############################################################
-
-data = connection.execute_query("select order_key from RajElectricalsOrdersNew;")
-
-# print(data)
-errors = []
-for i, j in data.iterrows():
-    # if i < 433:
-    #     continue
-    # print(j['order_key'])
-    try:
-        old_order_key = j['order_key']
-        new_order_key = str(j['order_key']).split("-")[0] + "-ODR-" + str(j['order_key']).split("-")[-2] + "-" + \
-                        str(j['order_key']).split("-")[-1]
-        print(new_order_key)
-        connection.execute(
-            "update RajElectricalsOrdersNew set order_key='{}' where order_key='{}';".format(new_order_key, old_order_key))
-    except:
-        errors.append(old_order_key)
-#################################################################################################
+# ###################################  Update Prev Order Key to New Format##############################################################
+#
+# data = connection.execute_query("select order_key from RajElectricalsOrdersNew;")
+#
+# # print(data)
+# errors = []
+# for i, j in data.iterrows():
+#     # if i < 433:
+#     #     continue
+#     # print(j['order_key'])
+#     try:
+#         old_order_key = j['order_key']
+#         new_order_key = str(j['order_key']).split("-")[0] + "-ODR-" + str(j['order_key']).split("-")[-2] + "-" + \
+#                         str(j['order_key']).split("-")[-1]
+#         print(new_order_key)
+#         connection.execute(
+#             "update RajElectricalsOrdersNew set order_key='{}' where order_key='{}';".format(new_order_key, old_order_key))
+#     except:
+#         errors.append(old_order_key)
+# #################################################################################################
