@@ -1978,6 +1978,9 @@ def order_add_new_contact_entry(contact_click, row_id, submit_button, close_butt
                      Output('order_project_value', 'value'),
                      Output('order_remarks', 'value'),
                      Output('order_comp_location', 'value'),
+                     Output('order_project_technical', 'value'),
+                     Output('order_project_management', 'value'),
+                     Output('order_project_supervisor', 'value'),
                      Output('order_modal_display', 'displayed'),
                      Output('orders_table', 'data')],
                   [Input('order_submit_button', 'submit_n_clicks'),
@@ -2005,13 +2008,17 @@ def order_add_new_contact_entry(contact_click, row_id, submit_button, close_butt
                      State('order_project_value', 'value'),
                      State('order_remarks', 'value'),
                      State('order_comp_location', 'value'),
+                     State('order_project_technical', 'value'),
+                     State('order_project_management', 'value'),
+                     State('order_project_supervisor', 'value'),
                      State('order_add_contact_div', 'children')]
                   )
 def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_dropdown, row_id, clickData_scope, clickData_status,
                         order_key_load_button, rows, order_key, order_date, order_po_no,
                         order_project_description, order_scope_of_work, order_client_name, order_client_location, order_existing_client,
                         order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office,
-                        order_project_value, order_remarks, order_comp_location, add_contact_div_value):
+                        order_project_value, order_remarks, order_comp_location, order_project_technical,
+                        order_project_management, order_project_supervisor, add_contact_div_value):
     ctx = dash.callback_context
     ctx_msg = json.dumps({
         'states': ctx.states,
@@ -2031,7 +2038,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                    existing_enquiry_data.iloc[0]['client_name'], existing_enquiry_data.iloc[0]['client_location'], existing_enquiry_data.iloc[0][
                        'existing_client'], '', '', '', '', \
                    existing_enquiry_data.iloc[0]['raj_group_office'], existing_enquiry_data.iloc[0]['tentative_project_value'], \
-                   existing_enquiry_data.iloc[0]['remarks'], '', False, rows
+                   existing_enquiry_data.iloc[0]['remarks'], '', '', '', '', False, rows
         elif triggered_input == 'order_key_load_button' and order_key_load_button:
             prev_order_key = connection.execute_query("select order_key from RajVijtechOrdersNew;")['order_key']
             prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
@@ -2043,7 +2050,7 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
             return 'tab-2', order_key, None, None, \
                    None, None, None, None, None, \
                    None, None, None, None, None, \
-                   None, None, None, False, rows
+                   None, None, None, None, None, None, False, rows
 
         elif triggered_input == 'order_submit_button' and submit_clicks:
             # if any of the required field is None, return to the same page
@@ -2052,7 +2059,8 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                 return 'tab-2', order_key, order_date, order_po_no, \
                        order_project_description, order_scope_of_work, order_client_name, order_client_location, order_existing_client, \
                        order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office, \
-                       order_project_value, order_remarks, order_comp_location, True, rows
+                       order_project_value, order_remarks, order_comp_location, order_project_technical, \
+                       order_project_management, order_project_supervisor, True, rows
             if not order_order_no:
                 prev_order_key = connection.execute_query("select order_key from RajVijtechOrdersNew;")['order_key']
                 prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
@@ -2069,7 +2077,8 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                   order_client_location, order_existing_client, order_order_no, order_file_no,
                                   str(order_status).replace("[", '').replace("]", '').replace("'", '') ,
                                   order_project_incharge, str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
-                                order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\')]
+                                order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\'),
+                                order_project_technical, order_project_management, order_project_supervisor]
                 order_values = [i if i else '' for i in order_values]
                 client_values = [order_client_name, order_client_location, order_key]
                 client_values = [i if i else '' for i in client_values]
@@ -2116,6 +2125,9 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                          "project_value='{}', "
                                          "remarks='{}',"
                                          "comp_location='{}' "
+                                         "order_project_technical='{}',"
+                                         "order_project_management='{}',"
+                                         "order_project_supervisor='{}' "
                                          "where  order_key='{}';".format(order_date, order_po_no, order_project_description,
                                   str(order_scope_of_work).replace("[", '').replace("]", '').replace("'", ''),
                                   order_client_name,
@@ -2126,7 +2138,10 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                                                              "]", '').replace("'", ''),
                                   str(order_raj_group_office).replace("[", '').replace("]", '').replace("'", ''),
 
-                                  order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\'), order_key))
+                                  order_project_value, order_remarks, r'{}'.format(order_comp_location).replace('\\', '\\\\'),
+                                                                         order_project_technical,
+                                                                         order_project_management,
+                                                                         order_project_supervisor, order_key))
 
 
                 ## update RajGroupClientRepresentativeList
@@ -2151,7 +2166,8 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                                 client_rep_mod_values)
 
 
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
+                   None, None, None, False, \
                    rows
 
         elif triggered_input == 'orders_table' and row_id:
@@ -2165,7 +2181,8 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                    row_data.iloc[0]['order_no'], row_data.iloc[0]['file_no'], \
                    row_data.iloc[0]['order_status'], \
                    row_data.iloc[0]['project_incharge'], row_data.iloc[0]['raj_group_office'], row_data.iloc[0]['project_value'], \
-                   row_data.iloc[0]['remarks'], row_data.iloc[0]['comp_location'], False, rows
+                   row_data.iloc[0]['remarks'], row_data.iloc[0]['comp_location'], row_data.iloc[0]['project_technical'], \
+                   row_data.iloc[0]['project_management'], row_data.iloc[0]['project_supervisor'], False, rows
 
         elif triggered_input == 'order_client_dropdown' and client_dropdown:
             if client_dropdown != 'Other':
@@ -2181,26 +2198,31 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
             return 'tab-2', order_key, order_date, order_po_no, \
                    order_project_description, order_scope_of_work, client_nm, client_loc, existing_client, \
                    order_order_no, order_file_no, order_status, order_project_incharge, order_raj_group_office, \
-                   order_project_value, order_remarks, order_comp_location, False, rows
+                   order_project_value, order_remarks, order_comp_location, order_project_technical, order_project_management,\
+                   order_project_supervisor, False, rows
 
         elif triggered_input == 'orders_scope_pie_chart' and clickData_scope:
             status_var = clickData_scope['points'][0]['label']
             orders_data_modified = connection.execute_query("select * from RajVijtechOrdersNew where "
                                                                        "scope_of_work='{}' order by order_key desc;".format(status_var)).to_dict('records')
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
+                   None, None, None, None, False, \
                    orders_data_modified
 
         elif triggered_input == 'orders_status_pie_chart' and clickData_status:
             status_var = clickData_status['points'][0]['label']
             orders_data_modified = connection.execute_query("select * from RajVijtechOrdersNew where "
                                                                        "order_status='{}' order by order_key desc;".format(status_var)).to_dict('records')
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
+                   None, None, None, None, False, \
                    orders_data_modified
 
         else:
-            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
+            return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
+                   None, None, None, None, False, \
                    rows
-    return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False, \
+    return 'tab-1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, \
+           None, None, None, False, \
                rows
 
 

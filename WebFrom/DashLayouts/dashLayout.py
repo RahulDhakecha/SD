@@ -1877,6 +1877,27 @@ def rv_order_layout():
                         placeholder='Computer Location',
                         size=50
                     ),
+                    html.Header("Project Technical"),
+                    dcc.Input(
+                        id='order_project_technical',
+                        type='text',
+                        placeholder='Project Technical',
+                        size=50
+                    ),
+                    html.Header("Project Management"),
+                    dcc.Input(
+                        id='order_project_management',
+                        type='text',
+                        placeholder='Project Management',
+                        size=50
+                    ),
+                    html.Header("Project Supervisor"),
+                    dcc.Input(
+                        id='order_project_supervisor',
+                        type='text',
+                        placeholder='Project Supervisor',
+                        size=50
+                    ),
                 ], className="four columns"),
             ], className="row"),
             html.Div([
