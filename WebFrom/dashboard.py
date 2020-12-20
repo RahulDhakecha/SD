@@ -1020,9 +1020,9 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                          "project_value='{}', "
                                          "remarks='{}',"
                                          "comp_location='{}',"
-                                         "order_project_technical='{}',"
-                                         "order_project_management='{}',"
-                                         "order_project_supervisor='{}' "
+                                         "project_technical='{}',"
+                                         "project_management='{}',"
+                                         "project_supervisor='{}' "
                                          "where  order_key='{}';".format(order_date, order_po_no, order_project_description,
                                   str(order_scope_of_work).replace("[", '').replace("]", '').replace("'", ''),
                                   order_client_name,
@@ -2124,10 +2124,10 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                                          "raj_group_office='{}', "
                                          "project_value='{}', "
                                          "remarks='{}',"
-                                         "comp_location='{}' "
-                                         "order_project_technical='{}',"
-                                         "order_project_management='{}',"
-                                         "order_project_supervisor='{}' "
+                                         "comp_location='{}', "
+                                         "project_technical='{}',"
+                                         "project_management='{}',"
+                                         "project_supervisor='{}' "
                                          "where  order_key='{}';".format(order_date, order_po_no, order_project_description,
                                   str(order_scope_of_work).replace("[", '').replace("]", '').replace("'", ''),
                                   order_client_name,
