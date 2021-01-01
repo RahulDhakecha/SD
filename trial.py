@@ -37,6 +37,7 @@ if __name__ == '__main__':
     #     "client_location, order_no, file_no, order_status, project_incharge, project_value,"
     #     " remarks, comp_location from RajElectricalsOrdersNew;")
     # value['comp_location'] = value.apply(lambda row: rectify_commp_location(row['comp_location'], row['order_key']), axis=1)
-    connection.execute_query("select email from users where user_name='{}'".format('AnkitRibadiya')).iloc[0]['email']
+    # connection.execute_query("select email from users where user_name='{}'".format('AnkitRibadiya')).iloc[0]['email']
+    print(str(dt.now().year))
 
 

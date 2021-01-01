@@ -210,7 +210,9 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
                        quotation_number, remarks, True, rows
             if not enquiry_key:
                 prev_enquiry_key = connection.execute_query("select count(enquiry_key) as cnt from RajGroupEnquiryList "
-                                                            "where substr(enquiry_key, 9, 2) = '{}'".format(str(dt.now().month).zfill(2))).iloc[0]['cnt']
+                                                            "where substr(enquiry_key, 4, 4) = '{}' and "
+                                                            "substr(enquiry_key, 9, 2) = '{}'".format(
+                    str(dt.now().year).zfill(4), str(dt.now().month).zfill(2))).iloc[0]['cnt']
                 enquiry_key = "EN_"+str(dt.now().year)+"_"+str(dt.now().month).zfill(2)+"_"+str(prev_enquiry_key+1).zfill(4)
                 print("en_key:" + str(enquiry_key))
                 enquiry_values = [enquiry_key, entry_date, project_description, str(scope_of_work).replace("[", '').replace("]", '').replace("'", ''),
@@ -515,12 +517,14 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
                                                       "from "
                                                       "(select enquiry_key "
                                                       "from RajGroupFollowUpLog "
+                                                      "where substr(offer_key, 8, 4) = '{}' "
                                                       "group by 1) as A "
                                                       "left join "
                                                       "RajGroupEnquiryList as B "
                                                       "on A.enquiry_key=B.enquiry_key "
                                                       "where raj_group_office='{}' "
-                                                      "group by 1;".format(str(raj_group_office))).iloc[0]['cnt']
+                                                      "group by 1;".format(str(dt.now().year).zfill(4),
+                                                                           str(raj_group_office))).iloc[0]['cnt']
             except IndexError:
                 prev_sr_no = 0
             rev_no = 1
@@ -915,8 +919,12 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                    existing_enquiry_data.iloc[0]['raj_group_office'], existing_enquiry_data.iloc[0]['tentative_project_value'], \
                    existing_enquiry_data.iloc[0]['remarks'], '', '', '', '', False, rows
         elif triggered_input == 'order_key_load_button' and order_key_load_button:
-            prev_order_key = connection.execute_query("select order_key from RajElectricalsOrdersNew;")['order_key']
-            prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
+            prev_order_key = connection.execute_query("select order_key from RajElectricalsOrdersNew "
+                                                      "where substr(order_key, 8, 4) = '{}';".format(str(dt.now().year)))['order_key']
+            try:
+                prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
+            except:
+                prev_order_key_no = 0
             # if prev_order_key_no <= 2000:
             #     prev_order_key_no = 2000
             new_order_key_no = str(int(prev_order_key_no) + 1).zfill(4)
@@ -946,8 +954,12 @@ def update_order_values(submit_clicks, close_clicks, order_enquiry_key, client_d
                        order_project_value, order_remarks, order_comp_location, order_project_technical, \
                        order_project_management, order_project_supervisor, True, rows
             if not order_order_no:
-                prev_order_key = connection.execute_query("select order_key from RajElectricalsOrdersNew;")['order_key']
-                prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
+                prev_order_key = connection.execute_query("select order_key from RajElectricalsOrdersNew "
+                                                          "where substr(order_key, 8, 4) = '{}';".format(str(dt.now().year)))['order_key']
+                try:
+                    prev_order_key_no = max([int(s.strip().split("-")[-1]) for s in list(prev_order_key)])
+                except:
+                    prev_order_key_no = 0
                 # if prev_order_key_no <= 2000:
                 #     prev_order_key_no = 2000
                 new_order_key_no = str(int(prev_order_key_no)+1).zfill(4)
