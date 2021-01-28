@@ -2501,8 +2501,9 @@ def add_hyperlink(comp_location, order_key):
 @app.route('/dash/urlToDownload/')
 def download_csv():
     value = connection.execute_query("select order_key, order_date, po_no, project_description, scope_of_work, client_name, "
-                                     "client_location, order_no, file_no, order_status, project_incharge, project_value,"
-                                     " remarks, comp_location from RajElectricalsOrdersNew;")
+                                     "client_location, order_no, file_no, order_status, project_technical, project_management, "
+                                     "project_supervisor, cast(REPLACE(project_value,',','') as unsigned) as project_value, "
+                                     "remarks, comp_location from RajElectricalsOrdersNew;")
     value['order_key'] = value.apply(lambda row: add_hyperlink(row['comp_location'], row['order_key']), axis=1)
     # str_io = io.StringIO()
     # value.to_csv(str_io)
@@ -2525,9 +2526,11 @@ def download_csv():
 
 @app.route('/dash/urlToDownload/RV/')
 def download_rv_excel():
-    value = connection.execute_query("select order_key, order_date, po_no, project_description, scope_of_work, client_name, "
-                                     "client_location, order_no, file_no, order_status, project_incharge, project_value,"
-                                     " remarks, comp_location from RajVijtechOrdersNew;")
+    value = connection.execute_query(
+        "select order_key, order_date, po_no, project_description, scope_of_work, client_name, "
+        "client_location, order_no, file_no, order_status, project_technical, project_management, "
+        "project_supervisor, cast(REPLACE(project_value,',','') as unsigned) as project_value, "
+        "remarks, comp_location from RajVijtechOrdersNew;")
     value['order_key'] = value.apply(lambda row: add_hyperlink(row['comp_location'], row['order_key']), axis=1)
     # str_io = io.StringIO()
     # value.to_csv(str_io)

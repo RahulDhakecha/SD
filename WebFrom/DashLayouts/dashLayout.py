@@ -269,11 +269,11 @@ def weekly_leads_line_data(data):
     weekly = data1[['enquiry_key', 'years', 'weeks']].groupby(['years', 'weeks'],
                                                                                as_index=False).count().rename(
         columns={'enquiry_key': 'leads_cnt'})
-    weekly_leads_data = weekly[weekly['years'] == 2020]
+    weekly_leads_data = weekly[weekly['years'] == 2021]
 
     # print(weekly_leads_data)
     current_year, current_week, current_day = date.today().isocalendar()
-    weeks = [getDateRangeFromWeek('2020', p_week) for p_week in range(1, current_week)]
+    weeks = [getDateRangeFromWeek('2021', p_week) for p_week in range(1, current_week)]
 
     weekly_leads_cnt_data = []
     for i in range(1, current_week):
@@ -351,11 +351,11 @@ def weekly_offers_line_data():
     weekly = data1[['enquiry_key', 'years', 'weeks']].groupby(['years', 'weeks'],
                                                                                as_index=False).count().rename(
         columns={'enquiry_key': 'offers_cnt'})
-    weekly_offers_data = weekly[weekly['years'] == 2020]
+    weekly_offers_data = weekly[weekly['years'] == 2021]
 
     # print(weekly_leads_data)
     current_year, current_week, current_day = date.today().isocalendar()
-    weeks = [getDateRangeFromWeek('2020', p_week) for p_week in range(1, current_week)]
+    weeks = [getDateRangeFromWeek('2021', p_week) for p_week in range(1, current_week)]
 
     weekly_offers_cnt_data = []
     for i in range(1, current_week):
@@ -1613,12 +1613,14 @@ def order_layout():
 
 
 
+
 def rv_order_layout():
     connection = AWSMySQLConn()
     # if company == "DN":
     data_orders = connection.execute_query(
         "select order_key, order_date, project_description, client_name,"
-        "client_location, project_value, scope_of_work, order_status, project_incharge from RajVijtechOrdersNew order by 1 desc;")
+        "client_location, project_value, scope_of_work, order_status, project_incharge from RajVijtechOrdersNew "
+        "order by 1 desc;")
     # elif company == "RJ":
     # data_orders = connection.execute_query(
     #     "select order_key, order_date, project_description, client_name,"
@@ -1638,296 +1640,754 @@ def rv_order_layout():
 
 
     return html.Div([
-    html.Div([
+        html.Meta(name="viewport", content="width=device-width, initial-scale=1.0"),
+        # html.Div([
+        #     html.Div([
+        #         dcc.Link('HOME', href='/', refresh=True),
+        #     ], className="one columns"),
+        #     html.Div([
+        #         dcc.Link('REFRESH', href='/dash/', refresh=True),
+        #     ], className="one columns"),
+        #     # html.Div([
+        #     #     html.A('Download Dispatch Register', href='/dash/urlToDownload', id='my_link'),
+        #     # ], className="one columns"),
+        # ], className="row"),
+
         html.Div([
-            dcc.Link('HOME', href='/', refresh=True),
-        ], className="one columns"),
-        html.Div([
-            dcc.Link('REFRESH', href='/dash5/', refresh=True),
-        ], className="one columns"),
-        html.Div([
-            dcc.Dropdown(
-                id='file_options',
-                options=[{'value': i, 'label': i} for i in ['Raj Vijtech Orders']],
-                placeholder='Select File to Download'
-            ),
-        ], className="two columns"),
-        html.Div([
-            html.A('Download', id='my_link'),
-        ], className="two columns"),
-    ], className="row"),
-    dcc.Tabs(id='tabs', value='tab-1', children=[
-        dcc.Tab(id='tab1', value='tab-1', label='Work Order Dashboard', children=[
             html.Div([
+                html.A('Home', href="/", className='nav_item now', style={'border-left': 'none'}),
+                html.A('REFRESH', href="/dash5/", className='nav_item'),
+
+            ], className='nav_bar_content'),
+            html.A('Logout', href="/logout", className='nav_item last'),
+        ], className='nav_bar'),
+        html.Div([
+            html.Div([
+                html.A([
+                    html.Img(src="assets/close.png", style={'width': '30px', 'height': '30px', 'padding': '5px'})
+                ], href="javascript:closeNav()", className='closebtn'),
+                html.A('HOME', href="/", className='menulink'),
+                html.A('REFRESH', href="/dash/", className='menulink'),
+                html.A('LOGOUT', href="/logout", className='menulink'),
+
+            ], id='mySidenav', className='sidenav'),
+
+            html.A([
+                html.Img(src="assets/menu.png", style={'width': '30px', 'height': '30px', 'padding': '5px'})
+            ], href='javascript:openNav()'),
+
+        ], className='nav_bar2'),
+
+        dcc.Tabs(id='tabs', value='tab-1', children=[
+            dcc.Tab(id='tab1', value='tab-1', label='Work Order Dashboard', children=[
+                # Body1 start
                 html.Div([
-                    # Pie-chart reflecting scope wise orders
-                    dcc.Graph(
-                        id='orders_scope_pie_chart',
-                        figure=orders_scope_pie_data(data_orders)
-                    ),
-                ], className="pretty_container six columns"),
+                    html.Div([
+                        html.H1('Offer Details', className='main_title')
+                    ]),
+                    html.Div([
+                        html.Div([
+                            # Pie-chart reflecting scope wise orders
+                            dcc.Graph(
+                                id='orders_scope_pie_chart',
+                                figure=orders_scope_pie_data(data_orders)
+                            ),
+                        ], className="pie_charts_container"),
 
+                        html.Div([
+
+                            # Pie-chart reflecting status wise orders
+                            dcc.Graph(
+                                id='orders_status_pie_chart',
+                                figure=orders_status_pie_data(data_orders)
+                            ),
+                        ], className="pie_charts_container"),
+
+                    ], className='pie_charts'),
+                ], className='body_data2'),
+                # Body1 End
+
+                # BOdy2 Start
                 html.Div([
-                    # Pie-chart reflecting status wise orders
-                    dcc.Graph(
-                        id='orders_status_pie_chart',
-                        figure=orders_status_pie_data(data_orders)
+
+                    html.Div([
+                        # Data Table - Work Orders
+                        dash_table.DataTable(
+                            id='orders_table',
+                            style_data={'minWidth': 'auto', 'width': 'auto', 'maxWidth': '8vw'},
+                            style_table={
+                                'overflowY': 'auto',
+                                'minHeight': '90vh', 'height': '90vh', 'maxHeight': '90vh',
+
+                            },
+                            style_header={
+                                'backgroundColor': '#1034A6',
+                                'fontWeight': '500',
+                                'color': '#F5F5F5',
+                                'borderRadius': '10px',
+                                # 'border': '1px solid  #F5F5F5',
+                                'font-family': 'Comfortaa',
+                                'font-size': '3',
+                                'height': '7vh'
+
+                            },
+                            style_cell={
+                                'textAlign': 'center',
+                                'whiteSpace': 'normal',
+                                'minHeight': '30px',
+                                'font-size': 'larger',
+                                'font-family': 'Comfortaa',
+
+                            },
+                            style_data_conditional=[
+                                {'color': '#1034A6',
+                                 'backgroundColor': '#F5F5F5',
+                                 'border': '1px solid  #1034A6',
+                                 }
+                            ],
+                            fixed_rows={'headers': True, 'data': 0},
+                            # tooltip_data=[
+                            #     {
+                            #         column: {'value': str(value), 'type': 'markdown'}
+                            #         for column, value in row.items()
+                            #     } for row in data_orders.to_dict('rows')
+                            # ],
+                            # tooltip_duration=None,
+                            # css=[{
+                            #     'selector': '.dash-cell div.dash-cell-value',
+                            #     'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
+                            # }],
+                            css=[{
+                                'selector': '.dash-cell div.dash-cell-value',
+                                'rule': 'display: inline; font-family: Comfortaa;white-space: inherit; overflow: inherit; text-overflow: inherit;',
+
+                            }],
+
+                            style_filter_conditional=[{
+                                'backgroundColor': '#F5F5F5',
+                                'color': '#1034A6',
+                                'padding': '10px',
+                                'height': '20px',
+                                'border': '2px solid #433cde9',
+                            }],
+                            style_as_list_view=True,
+                            filter_action="native",
+                            sort_action="native",
+                            sort_mode="multi",
+                            row_selectable="single",
+                            editable=False,
+                            columns=[{"name": i, "id": i} for i in data_orders.columns],
+                            data=data_orders.to_dict('records')
+                        ),
+
+                    ], className='table_data')
+                ], className='body_data3'),
+                # BOdy2 end
+                html.Div([
+                    dcc.Dropdown(
+                        id='file_options',
+                        options=[{'value': i, 'label': i} for i in ['Raj Vijtech Orders']],
+                        placeholder='Select File to Download'
                     ),
-                ], className="pretty_container six columns")
+                ], className="two columns"),
+                html.Div([
+                    html.A('Download', id='my_link'),
+                ], className="two columns"),
+            ]),
+            dcc.Tab(id='tab2', value='tab-2', label='Raj Group Order Form', children=[
+                # Body3 start
+                html.Div([
+                    html.Div([
+                        html.Div([
 
-            ], className="row"),
-            # Data Table - Work Orders
-            dash_table.DataTable(
-                id='orders_table',
-                style_data={'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
-                style_table={
-                    'maxHeight': '30',
-                    'overflowY': 'scroll'
-                },
-                style_header={
-                    'backgroundColor': 'rgb(230, 230, 230)',
-                    'fontWeight': 'bold'
-                },
-                style_cell={
-                    'textAlign': 'center',
-                    'whiteSpace': 'normal',
-                    'minHeight': '30px',
-                    # 'height': 'auto',
-                    # 'overflow': 'scroll',
-                    # 'textOverflow': 'ellipsis',
-                },
-                style_data_conditional=[
-                    {
-                        'if': {'row_index': 'odd'},
-                        'backgroundColor': 'rgb(248, 248, 248)'
-                    }
-                ],
-                fixed_rows={'headers': True, 'data': 0},
-                # tooltip_data=[
-                #     {
-                #         column: {'value': str(value), 'type': 'markdown'}
-                #         for column, value in row.items()
-                #     } for row in data_orders.to_dict('rows')
-                # ],
-                # tooltip_duration=None,
-                # css=[{
-                #     'selector': '.dash-cell div.dash-cell-value',
-                #     'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
-                # }],
-                filter_action="native",
-                sort_action="native",
-                sort_mode="multi",
-                row_selectable="single",
-                editable=False,
-                columns=[{"name": i, "id": i} for i in data_orders.columns],
-                data=data_orders.to_dict('records')
-            ),
+                            html.Div([
 
+                                html.H5("Project Details", className='modeltitle'),
+
+                                html.P("Enquiry Key"),
+                                dcc.Dropdown(
+                                    id='order_enquiry_key',
+                                    options=[{'value': i, 'label': i} for i in en_keys],
+                                    className='dropdownc',
+                                    placeholder="Select a Enquiry Key",
+                                    style={'border': 'none', 'border-radius': '20px'}
+                                ),
+                                html.Div([
+                                    html.P("Order Key"),
+                                    dcc.Input(
+                                        id='order_key',
+                                        type='text',
+                                        className='input1 ',
+
+                                    ),
+                                    dcc.ConfirmDialogProvider(
+                                        # children=html.Button(
+                                        #     'Load Order Key',
+                                        # ),
+                                        [
+                                            html.A([
+                                                html.Img(src='assets/loadkey.png', className="logoimg", alt='home'),
+                                            ], className="keyspan")
+                                        ],
+                                        id='order_key_load_button',
+                                        message='Are you sure you want to continue?'
+                                    ),
+
+                                ], className='loadkey'),
+
+                                html.P("Order Date", className='date_1'),
+                                dcc.DatePickerSingle(
+                                    id='order_date',
+                                    placeholder='Select a Date',
+                                    with_portal=True,
+                                    display_format="YYYY-MM-DD",
+                                    className='input1',
+
+                                ),
+                                html.P("PO No"),
+                                dcc.Input(
+                                    id='order_po_no',
+                                    type='text',
+                                    className='input1',
+
+                                ),
+                                html.P("Project Description"),
+                                dcc.Input(
+                                    id='order_project_description',
+                                    type='text',
+                                    className='input1'
+                                ),
+                                html.P("Scope of Work"),
+                                dcc.Dropdown(
+                                    id='order_scope_of_work',
+                                    options=[{'value': i, 'label': i} for i in sow],
+                                    className='dropdownc',
+                                    placeholder="Select a Work",
+                                    style={'border': 'none', 'border-radius': '20px'}
+                                ),
+                            ], className='')
+                        ], className='squreborder'),
+                        html.Div([
+                            html.H5("Client Details", className='modeltitle'),
+
+                            html.P("Client Dropdown"),
+                            dcc.Dropdown(
+                                id='order_client_dropdown',
+                                options=[{'value': i, 'label': i} for i in client_data],
+                                className='dropdownc',
+                                placeholder="Select a Client",
+                                style={'border': 'none', 'border-radius': '20px'}
+
+                            ),
+
+                            html.P("Client Name"),
+                            dcc.Input(
+                                id='order_client_name',
+                                type='text',
+                                required='true',
+                                className='input1'
+                            ),
+                            html.P("Client Location"),
+                            dcc.Input(
+                                id='order_client_location',
+                                type='text',
+                                required='true',
+                                className='input1'
+                            ),
+                            html.P("Existing Client"),
+                            dcc.RadioItems(
+                                id='order_existing_client',
+                                options=[{'value': 'YES', 'label': 'YES'},
+                                         {'value': 'NO', 'label': 'NO'}]
+                            ),
+                        ], className='squreborder'),
+
+                        html.Div([
+                            html.Div([
+                                html.H5("Local Office Details", className='modeltitle'),
+                                html.P("Order No/Tender File No"),
+                                dcc.Input(
+                                    id='order_order_no',
+                                    type='text',
+                                    className='input1'
+                                ),
+                                html.P("File No"),
+                                dcc.Input(
+                                    id='order_file_no',
+                                    type='text',
+                                    className='input1'
+                                ),
+                                html.P("Status"),
+                                dcc.Dropdown(
+                                    id='order_status',
+                                    options=[{'value': i, 'label': i} for i in order_status],
+                                    className='dropdownc',
+                                    placeholder="Select a lead status",
+                                    style={'border': 'none', 'border-radius': '20px'}
+                                ),
+                                html.P("Project incharge"),
+                                dcc.Input(
+                                    id='order_project_incharge',
+                                    type='text',
+                                    className='input1',
+                                    required=True
+                                ),
+                                html.P("Raj Group Office"),
+                                dcc.Dropdown(
+                                    id='order_raj_group_office',
+                                    options=[{'value': i, 'label': i} for i in raj_group_office],
+                                    className='dropdownc',
+                                    placeholder="Select an office",
+                                    style={'border': 'none', 'border-radius': '20px'}
+                                ),
+                                html.P("Project value"),
+                                dcc.Input(
+                                    id='order_project_value',
+                                    type='text',
+                                    className='input1',
+
+                                ),
+
+                                html.P("Remarks"),
+                                dcc.Input(
+                                    id='order_remarks',
+                                    type='text',
+                                    className='input1'
+                                ),
+
+                                html.P("Computer Location"),
+                                dcc.Input(
+                                    id='order_comp_location',
+                                    type='text',
+                                    className='input1'
+                                ),
+
+                                html.P("Project Technical"),
+                                dcc.Input(
+                                    id='order_project_technical',
+                                    type='text',
+                                    className='input1'
+                                ),
+
+                                html.P("Project Management"),
+                                dcc.Input(
+                                    id='order_project_management',
+                                    type='text',
+                                    className='input1'
+                                ),
+
+                                html.P("Project Supervisor"),
+                                dcc.Input(
+                                    id='order_project_supervisor',
+                                    type='text',
+                                    className='input1'
+                                ),
+
+                                html.Header("Feedback Link"),
+                                dcc.Link(id="feedback_link", children=[
+                                    None
+                                ]),
+                            ], className=''),
+
+                        ], className='followup squreborder'),
+
+                        html.Div([
+                            html.H5("Contact Details", className='modeltitle'),
+                            html.Div([
+                                html.Div(id="order_add_contact_div", className='add_dynamic_details',
+                                         style={'margin-bottom': '10px'}),
+                                html.Div([
+                                    dcc.ConfirmDialogProvider(
+                                        children=html.Button(
+                                            'Add',
+                                            className='allbutton alignbtn'
+                                        ),
+                                        id='order_add_another_contact',
+                                        message='Are you sure you want to continue?'
+                                    ),
+
+                                    dcc.ConfirmDialogProvider(
+                                        children=html.Button(
+                                            'Delete',
+                                            className='allbutton alignbtn'
+                                        ),
+                                        id='delete_contact_button',
+                                        message='Are you sure you want to continue?'
+                                    ),
+                                ], className='centerbtn'),
+                            ]),
+
+                        ], className='squreborder addcontect', style={'position': 'relative'}),
+
+                        html.Div(id="add_offer_hide", children=[
+                            html.H5("Offer Details", className='modeltitle'),
+                            html.Div(id="add_offer_div", className='add_dynamic_details',
+                                     style={'margin-bottom': '10px'}),
+                            # html.P("Add Another Offer"),
+                            html.Div([
+                                dcc.ConfirmDialogProvider(
+                                    children=html.Button(
+                                        'Add Offer',
+                                        className='allbutton alignbtn'
+                                    ),
+                                    id='add_another_offer',
+                                    message='Are you sure you want to continue?'
+                                ),
+                            ], className='centerbtn'),
+                        ], className='squreborder addoffer', style={'display': 'none'}),
+
+                        html.Div([
+
+                            dcc.ConfirmDialogProvider(
+                                children=html.Button(
+                                    'Submit',
+                                    className='allbutton'
+                                ),
+                                id='order_submit_button',
+                                message='Are you sure you want to continue?'
+                            ),
+
+                            dcc.ConfirmDialogProvider(
+                                children=html.Button(
+                                    'Close',
+                                    id='close_dash',
+                                    className='allbutton'
+                                ),
+                                id='order_close_button',
+                                message='Are you sure you want to continue?'
+                            ),
+
+                            dcc.ConfirmDialog(
+                                id='order_modal_display',
+                                message='Please fill all required values marked in RED!!',
+                            ),
+
+                        ], className='btnn btncls')
+                    ], className='form_container'),
+                ], id='show_dashboard', className='body_data4'),
+                # Body3 End
+            ])
         ]),
-        dcc.Tab(id='tab2', value='tab-2', label='Raj Group Order Form', children=[
-            html.Div([
-                html.Div([
-                    html.H3("Project Details"),
-                    html.Header("Enquiry Key"),
-                    dcc.Dropdown(
-                        id='order_enquiry_key',
-                        options=[{'value': i, 'label': i} for i in en_keys],
-                    ),
-                    dcc.ConfirmDialogProvider(
-                        children=html.Button(
-                            'Load Order Key',
-                        ),
-                        id='order_key_load_button',
-                        message='Are you sure you want to continue?'
-                    ),
-                    html.Header("Order Key"),
-                    dcc.Input(
-                        id='order_key',
-                        type='text',
-                        placeholder='Order Key is locked for User',
-                        size=50,
-                        disabled=True
-                    ),
-                    html.Header("Order Date", className="required"),
-                    dcc.DatePickerSingle(
-                        id='order_date',
-                        placeholder='Select a Date',
-                        with_portal=True,
-                        display_format="YYYY-MM-DD",
-                    ),
-                    html.Header("PO No"),
-                    dcc.Input(
-                        id='order_po_no',
-                        type='text',
-                        placeholder='Enter Client PO No',
-                        size=50
-                    ),
-                    html.Header("Project Description"),
-                    dcc.Input(
-                        id='order_project_description',
-                        type='text',
-                        placeholder='Enter Project Description',
-                        size=50
-                    ),
-                    html.Header("Scope of Work", className="required"),
-                    dcc.Dropdown(
-                        id='order_scope_of_work',
-                        options=[{'value': i, 'label': i} for i in sow],
-                    ),
-                ], className="four columns"),
-                html.Div([
-                    html.H3("Client Details"),
-                    html.Header("Client Dropdown", className="required"),
-                    dcc.Dropdown(
-                        id='order_client_dropdown',
-                        options=[{'value': i, 'label': i} for i in client_data]
-                    ),
-                    html.Header("Client Name", className="required"),
-                    dcc.Input(
-                        id='order_client_name',
-                        type='text',
-                        placeholder='Enter Client Name',
-                        size=50,
-                    ),
-                    html.Header("Client Location", className="required"),
-                    dcc.Input(
-                        id='order_client_location',
-                        type='text',
-                        placeholder='Enter Client Location',
-                        size=50
-                    ),
-                    html.Header("Existing Client"),
-                    dcc.RadioItems(
-                        id='order_existing_client',
-                        options=[{'value': 'YES', 'label': 'YES'},
-                                 {'value': 'NO', 'label': 'NO'}]
-                    ),
-                ], className="four columns"),
-            ], className="row"),
-
-            html.H3("Contact Details"),
-            html.Div([
-                html.Div(id="order_add_contact_div"),
-                html.Header("Add Another Contact"),
-                dcc.ConfirmDialogProvider(
-                    children=html.Button(
-                        'Add Contact',
-                    ),
-                    id='order_add_another_contact',
-                    message='Are you sure you want to continue?'
-                ),
-            ], className="row"),
-
-            html.H3("Local Office Details"),
-
-            html.Div([
-                html.Div([
-                    html.Header("Order No/Tender File No"),
-                    dcc.Input(
-                        id='order_order_no',
-                        type='text',
-                        placeholder='Order No is locked for User',
-                        size=50,
-                        disabled=True
-                    ),
-                    html.Header("File No"),
-                    dcc.Input(
-                        id='order_file_no',
-                        type='text',
-                        placeholder='File No',
-                        size=50
-                    ),
-                    html.Header("Status", className="required"),
-                    dcc.Dropdown(
-                        id='order_status',
-                        options=[{'value': i, 'label': i} for i in order_status]
-                    ),
-                    html.Header("Project Incharge", className="required"),
-                    dcc.Input(
-                        id='order_project_incharge',
-                        type='text',
-                        placeholder='Project Incharge',
-                        size=50
-                    ),
-                ], className="four columns"),
-                html.Div([
-                    html.Header("Raj Group Office", className="required"),
-                    dcc.Dropdown(
-                        id='order_raj_group_office',
-                        options=[{'value': i, 'label': i} for i in raj_group_office]
-                    ),
-                    html.Header("Project Value"),
-                    dcc.Input(
-                        id='order_project_value',
-                        type='text',
-                        placeholder='Tentative Project Value',
-                        size=50
-                    ),
-                    html.Header("Remarks"),
-                    dcc.Input(
-                        id='order_remarks',
-                        type='text',
-                        placeholder='Remarks',
-                        size=50
-                    ),
-                    html.Header("Computer Location"),
-                    dcc.Input(
-                        id='order_comp_location',
-                        type='text',
-                        placeholder='Computer Location',
-                        size=50
-                    ),
-                    html.Header("Project Technical"),
-                    dcc.Input(
-                        id='order_project_technical',
-                        type='text',
-                        placeholder='Project Technical',
-                        size=50
-                    ),
-                    html.Header("Project Management"),
-                    dcc.Input(
-                        id='order_project_management',
-                        type='text',
-                        placeholder='Project Management',
-                        size=50
-                    ),
-                    html.Header("Project Supervisor"),
-                    dcc.Input(
-                        id='order_project_supervisor',
-                        type='text',
-                        placeholder='Project Supervisor',
-                        size=50
-                    ),
-                ], className="four columns"),
-            ], className="row"),
-            html.Div([
-                html.Div([
-                    dcc.ConfirmDialogProvider(
-                        children=html.Button(
-                            'Submit',
-                        ),
-                        id='order_submit_button',
-                        message='Are you sure you want to continue?'
-                    ),
-                ], className="six columns"),
-                html.Div([
-                    dcc.ConfirmDialogProvider(
-                        children=html.Button(
-                            'Close',
-                        ),
-                        id='order_close_button',
-                        message='Are you sure you want to continue?'
-                    )
-                ], className="six columns"),
-                dcc.ConfirmDialog(
-                    id='order_modal_display',
-                    message='Please fill all required values marked in RED!!',
-                ),
-            ], className="row"),
-        ])
-    ]),
-    html.Div(id='tabs-content')
+        html.Div(id='tabs-content')
 ], className="page")
+
+
+
+# def rv_order_layout():
+#     connection = AWSMySQLConn()
+#     # if company == "DN":
+#     data_orders = connection.execute_query(
+#         "select order_key, order_date, project_description, client_name,"
+#         "client_location, project_value, scope_of_work, order_status, project_incharge from RajVijtechOrdersNew order by 1 desc;")
+#     # elif company == "RJ":
+#     # data_orders = connection.execute_query(
+#     #     "select order_key, order_date, project_description, client_name,"
+#     #     "client_location, project_value, scope_of_work, order_status, project_incharge from DNSyndicateOrdersNew order by order_date desc;")
+#
+#     data_upcoming_projects = connection.execute_query(
+#         "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
+#         "client_location, lead_status, follow_up_person from RajGroupEnquiryList order by 1 desc;")
+#
+#     en_keys = list(data_upcoming_projects['enquiry_key'])
+#
+#
+#     client_data = ['Other']
+#     client_data_all = connection.execute_query("select client_name, client_location from RajGroupClientList group by 1,2;")
+#     for i, j in zip(list(client_data_all['client_name']), list(client_data_all['client_location'])):
+#         client_data.append(i+" -- "+j)
+#
+#
+#     return html.Div([
+#     html.Div([
+#         html.Div([
+#             dcc.Link('HOME', href='/', refresh=True),
+#         ], className="one columns"),
+#         html.Div([
+#             dcc.Link('REFRESH', href='/dash5/', refresh=True),
+#         ], className="one columns"),
+#         html.Div([
+#             dcc.Dropdown(
+#                 id='file_options',
+#                 options=[{'value': i, 'label': i} for i in ['Raj Vijtech Orders']],
+#                 placeholder='Select File to Download'
+#             ),
+#         ], className="two columns"),
+#         html.Div([
+#             html.A('Download', id='my_link'),
+#         ], className="two columns"),
+#     ], className="row"),
+#     dcc.Tabs(id='tabs', value='tab-1', children=[
+#         dcc.Tab(id='tab1', value='tab-1', label='Work Order Dashboard', children=[
+#             html.Div([
+#                 html.Div([
+#                     # Pie-chart reflecting scope wise orders
+#                     dcc.Graph(
+#                         id='orders_scope_pie_chart',
+#                         figure=orders_scope_pie_data(data_orders)
+#                     ),
+#                 ], className="pretty_container six columns"),
+#
+#                 html.Div([
+#                     # Pie-chart reflecting status wise orders
+#                     dcc.Graph(
+#                         id='orders_status_pie_chart',
+#                         figure=orders_status_pie_data(data_orders)
+#                     ),
+#                 ], className="pretty_container six columns")
+#
+#             ], className="row"),
+#             # Data Table - Work Orders
+#             dash_table.DataTable(
+#                 id='orders_table',
+#                 style_data={'minWidth': '180px', 'width': '180px', 'maxWidth': '180px'},
+#                 style_table={
+#                     'maxHeight': '30',
+#                     'overflowY': 'scroll'
+#                 },
+#                 style_header={
+#                     'backgroundColor': 'rgb(230, 230, 230)',
+#                     'fontWeight': 'bold'
+#                 },
+#                 style_cell={
+#                     'textAlign': 'center',
+#                     'whiteSpace': 'normal',
+#                     'minHeight': '30px',
+#                     # 'height': 'auto',
+#                     # 'overflow': 'scroll',
+#                     # 'textOverflow': 'ellipsis',
+#                 },
+#                 style_data_conditional=[
+#                     {
+#                         'if': {'row_index': 'odd'},
+#                         'backgroundColor': 'rgb(248, 248, 248)'
+#                     }
+#                 ],
+#                 fixed_rows={'headers': True, 'data': 0},
+#                 # tooltip_data=[
+#                 #     {
+#                 #         column: {'value': str(value), 'type': 'markdown'}
+#                 #         for column, value in row.items()
+#                 #     } for row in data_orders.to_dict('rows')
+#                 # ],
+#                 # tooltip_duration=None,
+#                 # css=[{
+#                 #     'selector': '.dash-cell div.dash-cell-value',
+#                 #     'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
+#                 # }],
+#                 filter_action="native",
+#                 sort_action="native",
+#                 sort_mode="multi",
+#                 row_selectable="single",
+#                 editable=False,
+#                 columns=[{"name": i, "id": i} for i in data_orders.columns],
+#                 data=data_orders.to_dict('records')
+#             ),
+#
+#         ]),
+#         dcc.Tab(id='tab2', value='tab-2', label='Raj Group Order Form', children=[
+#             html.Div([
+#                 html.Div([
+#                     html.H3("Project Details"),
+#                     html.Header("Enquiry Key"),
+#                     dcc.Dropdown(
+#                         id='order_enquiry_key',
+#                         options=[{'value': i, 'label': i} for i in en_keys],
+#                     ),
+#                     dcc.ConfirmDialogProvider(
+#                         children=html.Button(
+#                             'Load Order Key',
+#                         ),
+#                         id='order_key_load_button',
+#                         message='Are you sure you want to continue?'
+#                     ),
+#                     html.Header("Order Key"),
+#                     dcc.Input(
+#                         id='order_key',
+#                         type='text',
+#                         placeholder='Order Key is locked for User',
+#                         size=50,
+#                         disabled=True
+#                     ),
+#                     html.Header("Order Date", className="required"),
+#                     dcc.DatePickerSingle(
+#                         id='order_date',
+#                         placeholder='Select a Date',
+#                         with_portal=True,
+#                         display_format="YYYY-MM-DD",
+#                     ),
+#                     html.Header("PO No"),
+#                     dcc.Input(
+#                         id='order_po_no',
+#                         type='text',
+#                         placeholder='Enter Client PO No',
+#                         size=50
+#                     ),
+#                     html.Header("Project Description"),
+#                     dcc.Input(
+#                         id='order_project_description',
+#                         type='text',
+#                         placeholder='Enter Project Description',
+#                         size=50
+#                     ),
+#                     html.Header("Scope of Work", className="required"),
+#                     dcc.Dropdown(
+#                         id='order_scope_of_work',
+#                         options=[{'value': i, 'label': i} for i in sow],
+#                     ),
+#                 ], className="four columns"),
+#                 html.Div([
+#                     html.H3("Client Details"),
+#                     html.Header("Client Dropdown", className="required"),
+#                     dcc.Dropdown(
+#                         id='order_client_dropdown',
+#                         options=[{'value': i, 'label': i} for i in client_data]
+#                     ),
+#                     html.Header("Client Name", className="required"),
+#                     dcc.Input(
+#                         id='order_client_name',
+#                         type='text',
+#                         placeholder='Enter Client Name',
+#                         size=50,
+#                     ),
+#                     html.Header("Client Location", className="required"),
+#                     dcc.Input(
+#                         id='order_client_location',
+#                         type='text',
+#                         placeholder='Enter Client Location',
+#                         size=50
+#                     ),
+#                     html.Header("Existing Client"),
+#                     dcc.RadioItems(
+#                         id='order_existing_client',
+#                         options=[{'value': 'YES', 'label': 'YES'},
+#                                  {'value': 'NO', 'label': 'NO'}]
+#                     ),
+#                 ], className="four columns"),
+#             ], className="row"),
+#
+#             html.H3("Contact Details"),
+#             html.Div([
+#                 html.Div(id="order_add_contact_div"),
+#                 html.Header("Add Another Contact"),
+#                 dcc.ConfirmDialogProvider(
+#                     children=html.Button(
+#                         'Add Contact',
+#                     ),
+#                     id='order_add_another_contact',
+#                     message='Are you sure you want to continue?'
+#                 ),
+#             ], className="row"),
+#
+#             html.H3("Local Office Details"),
+#
+#             html.Div([
+#                 html.Div([
+#                     html.Header("Order No/Tender File No"),
+#                     dcc.Input(
+#                         id='order_order_no',
+#                         type='text',
+#                         placeholder='Order No is locked for User',
+#                         size=50,
+#                         disabled=True
+#                     ),
+#                     html.Header("File No"),
+#                     dcc.Input(
+#                         id='order_file_no',
+#                         type='text',
+#                         placeholder='File No',
+#                         size=50
+#                     ),
+#                     html.Header("Status", className="required"),
+#                     dcc.Dropdown(
+#                         id='order_status',
+#                         options=[{'value': i, 'label': i} for i in order_status]
+#                     ),
+#                     html.Header("Project Incharge", className="required"),
+#                     dcc.Input(
+#                         id='order_project_incharge',
+#                         type='text',
+#                         placeholder='Project Incharge',
+#                         size=50
+#                     ),
+#                 ], className="four columns"),
+#                 html.Div([
+#                     html.Header("Raj Group Office", className="required"),
+#                     dcc.Dropdown(
+#                         id='order_raj_group_office',
+#                         options=[{'value': i, 'label': i} for i in raj_group_office]
+#                     ),
+#                     html.Header("Project Value"),
+#                     dcc.Input(
+#                         id='order_project_value',
+#                         type='text',
+#                         placeholder='Tentative Project Value',
+#                         size=50
+#                     ),
+#                     html.Header("Remarks"),
+#                     dcc.Input(
+#                         id='order_remarks',
+#                         type='text',
+#                         placeholder='Remarks',
+#                         size=50
+#                     ),
+#                     html.Header("Computer Location"),
+#                     dcc.Input(
+#                         id='order_comp_location',
+#                         type='text',
+#                         placeholder='Computer Location',
+#                         size=50
+#                     ),
+#                     html.Header("Project Technical"),
+#                     dcc.Input(
+#                         id='order_project_technical',
+#                         type='text',
+#                         placeholder='Project Technical',
+#                         size=50
+#                     ),
+#                     html.Header("Project Management"),
+#                     dcc.Input(
+#                         id='order_project_management',
+#                         type='text',
+#                         placeholder='Project Management',
+#                         size=50
+#                     ),
+#                     html.Header("Project Supervisor"),
+#                     dcc.Input(
+#                         id='order_project_supervisor',
+#                         type='text',
+#                         placeholder='Project Supervisor',
+#                         size=50
+#                     ),
+#                 ], className="four columns"),
+#             ], className="row"),
+#             html.Div([
+#                 html.Div([
+#                     dcc.ConfirmDialogProvider(
+#                         children=html.Button(
+#                             'Submit',
+#                         ),
+#                         id='order_submit_button',
+#                         message='Are you sure you want to continue?'
+#                     ),
+#                 ], className="six columns"),
+#                 html.Div([
+#                     dcc.ConfirmDialogProvider(
+#                         children=html.Button(
+#                             'Close',
+#                         ),
+#                         id='order_close_button',
+#                         message='Are you sure you want to continue?'
+#                     )
+#                 ], className="six columns"),
+#                 dcc.ConfirmDialog(
+#                     id='order_modal_display',
+#                     message='Please fill all required values marked in RED!!',
+#                 ),
+#             ], className="row"),
+#         ])
+#     ]),
+#     html.Div(id='tabs-content')
+# ], className="page")
 
 
 def dn_order_layout():
