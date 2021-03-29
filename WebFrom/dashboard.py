@@ -735,19 +735,19 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
                 "select contact_person_name, contact_person_mobile, contact_person_email, contact_person_designation"
                 " from RajGroupClientRepresentativeList where client_name='{}' and client_location='{}' group by 1,2,3,4;".format(cl_nm, cl_lc))
             for index, row in contact_data.iterrows():
-                continue
-            #     existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
-            #                                                   row['contact_person_name'],
-            #                                                   "contact_person_mobile_id_{}".format(index),
-            #                                                   row['contact_person_mobile'],
-            #                                                   "contact_person_email_id_{}".format(index),
-            #                                                   row['contact_person_email'],
-            #                                                   "contact_person_designation_id_{}".format(index),
-            #                                                   row['contact_person_designation'],
-            #                                                   "contact_person_id_{}".format(index)
-            #                                                   ))
-            #     if index>2:
-            #         break
+                existing_contact_entries.append(new_contact_entry_layout("contact_person_name_id_{}".format(index),
+                                                              row['contact_person_name'],
+                                                              "contact_person_mobile_id_{}".format(index),
+                                                              row['contact_person_mobile'],
+                                                              "contact_person_email_id_{}".format(index),
+                                                              row['contact_person_email'],
+                                                              "contact_person_designation_id_{}".format(index),
+                                                              row['contact_person_designation'],
+                                                              "contact_person_id_{}".format(index)
+                                                              ))
+                print(existing_contact_entries)
+                if index>2:
+                    break
             return existing_contact_entries
         elif triggered_input == 'delete_contact_button' and delete_contact:
             print(add_contact_div_value)
