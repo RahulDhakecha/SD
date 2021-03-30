@@ -658,7 +658,7 @@ def main_layout():
     data_upcoming_projects = connection.execute_query(
         "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
         "client_location, lead_status, follow_up_person, tentative_project_value  from RajGroupEnquiryList where"
-        " follow_up_person like '{}' order by 1 desc;".format(username))
+        " follow_up_person like '{}' order by 1 desc limit 10;".format(username))
 
     en_keys = list(data_upcoming_projects['enquiry_key'])
 
