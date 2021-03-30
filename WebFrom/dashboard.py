@@ -745,7 +745,6 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
                                                               row['contact_person_designation'],
                                                               "contact_person_id_{}".format(index)
                                                               ))
-                print(existing_contact_entries)
                 if index>2:
                     break
             return existing_contact_entries
