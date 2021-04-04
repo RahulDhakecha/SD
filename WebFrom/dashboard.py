@@ -745,8 +745,8 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
                                                               row['contact_person_designation'],
                                                               "contact_person_id_{}".format(index)
                                                               ))
-                if index>2:
-                    break
+                # if index>2:
+                #     break
             return existing_contact_entries
         elif triggered_input == 'delete_contact_button' and delete_contact:
             print(add_contact_div_value)
