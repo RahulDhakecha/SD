@@ -39,6 +39,7 @@ import dash
 from dash.dependencies import Input, Output, State
 # from flask_caching.backends import FileSystemCache
 # from dash_extensions.callback import CallbackCache, Trigger
+from flask_caching import Cache
 import dash_table
 # import dash_bootstrap_components as dbc
 import dash_html_components as html
@@ -90,6 +91,7 @@ def is_master_logged_in(f):
     return wrap
 
 
+
 def call_dash_app(href):
     d_app = dash.Dash(__name__,
                          server=app,
@@ -105,6 +107,32 @@ dash_app2 = call_dash_app('/dash2/')
 dash_app3 = call_dash_app('/dash3/')
 # dash_app4 = call_dash_app('/dash4/')
 dash_app5 = call_dash_app('/dash5/')
+
+cache = Cache(dash_app.server, config={
+    'CACHE_TYPE': 'redis',
+    # Note that filesystem cache doesn't work on systems with ephemeral
+    # filesystems like Heroku.
+    'CACHE_TYPE': 'filesystem',
+    'CACHE_DIR': 'cache-directory',
+
+    # should be equal to maximum number of users on the app at a single time
+    # higher numbers will store more data in the filesystem / redis cache
+    'CACHE_THRESHOLD': 200
+})
+
+def get_enquiry_table(session_id):
+    @cache.memoize()
+    def query_and_serialize_data(session_id):
+        # expensive or user/session-unique data processing step goes here
+
+        rows = connection.execute_query(
+        "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
+        "client_location, lead_status, follow_up_person, tentative_project_value  from RajGroupEnquiryList where"
+        " follow_up_person like '{}' order by 1 desc;".format("%")).to_dict('records')
+
+        return rows
+
+    return query_and_serialize_data(session_id)
 
 
 @app.route('/d')
@@ -155,9 +183,10 @@ dash_app5.layout = rv_order_layout
                    Input('service_wise_pie_chart', 'clickData'),
                    Input('pending_offers_pie_chart', 'clickData'),
                    Input('submitted_offers_pie_chart', 'clickData'),
-                   Input('client_dropdown', 'value')],
-                  [State('upcoming_projects_table', 'data'),
-                   State('enquiry_key', 'value'),
+                   Input('client_dropdown', 'value'),
+                   Input('session-id', 'children')],
+                  # [State('upcoming_projects_table', 'data'),
+                  [State('enquiry_key', 'value'),
                    State('entry_date', 'date'),
                    State('project_description', 'value'),
                    State('scope_of_work', 'value'),
@@ -181,8 +210,8 @@ dash_app5.layout = rv_order_layout
                    State('add_offer_div', 'children'),
                    State('add_contact_div', 'children')])
 def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, hoverData_service, hoverData_followup, hoverData_offers,
-                  client_dropdown,
-                  rows, enquiry_key, entry_date, project_description, scope_of_work, client_name, client_location, existing_client,
+                  client_dropdown, session_id,
+                  enquiry_key, entry_date, project_description, scope_of_work, client_name, client_location, existing_client,
                   internal_lead, external_lead, lead_status,
                   raj_group_office, follow_up_person, tentative_project_value,
                   quotation_number, remarks, add_offer_div_value, add_contact_div_value):
@@ -198,6 +227,11 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
     #     username = session['username']
     # except:
     username = '%'
+    rows = get_enquiry_table(session_id)
+    # rows = connection.execute_query(
+    #     "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
+    #     "client_location, lead_status, follow_up_person, tentative_project_value  from RajGroupEnquiryList where"
+    #     " follow_up_person like '{}' order by 1 desc;".format(username)).to_dict('records')
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 1: "+str(triggered_input))
@@ -493,15 +527,16 @@ def control_client_dropdwon(close_clicks, row_id):
                    [Input('add_another_offer', 'submit_n_clicks'),
                     Input('upcoming_projects_table', 'selected_rows'),
                     Input('submit_button', 'submit_n_clicks'),
-                    Input('close_button', 'submit_n_clicks')],
+                    Input('close_button', 'submit_n_clicks'),
+                    Input('session-id', 'children')],
                    [State('enquiry_key', 'value'),
-                    State('upcoming_projects_table', 'data'),
+                    # State('upcoming_projects_table', 'data'),
                     State('add_offer_div', 'children'),
                     State('scope_of_work', 'value'),
                     State('client_name', 'value'),
                     State('client_location', 'value'),
                     State('raj_group_office', 'value')])
-def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquiry_key, rows, add_offer_div_value,
+def add_new_offer_entry(offer_click, row_id, submit_button, click_button, session_id, enquiry_key, add_offer_div_value,
                         scope_of_work, client_name, client_location, raj_group_office):
     # connection = AWSMySQLConn()
     ctx = dash.callback_context
@@ -510,6 +545,7 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
         'triggered': ctx.triggered,
         'inputs': ctx.inputs
     }, indent=2)
+    rows = get_enquiry_table(session_id)
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 3: "+str(triggered_input))
@@ -660,13 +696,15 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, enquir
                     Input('submit_button', 'submit_n_clicks'),
                     Input('close_button', 'submit_n_clicks'),
                     Input('client_dropdown', 'value'),
-                    Input('delete_contact_button', 'submit_n_clicks')],
+                    Input('delete_contact_button', 'submit_n_clicks'),
+                    Input('session-id', 'children')],
                    [State('enquiry_key', 'value'),
-                    State('upcoming_projects_table', 'data'),
+                    # State('upcoming_projects_table', 'data'),
                     State('add_contact_div', 'children'),
                     State('client_name', 'value'),
                     State('client_location', 'value')])
-def add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, delete_contact, enquiry_key, rows, add_contact_div_value, client_name, client_location):
+def add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, delete_contact, session_id,
+                          enquiry_key, add_contact_div_value, client_name, client_location):
     # connection = AWSMySQLConn()
     ctx = dash.callback_context
     ctx_msg = json.dumps({
@@ -674,6 +712,7 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
         'triggered': ctx.triggered,
         'inputs': ctx.inputs
     }, indent=2)
+    rows = get_enquiry_table(session_id)
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 4: " + str(triggered_input))

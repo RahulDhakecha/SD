@@ -9,7 +9,7 @@ from fixedVariables import sow, lead_status, raj_group_office, follow_up_person,
 from Connections.AWSMySQL import AWSMySQLConn
 import pandas as pd
 import plotly.graph_objects as go
-
+import uuid
 
 def service_wise_pie_data(data):
     # connection = AWSMySQLConn()
@@ -655,10 +655,11 @@ def new_contact_entry_layout(contact_person_name_id=None,
 def main_layout():
     connection = AWSMySQLConn()
     username = "%"
+    session_id = str(uuid.uuid4())
     data_upcoming_projects = connection.execute_query(
         "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
         "client_location, lead_status, follow_up_person, tentative_project_value  from RajGroupEnquiryList where"
-        " follow_up_person like '{}' order by 1 desc limit 300;".format(username))
+        " follow_up_person like '{}' order by 1 desc;".format(username))
 
     en_keys = list(data_upcoming_projects['enquiry_key'])
 
@@ -703,7 +704,7 @@ def main_layout():
         #     #     html.A('Download Dispatch Register', href='/dash/urlToDownload', id='my_link'),
         #     # ], className="one columns"),
         # ], className="row"),
-
+        html.Div(session_id, id='session-id', style={'display': 'none'}),
         html.Div([
             html.Div([
                 html.A('Home', href="/", className='nav_item now', style={'border-left': 'none'}),
