@@ -188,8 +188,8 @@ dash_app5.layout = rv_order_layout
                    Input('submitted_offers_pie_chart', 'clickData'),
                    Input('client_dropdown', 'value'),
                    Input('session-id', 'children')],
-                  # [State('upcoming_projects_table', 'data'),
-                  [State('enquiry_key', 'value'),
+                  [State('upcoming_projects_table', 'data'),
+                   State('enquiry_key', 'value'),
                    State('entry_date', 'date'),
                    State('project_description', 'value'),
                    State('scope_of_work', 'value'),
@@ -213,7 +213,7 @@ dash_app5.layout = rv_order_layout
                    State('add_offer_div', 'children'),
                    State('add_contact_div', 'children')])
 def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, hoverData_service, hoverData_followup, hoverData_offers,
-                  client_dropdown, session_id,
+                  client_dropdown, session_id, rows,
                   enquiry_key, entry_date, project_description, scope_of_work, client_name, client_location, existing_client,
                   internal_lead, external_lead, lead_status,
                   raj_group_office, follow_up_person, tentative_project_value,
@@ -230,8 +230,13 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
     #     username = session['username']
     # except:
     username = '%'
-    print("Session ID: "+str(session_id))
-    rows = get_enquiry_table(session_id, None)
+    # print("Session ID: "+str(session_id))
+    # rows = get_enquiry_table(session_id, None)
+    # cache.set("row_value", connection.execute_query(
+    #     "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
+    #     "client_location, lead_status, follow_up_person, tentative_project_value  from RajGroupEnquiryList where"
+    #     " follow_up_person like '{}' order by 1 desc;".format("%")).to_dict('records'))
+    # rows = cache.get("row_value")
     # rows = connection.execute_query(
     #     "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
     #     "client_location, lead_status, follow_up_person, tentative_project_value  from RajGroupEnquiryList where"
@@ -442,6 +447,10 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
 
         elif triggered_input == 'graph_lead_stages' and hoverData_lead_status:
             status_var = hoverData_lead_status['points'][0]['x']
+            # cache.set("row_value", connection.execute_query("select * from RajGroupEnquiryList where "
+            #                                                                "lead_status='{}' and follow_up_person like "
+            #                                                            "'{}' order by enquiry_key desc;".format(status_var,
+            #                                                                                                    data_access_rights[username])).to_dict('records'))
             upcoming_projects_data_modified = connection.execute_query("select * from RajGroupEnquiryList where "
                                                                            "lead_status='{}' and follow_up_person like "
                                                                        "'{}' order by enquiry_key desc;".format(status_var,
@@ -534,13 +543,13 @@ def control_client_dropdwon(close_clicks, row_id):
                     Input('close_button', 'submit_n_clicks'),
                     Input('session-id', 'children')],
                    [State('enquiry_key', 'value'),
-                    # State('upcoming_projects_table', 'data'),
+                    State('upcoming_projects_table', 'data'),
                     State('add_offer_div', 'children'),
                     State('scope_of_work', 'value'),
                     State('client_name', 'value'),
                     State('client_location', 'value'),
                     State('raj_group_office', 'value')])
-def add_new_offer_entry(offer_click, row_id, submit_button, click_button, session_id, enquiry_key, add_offer_div_value,
+def add_new_offer_entry(offer_click, row_id, submit_button, click_button, session_id, enquiry_key, rows, add_offer_div_value,
                         scope_of_work, client_name, client_location, raj_group_office):
     # connection = AWSMySQLConn()
     ctx = dash.callback_context
@@ -549,7 +558,8 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, sessio
         'triggered': ctx.triggered,
         'inputs': ctx.inputs
     }, indent=2)
-    rows = get_enquiry_table(session_id, None)
+    # rows = cache.get("row_value")
+    # rows = get_enquiry_table(session_id, None)
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 3: "+str(triggered_input))
@@ -703,12 +713,12 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, sessio
                     Input('delete_contact_button', 'submit_n_clicks'),
                     Input('session-id', 'children')],
                    [State('enquiry_key', 'value'),
-                    # State('upcoming_projects_table', 'data'),
+                    State('upcoming_projects_table', 'data'),
                     State('add_contact_div', 'children'),
                     State('client_name', 'value'),
                     State('client_location', 'value')])
 def add_new_contact_entry(contact_click, row_id, submit_button, close_button, client_dropdown, delete_contact, session_id,
-                          enquiry_key, add_contact_div_value, client_name, client_location):
+                          enquiry_key, rows, add_contact_div_value, client_name, client_location):
     # connection = AWSMySQLConn()
     ctx = dash.callback_context
     ctx_msg = json.dumps({
@@ -716,7 +726,8 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
         'triggered': ctx.triggered,
         'inputs': ctx.inputs
     }, indent=2)
-    rows = get_enquiry_table(session_id, None)
+    # rows = cache.get("row_value")
+    # rows = get_enquiry_table(session_id, None)
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 4: " + str(triggered_input))
