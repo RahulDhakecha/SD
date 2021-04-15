@@ -120,15 +120,18 @@ cache = Cache(dash_app.server, config={
     'CACHE_THRESHOLD': 200
 })
 
-def get_enquiry_table(session_id):
+def get_enquiry_table(session_id, row_value):
     @cache.memoize()
     def query_and_serialize_data(session_id):
         # expensive or user/session-unique data processing step goes here
 
-        rows = connection.execute_query(
-        "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
-        "client_location, lead_status, follow_up_person, tentative_project_value  from RajGroupEnquiryList where"
-        " follow_up_person like '{}' order by 1 desc;".format("%")).to_dict('records')
+        if row_value:
+            rows = row_value
+        else:
+            rows = connection.execute_query(
+            "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
+            "client_location, lead_status, follow_up_person, tentative_project_value  from RajGroupEnquiryList where"
+            " follow_up_person like '{}' order by 1 desc;".format("%")).to_dict('records')
 
         return rows
 
@@ -227,7 +230,8 @@ def update_output(submit_clicks, close_clicks, row_id, hoverData_lead_status, ho
     #     username = session['username']
     # except:
     username = '%'
-    rows = get_enquiry_table(session_id)
+    print("Session ID: "+str(session_id))
+    rows = get_enquiry_table(session_id, None)
     # rows = connection.execute_query(
     #     "select enquiry_key, entry_date, project_description, scope_of_work, client_name,"
     #     "client_location, lead_status, follow_up_person, tentative_project_value  from RajGroupEnquiryList where"
@@ -545,7 +549,7 @@ def add_new_offer_entry(offer_click, row_id, submit_button, click_button, sessio
         'triggered': ctx.triggered,
         'inputs': ctx.inputs
     }, indent=2)
-    rows = get_enquiry_table(session_id)
+    rows = get_enquiry_table(session_id, None)
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 3: "+str(triggered_input))
@@ -712,7 +716,7 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
         'triggered': ctx.triggered,
         'inputs': ctx.inputs
     }, indent=2)
-    rows = get_enquiry_table(session_id)
+    rows = get_enquiry_table(session_id, None)
     if ctx.triggered:
         triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
         print("Triggered Input 4: " + str(triggered_input))
@@ -840,6 +844,24 @@ def add_new_contact_entry(contact_click, row_id, submit_button, close_button, cl
             return None
         else:
             return None
+
+
+@dash_app.callback(Output('my_link', 'href'),
+                   [Input('file_options', 'value')],
+                  )
+def download_file(file_options):
+    ctx = dash.callback_context
+    ctx_msg = json.dumps({
+        'states': ctx.states,
+        'triggered': ctx.triggered,
+        'inputs': ctx.inputs
+    }, indent=2)
+    if ctx.triggered:
+        triggered_input = ctx.triggered[0]['prop_id'].split('.')[0]
+        print("Triggered Input 5: " + str(triggered_input))
+        if triggered_input == 'file_options' and file_options:
+            return '/dash/urlToDownload/RGEnq/'
+        return None
 
 
 @dash_app2.callback(Output('feedback_link', 'children'),
@@ -2541,6 +2563,32 @@ def add_hyperlink(comp_location, order_key):
     return '=HYPERLINK("{}","{}")'.format(comp_location, order_key)
 
 
+@app.route('/dash/urlToDownload/RGEnq/')
+def download_rg_enq_list():
+    value = connection.execute_query("select enquiry_key, entry_date, project_description, scope_of_work, client_name, "
+                                     "client_location, lead_status, follow_up_person, tentative_project_value  "
+                                     "from RajGroupEnquiryList order by 1 desc;")
+    # value['order_key'] = value.apply(lambda row: add_hyperlink(row['comp_location'], row['order_key']), axis=1)
+    # str_io = io.StringIO()
+    # value.to_csv(str_io)
+    # mem = io.BytesIO()
+    # mem.write(str_io.getvalue().encode('utf-8'))
+    # mem.seek(0)
+    # str_io.close()
+    strIO = io.BytesIO()
+    excel_writer = pd.ExcelWriter(strIO, engine='xlsxwriter')
+    value.to_excel(excel_writer, sheet_name='sheet1')
+    excel_writer.save()
+    excel_data = strIO.getvalue()
+    strIO.seek(0)
+    return flask.send_file(strIO,
+                           # mimetype='excel',
+                           # mimetype='text/csv',
+                           attachment_filename='Raj_Group_Enquiry_List.xlsx',
+                           as_attachment=True,
+                           cache_timeout=0)
+
+
 @app.route('/dash/urlToDownload/')
 def download_csv():
     value = connection.execute_query("select order_key, order_date, po_no, project_description, scope_of_work, client_name, "
@@ -2566,6 +2614,7 @@ def download_csv():
                            attachment_filename='Raj_Electricals_Order_List.xlsx',
                            as_attachment=True,
                            cache_timeout=0)
+
 
 @app.route('/dash/urlToDownload/RV/')
 def download_rv_excel():
