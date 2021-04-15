@@ -915,6 +915,16 @@ def main_layout():
                 ], className='table_data')
             ], className='body_data3'),
             # BOdy3 end
+            html.Div([
+                dcc.Dropdown(
+                    id='file_options',
+                    options=[{'value': i, 'label': i} for i in ['Raj Group Enquiry List']],
+                    placeholder='Select File to Download'
+                ),
+            ], className="two columns"),
+            html.Div([
+                html.A('Download', id='my_link'),
+            ], className="two columns"),
 
         ]),
         dcc.Tab(id='tab2', value='tab-2', label='Raj Group Marketing Form', children=[
